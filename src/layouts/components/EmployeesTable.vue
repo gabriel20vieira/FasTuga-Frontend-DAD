@@ -1,5 +1,6 @@
 <script setup>
 import avatarNoneUrl from "../../assets/images/avatars/avatar-5.png";
+import TablePagination from "../components/TablePagination.vue";
 
 const props = defineProps({
   employees: {
@@ -30,9 +31,17 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  isTableLoading: {
+    type: Boolean,
+    default: false,
+  },
+  tableLength: {
+    type: Number,
+    default: 1,
+  }
 })
 
-const emit = defineEmits(["edit"]);
+const emit = defineEmits(["edit", "delete", "newPage"]);
 
 const editClick = (user) => {
   emit("edit", user);
@@ -54,13 +63,20 @@ const userRole = (role) => {
       return "Delivery";
     case "EM":
       return "Manager";
+    case "C":
+      return "Customer";
     default:
       return "Employee";
   }
 }
+
+const clickNewTablePage = (page) => {
+  emit("newPage", page);
+}
 </script>
 
 <template>
+  <VProgressLinear :active="props.isTableLoading" indeterminate />
   <VTable>
     <thead>
       <tr>
@@ -76,7 +92,7 @@ const userRole = (role) => {
         <th v-if="showRole" class="text-uppercase">
           Role
         </th>
-        <th v-if="showEditButton" class="text-uppercase">
+        <th v-if="showEditButton" class="text-uppercase text-center">
           Actions
         </th>
       </tr>
@@ -91,10 +107,10 @@ const userRole = (role) => {
         </td>
         <td v-if="showEmail">{{ employee.email }}</td>
         <td v-if="showRole">{{ userRole(employee.type) }}</td>
-        <td v-if="showEditButton">
+        <td v-if="showEditButton" style="text-align: -webkit-center;">
           <div style="display: table-cell">
             <VBtn icon variant="text" @click="editClick(employee)" v-if="showEditButton" width="30px" height="30px">
-              <VIcon icon="mdi-pencil" size="18"/>
+              <VIcon icon="mdi-pencil" size="18" />
               <VTooltip activator="parent" location="end">
                 Edit
               </VTooltip>
@@ -102,7 +118,7 @@ const userRole = (role) => {
           </div>
           <div style="display: table-cell">
             <VBtn icon variant="text" @click="deleteClick(employee)" v-if="showEditButton" width="30px" height="30px">
-              <VIcon icon="mdi-trash" size="18"/>
+              <VIcon icon="mdi-trash" size="18" />
               <VTooltip activator="parent" location="end">
                 Delete
               </VTooltip>
@@ -112,6 +128,9 @@ const userRole = (role) => {
       </tr>
     </tbody>
   </VTable>
+  <VDivider />
+  <TablePagination @newPage="clickNewTablePage" :tableLength="props.tableLength"
+    :isTableLoading="props.isTableLoading" />
 </template>
 
 <style lang="scss">

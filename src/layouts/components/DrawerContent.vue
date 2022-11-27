@@ -1,9 +1,9 @@
 <script setup>
-import logo from '@/assets/logo.svg?raw'
+import logo from '@/assets/logo.svg?raw';
 import {
-  VerticalNavLink,
-  VerticalNavSectionTitle,
-} from '@layouts'
+VerticalNavLink,
+VerticalNavSectionTitle
+} from '@layouts';
 </script>
 
 <template>
@@ -33,13 +33,13 @@ import {
         icon: { icon: 'mdi-home-outline' }
       }"
     />
-    <!-- <VerticalNavLink
+    <VerticalNavLink
       :item="{
         title: 'Account Settings',
         to: 'account-settings',
         icon: { icon: 'mdi-account-cog-outline' }
       }"
-    /> -->
+    />
     <VerticalNavLink
       :item="{
         title: 'Employees',
@@ -49,7 +49,7 @@ import {
     />
     
     <!-- 👉 Pages -->
-    <!-- <VerticalNavSectionTitle :item="{ heading: 'Pages' }" />
+    <VerticalNavSectionTitle :item="{ heading: 'Pages' }" />
     <VerticalNavLink
       :item="{
         title: 'Login',
@@ -63,22 +63,24 @@ import {
         title: 'Register',
         to: 'register',
         target: '_blank',
-        icon: { icon: 'mdi-account-plus-outline' }
+        icon: { icon: 'mdi-account-plus-outline' },
+        disable: true,
+
       }"
-    /> -->
+    />
 
     <!-- ℹ️ This path doesn't exist so 404 route will catch this undefined path -->
-    <!-- <VerticalNavLink
+    <VerticalNavLink
       :item="{
         title: 'Error',
         to: { path: '/error' },
         target: '_blank',
         icon: { icon: 'mdi-alert-circle-outline' }
       }"
-    /> -->
+    />
 
     <!-- 👉 User Interface -->
-    <!--<VerticalNavSectionTitle :item="{ heading: 'User Interface' }" />
+    <VerticalNavSectionTitle :item="{ heading: 'User Interface' }" />
 
     <VerticalNavLink
       :item="{
@@ -114,6 +116,6 @@ import {
         to: 'form-layouts',
         icon: { icon: 'mdi-form-select' }
       }"
-    /> -->
+    />
   </ul>
 </template>

@@ -5,7 +5,7 @@ const theme = {
       dark: false,
       colors: {
         'primary': '#FF8300',
-        'secondary': '#8A8D93',
+        'secondary': '#2c4875',
         'on-secondary': '#fff',
         'success': '#56CA00',
         'info': '#16B1FF',
@@ -42,7 +42,7 @@ const theme = {
       dark: true,
       colors: {
         'primary': '#FF8300',
-        'secondary': '#8A8D93',
+        'secondary': '#2c4875',
         'on-secondary': '#fff',
         'success': '#56CA00',
         'info': '#16B1FF',

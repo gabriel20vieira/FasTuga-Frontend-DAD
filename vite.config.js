@@ -52,7 +52,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 5000,
   },
   optimizeDeps: {
-    exclude: ['vuetify'],
+    exclude: ["@meforma/vue-toaster", 'vuetify'],
     entries: [
       './src/**/*.vue',
     ],
