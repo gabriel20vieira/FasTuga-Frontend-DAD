@@ -19,6 +19,9 @@ html {
   position: absolute;
   inset-block-start: 40%;
   inset-inline-start: calc(50% - 45px);
+  transform: translate(-50%, -50%);
+  top: 43%;
+  left: 50%;
 }
 
 .loading {
