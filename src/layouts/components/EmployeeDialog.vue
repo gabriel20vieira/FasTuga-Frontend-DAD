@@ -1,13 +1,16 @@
 <script setup>
+import defaultAvatar from "@/assets/images/avatars/avatar-8.png";
+import { uploadImage } from "@/utils/utils";
+import { emailRules, nameRules } from '@/utils/validations';
 import { computed } from "@vue/reactivity";
 import { onUnmounted } from "vue";
-import avatarNoneUrl from "../../assets/images/avatars/avatar-8.png";
-import { emailRules, nameRules } from '../../utils/validations';
 import ConfirmationDialog from "./ConfirmationDialog.vue";
 
 const form = ref(null)
 const roles = [{ type: "EC", title: "Chef" }, { type: "ED", title: "Delivery" }, { type: "EM", title: "Manager" }, { type: "C", title: "Customer" }]
 const confirmDialog = ref(null)
+const refInputEl = ref()
+const employeePhoto = ref(defaultAvatar)
 
 const user = ref({
   name: '',
@@ -43,10 +46,19 @@ const saveClick = async (user) => {
   }
 };
 
+const clickUploadImage = (file) => {
+  const fileReader = uploadImage(file)
+  fileReader.onload = () => {
+    if (typeof fileReader.result === 'string' && fileReader.result.includes("image/"))
+      employeePhoto.value = fileReader.result
+  }
+}
+
+
 const newData = computed(() => {
   return operation.value === 'create' ?
     user.value.name != '' || user.value.email != '' :
-    JSON.stringify(user.value) != JSON.stringify(props.user)
+    JSON.stringify(user.value) != JSON.stringify(props.user) || employeePhoto.value != defaultAvatar
 })
 
 const operation = computed(() => (!props.user) ? 'create' : 'update')
@@ -69,10 +81,9 @@ onUnmounted(() => {
     <VCardText>
       <VRow>
         <VCol style="position:relative">
-          <VAvatar rounded color="primary" size="192" variant="tonal">
-            <VImg :src="avatarNoneUrl" />
-          </VAvatar>
-          <VBtn color="secondary" icon="mdi-upload" class="photo-upload-btn" />
+          <VAvatar rounded color="primary" size="192" variant="tonal" :image="employeePhoto" />
+          <VBtn color="secondary" icon="mdi-upload" class="photo-upload-btn" @click="refInputEl?.click()" />
+          <input ref="refInputEl" type="file" name="file" accept=".jpeg,.png,.jpg" hidden @input="clickUploadImage">
         </VCol>
         <VCol xs="12" sm="7" lg="7" xl="7" class="pt-0">
           <VForm ref="form" @submit.prevent="() => { }">
@@ -95,7 +106,7 @@ onUnmounted(() => {
     <VCardActions class="pr-5">
       <VSwitch v-model="user.blocked" label="Block Account" class="pl-3" :true-value="1" :false-value="0" />
       <VSpacer />
-      <VBtn color="on-secondary" variant="outlined" @click="closeClick()">
+      <VBtn color="on-secondary" variant="outlined" @click="closeClick">
         Close
       </VBtn>
       <VBtn color="primary" variant="flat" @click="saveClick(user)" :disabled="!newData">
