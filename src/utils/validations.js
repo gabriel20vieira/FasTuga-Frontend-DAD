@@ -6,8 +6,9 @@ const emailRules = ref([
 
 const nameRules = ref([
   v => !!v || 'Name is required',
-  v => !/[^a-zA-Z ]/.test(v) || 'Name must be valid',
+  v => /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/.test(v) || 'Name must be valid',
   v => (v && v.length <= 60) || 'Name must be less than 60 characters',
 ])
 
 export { emailRules, nameRules }
+
