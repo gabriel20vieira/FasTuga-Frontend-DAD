@@ -1,5 +1,5 @@
 <script setup>
-import avatar1 from '@/assets/images/avatars/avatar-1.png'
+import avatar1 from '@/assets/images/avatars/avatar-1.png';
 
 const avatarBadgeProps = {
   dot: true,
@@ -8,6 +8,12 @@ const avatarBadgeProps = {
   offsetY: 3,
   color: 'success',
   bordered: true,
+}
+
+const axios = inject('axios')
+const logout = () => {
+  //TODO: Logout in better place
+  delete axios.defaults.headers.common.Authorization
 }
 </script>
 
@@ -110,7 +116,7 @@ const avatarBadgeProps = {
           <VDivider class="my-2" />
 
           <!-- 👉 Logout -->
-          <VListItem to="/login">
+          <VListItem to="/login" @click="logout">
             <template #prepend>
               <VIcon
                 class="me-2"
