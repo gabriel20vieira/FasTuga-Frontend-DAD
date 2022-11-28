@@ -1,150 +1,92 @@
 <script setup>
-import { useTheme } from 'vuetify'
-import logo from '@/assets/logo.svg?raw'
-import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
-import authV1MaskDark from '@/assets/images/pages/auth-v1-mask-dark.png'
-import authV1MaskLight from '@/assets/images/pages/auth-v1-mask-light.png'
-import authV1Tree2 from '@/assets/images/pages/auth-v1-tree-2.png'
-import authV1Tree from '@/assets/images/pages/auth-v1-tree.png'
+import logo from '@/assets/logo.png';
+import { useRouter } from 'vue-router';
+
+const axios = inject('axios')
+const router = useRouter()
 
 const form = ref({
   email: '',
   password: '',
   remember: false,
 })
-const vuetifyTheme = useTheme()
-const authThemeMask = computed(() => {
-  return vuetifyTheme.global.name.value === 'light' ? authV1MaskLight : authV1MaskDark
-})
+
 const isPasswordVisible = ref(false)
+const loginError = ref(null)
+const loading = ref(false)
+
+const login = () => {
+  loginError.value = null
+  if (form.value.email == "" || form.value.password == "")
+    return loginError.value = "Please fill both inputs."
+
+  loading.value = true
+
+  axios.post('login', form.value).then((response) => {
+    //TODO: Store
+    const token = response.data.token
+    const user = response.data.data
+    axios.defaults.headers.common.Authorization = "Bearer " + token
+    return router.push({ name: 'index' })
+  }).catch((error) => {
+    loading.value = false
+    if (error.code == "ERR_NETWORK")
+      return loginError.value = "Something went wrong. Please try again later."
+
+    if (error.response.status === 401)
+      return loginError.value = "Invalid Login 😕"
+
+    loginError.value = error
+  })
+}
+
+
 </script>
 
 <template>
   <div class="auth-wrapper d-flex align-center justify-center pa-4">
-    <VCard
-      class="auth-card pa-4 pt-7"
-      max-width="448"
-    >
-      <VCardItem class="justify-center">
-        <template #prepend>
-          <div class="d-flex">
-            <div v-html="logo" />
-          </div>
-        </template>
-
-        <VCardTitle class="font-weight-semibold text-2xl text-uppercase">
-          Materio
-        </VCardTitle>
-      </VCardItem>
-
-      <VCardText class="pt-2">
-        <h5 class="text-h5 font-weight-semibold mb-1">
-          Welcome to Materio! 👋🏻
-        </h5>
-        <p class="mb-0">
-          Please sign-in to your account and start the adventure
-        </p>
-      </VCardText>
-
+    <VCard class="auth-card pa-4 pt-7" max-width="448">
+      <VImg :src="logo" class="ma-5" />
       <VCardText>
-        <VForm @submit.prevent="() => {}">
+        <VForm @submit.prevent="() => { }">
           <VRow>
             <!-- email -->
             <VCol cols="12">
-              <VTextField
-                v-model="form.email"
-                label="Email"
-                type="email"
-              />
+              <VTextField v-model="form.email" label="Email" type="email" :disabled="loading"/>
             </VCol>
 
             <!-- password -->
             <VCol cols="12">
-              <VTextField
-                v-model="form.password"
-                label="Password"
-                :type="isPasswordVisible ? 'text' : 'password'"
+              <VTextField v-model="form.password" label="Password" :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                @click:append-inner="isPasswordVisible = !isPasswordVisible"
-              />
+                @click:append-inner="isPasswordVisible = !isPasswordVisible" :disabled="loading"/>
 
               <!-- remember me checkbox -->
-              <div class="d-flex align-center justify-space-between flex-wrap mt-1 mb-4">
-                <VCheckbox
-                  v-model="form.remember"
-                  label="Remember me"
-                />
-
-                <a
-                  class="ms-2 mb-1"
-                  href="javascript:void(0)"
-                >
-                  Forgot Password?
-                </a>
+              <div class="d-flex align-center justify-space-between flex-wrap mt-4 mb-4">
+                <VCheckbox v-model="form.remember" label="Remember me" :disabled="loading"/>
               </div>
 
+              <VAlert color="error" class="mb-5 text-center" v-show="loginError">
+                {{ loginError }}
+              </VAlert>
+
               <!-- login button -->
-              <VBtn
-                block
-                type="submit"
-                to="/"
-              >
+              <VBtn block @click="login" :loading="loading">
                 Login
               </VBtn>
             </VCol>
 
             <!-- create account -->
-            <VCol
-              cols="12"
-              class="text-center text-base"
-            >
-              <span>New on our platform?</span>
-              <RouterLink
-                class="text-primary ms-2"
-                :to="{ name: 'register' }"
-              >
-                Create an account
+            <VCol cols="12" class="text-center text-base">
+              <span>Don't have an account?</span>
+              <RouterLink class="text-primary ms-2" :to="{ name: 'register' }">
+                Signup here!
               </RouterLink>
-            </VCol>
-
-            <VCol
-              cols="12"
-              class="d-flex align-center"
-            >
-              <VDivider />
-              <span class="mx-4">or</span>
-              <VDivider />
-            </VCol>
-
-            <!-- auth providers -->
-            <VCol
-              cols="12"
-              class="text-center"
-            >
-              <AuthProvider />
             </VCol>
           </VRow>
         </VForm>
       </VCardText>
     </VCard>
-
-    <VImg
-      class="auth-footer-start-tree d-none d-md-block"
-      :src="authV1Tree"
-      :width="250"
-    />
-
-    <VImg
-      :src="authV1Tree2"
-      class="auth-footer-end-tree d-none d-md-block"
-      :width="350"
-    />
-
-    <!-- bg img -->
-    <VImg
-      class="auth-footer-mask d-none d-md-block"
-      :src="authThemeMask"
-    />
   </div>
 </template>
 
@@ -153,6 +95,6 @@ const isPasswordVisible = ref(false)
 </style>
 
 <route lang="yaml">
-meta:
+meta: 
   layout: blank
 </route>
