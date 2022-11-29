@@ -42,7 +42,10 @@ export const useUserStore = defineStore('user', () => {
     try {
       const response = await axios.post('login', credentials)
       axios.defaults.headers.common.Authorization = 'Bearer ' + response.data.token
-      sessionStorage.setItem('token', response.data.token)
+
+      //Remember me
+      if (credentials.remember) sessionStorage.setItem('token', response.data.token)
+
       user.value = response.data.data
       return true
     } catch (error) {
