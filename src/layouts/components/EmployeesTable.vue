@@ -1,5 +1,5 @@
 <script setup>
-import { userRole } from "@/utils/utils";
+import { CHEF, DELIVERY, MANAGER, userRole } from "@/utils/utils";
 import avatarNoneUrl from "../../assets/images/avatars/avatar-5.png";
 import TablePagination from "../components/TablePagination.vue";
 
@@ -59,6 +59,16 @@ const photoFullUrl = (employee) => {
 const clickNewTablePage = (page) => {
   emit("newPage", page);
 }
+
+const roleIcon = (role) => {
+  switch (role) {
+    case MANAGER: return 'mdi-tie'
+    case DELIVERY: return 'mdi-cash-register'
+    case CHEF: return 'mdi-chef-hat'
+    default: return 'mdi-food-fork-drink'
+  }
+}
+
 </script>
 
 <template>
@@ -92,7 +102,12 @@ const clickNewTablePage = (page) => {
           <div class="right">{{ employee.name }}</div>
         </td>
         <td v-if="showEmail">{{ employee.email }}</td>
-        <td v-if="showRole">{{ userRole(employee.type) }}</td>
+        <td v-if="showRole">
+          <VChip>
+            <VIcon :icon="roleIcon(employee.type)" size="15" class="mr-2" />
+            <span>{{ userRole(employee.type) }}</span>
+          </VChip>
+        </td>
         <td v-if="showEditButton" style="text-align: -webkit-center;">
           <div style="display: table-cell">
             <VBtn icon variant="text" @click="editClick(employee)" v-if="showEditButton" width="30px" height="30px">
