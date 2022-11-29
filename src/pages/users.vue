@@ -90,39 +90,14 @@ const next = (page) => {
 </script>
 
 <template>
+  <VCol cols="12">
+    <EmployeesTable :employees="users" @edit="clickEdit" @delete="clickDelete" @newPage="next"
+      :isTableLoading="isTableLoading" :tableLength="tableLength" @addNew="(isDialogVisible = true)" />
+  </VCol>
+
   <VDialog v-model="isDialogVisible" max-width="625" persistent>
-    <template #activator="{ props }">
-      <VCol cols="12">
-        <VCard>
-          <VCardText class="pt-4 pb-2">
-            <VCardTitle class="pa-0 table-header">
-              <VCardTitle class="pl-0 pt-1 table-title">Employees</VCardTitle>
-              <VBtn v-bind="props" class="pl-4">
-                <VIcon icon="mdi-add" size="18" class="mr-1" />
-                Add Employee
-              </VBtn>
-            </VCardTitle>
-          </VCardText>
-
-          <VDivider />
-          <EmployeesTable :employees="users" @edit="clickEdit" @delete="clickDelete" @newPage="next"
-            :isTableLoading="isTableLoading" :tableLength="tableLength" />
-        </VCard>
-      </VCol>
-    </template>
-
     <UserDetailsDialog :user="userBeingEdited" @close="closeDialog" @save="saveEmployee" :isLoading="isDialogLoading" />
   </VDialog>
 
   <ConfirmationDialog ref="confirmDialog" />
 </template>
-
-<style scoped>
-.table-header {
-  display: flex;
-}
-
-.table-title {
-  flex: auto;
-}
-</style>
