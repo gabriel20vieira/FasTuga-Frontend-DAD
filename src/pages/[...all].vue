@@ -1,9 +1,9 @@
 <script setup>
-import { useTheme } from 'vuetify'
 import misc404 from '@/assets/images/pages/404.png'
 import miscMaskDark from '@/assets/images/pages/misc-mask-dark.png'
 import miscMaskLight from '@/assets/images/pages/misc-mask-light.png'
 import tree from '@/assets/images/pages/tree.png'
+import { useTheme } from 'vuetify'
 
 const vuetifyTheme = useTheme()
 const authThemeMask = computed(() => {
@@ -13,38 +13,21 @@ const authThemeMask = computed(() => {
 
 <template>
   <div class="misc-wrapper">
-    <ErrorHeader
-      error-code="404"
-      error-title="Page Not Found ⚠️"
-      error-description="We couldn't find the page you are looking for."
-    />
+    <ErrorHeader error-code="404" error-title="Page Not Found ⚠️"
+      error-description="We couldn't find the page you are looking for." />
 
     <!-- 👉 Image -->
     <div class="misc-avatar w-100 text-center">
-      <VImg
-        :src="misc404"
-        alt="Coming Soon"
-        :max-width="800"
-        class="mx-auto"
-      />
-      <VBtn
-        to="/"
-        class="mt-10"
-      >
+      <VImg :src="misc404" alt="Coming Soon" :max-width="800" class="mx-auto" />
+      <VBtn to="/" class="mt-10">
         Back to Home
       </VBtn>
     </div>
 
     <!-- 👉 Footer -->
-    <VImg
-      :src="tree"
-      class="misc-footer-tree d-none d-md-block"
-    />
+    <VImg :src="tree" class="misc-footer-tree d-none d-md-block" />
 
-    <VImg
-      :src="authThemeMask"
-      class="misc-footer-img d-none d-md-block"
-    />
+    <VImg :src="authThemeMask" class="misc-footer-img d-none d-md-block" />
   </div>
 </template>
 

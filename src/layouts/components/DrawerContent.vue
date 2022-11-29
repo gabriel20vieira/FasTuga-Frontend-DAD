@@ -1,8 +1,9 @@
 <script setup>
 import logo from '@/assets/logo.svg?raw';
+import { useUserStore } from "@/stores/user";
 import {
-VerticalNavLink,
-VerticalNavSectionTitle
+  VerticalNavLink,
+  VerticalNavSectionTitle
 } from '@layouts';
 </script>
 
@@ -21,7 +22,7 @@ VerticalNavSectionTitle
       to: 'index',
       icon: { icon: 'mdi-home-outline' }
     }" />
-    <VerticalNavLink :item="{
+    <VerticalNavLink v-if="false" :item="{
       title: 'Account Settings',
       to: 'account-settings',
       icon: { icon: 'mdi-account-cog-outline' }
@@ -33,28 +34,16 @@ VerticalNavSectionTitle
     }" />
 
     <!-- 👉 Pages -->
-    <VerticalNavSectionTitle :item="{ heading: 'Pages' }" />
-    <VerticalNavLink :item="{
+    <VerticalNavSectionTitle v-show="!useUserStore().user" :item="{ heading: 'Pages' }" />
+    <VerticalNavLink v-show="!useUserStore().user" :item="{
       title: 'Login',
       to: 'login',
-      target: '_blank',
       icon: { icon: 'mdi-login' }
     }" />
-    <VerticalNavLink :item="{
+    <VerticalNavLink v-show="!useUserStore().user" :item="{
       title: 'Register',
       to: 'register',
-      target: '_blank',
       icon: { icon: 'mdi-account-plus-outline' },
-      disable: true,
-    
-    }" />
-
-    <!-- ℹ️ This path doesn't exist so 404 route will catch this undefined path -->
-    <VerticalNavLink :item="{
-      title: 'Error',
-      to: { path: '/error' },
-      target: '_blank',
-      icon: { icon: 'mdi-alert-circle-outline' }
     }" />
 
     <!-- 👉 User Interface -->

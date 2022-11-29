@@ -1,11 +1,12 @@
 <script setup>
-import DrawerContent from './DrawerContent.vue'
-import { VerticalNavLayout } from '@layouts'
+import { useUserStore } from "@/stores/user";
+import { VerticalNavLayout } from '@layouts';
+import DrawerContent from './DrawerContent.vue';
 
 // Components
-import Footer from '@/layouts/components/Footer.vue'
-import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
-import UserProfile from '@/layouts/components/UserProfile.vue'
+import Footer from '@/layouts/components/Footer.vue';
+import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue';
+import UserProfile from '@/layouts/components/UserProfile.vue';
 </script>
 
 <template>
@@ -15,20 +16,9 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
 
       <VSpacer />
 
-      <NavbarThemeSwitcher />
-      <VBtn
-        icon
-        variant="text"
-        color="default"
-        class="me-2"
-        size="small"
-      >
-        <VIcon
-          icon="mdi-bell-outline"
-          size="24"
-        />
-      </VBtn>
-      <UserProfile />
+      <NavbarThemeSwitcher class="me-2" />
+
+      <UserProfile v-show="useUserStore().user" />
     </template>
 
     <!-- 👉 Drawer content -->

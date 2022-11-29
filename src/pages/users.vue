@@ -85,7 +85,7 @@ const next = (page) => {
 </script>
 
 <template>
-  <VDialog v-model="isDialogVisible" max-width="625">
+  <VDialog v-model="isDialogVisible" max-width="625" persistent>
     <template #activator="{ props }">
       <VCol cols="12">
         <VCard>

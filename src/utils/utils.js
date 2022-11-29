@@ -11,3 +11,18 @@ export function uploadImage(file) {
     */
   }
 }
+
+export function userRole(role) {
+  switch (role) {
+    case 'EC':
+      return 'Chef'
+    case 'ED':
+      return 'Delivery'
+    case 'EM':
+      return 'Manager'
+    case 'C':
+      return 'Customer'
+    default:
+      return 'Employee'
+  }
+}

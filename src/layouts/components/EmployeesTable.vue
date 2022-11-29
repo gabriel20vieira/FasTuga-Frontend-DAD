@@ -1,4 +1,5 @@
 <script setup>
+import { userRole } from "@/utils/utils";
 import avatarNoneUrl from "../../assets/images/avatars/avatar-5.png";
 import TablePagination from "../components/TablePagination.vue";
 
@@ -54,21 +55,6 @@ const deleteClick = (user) => {
 const photoFullUrl = (employee) => {
   return avatarNoneUrl;
 };
-
-const userRole = (role) => {
-  switch (role) {
-    case "EC":
-      return "Chef";
-    case "ED":
-      return "Delivery";
-    case "EM":
-      return "Manager";
-    case "C":
-      return "Customer";
-    default:
-      return "Employee";
-  }
-}
 
 const clickNewTablePage = (page) => {
   emit("newPage", page);

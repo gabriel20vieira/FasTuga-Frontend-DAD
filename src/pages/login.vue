@@ -1,9 +1,10 @@
 <script setup>
 import logo from '@/assets/logo.png';
+import { useUserStore } from "@/stores/user";
 import { useRouter } from 'vue-router';
 
-const axios = inject('axios')
 const router = useRouter()
+const userStore = useUserStore()
 
 const form = ref({
   email: '',
@@ -15,30 +16,22 @@ const isPasswordVisible = ref(false)
 const loginError = ref(null)
 const loading = ref(false)
 
-const login = () => {
+const login = async () => {
   loginError.value = null
+
   if (form.value.email == "" || form.value.password == "")
     return loginError.value = "Please fill both inputs."
 
   loading.value = true
 
-  axios.post('login', form.value).then((response) => {
-    //TODO: Store
-    const token = response.data.token
-    const user = response.data.data
-    axios.defaults.headers.common.Authorization = "Bearer " + token
+  if (await userStore.login(form.value)) {
     return router.push({ name: 'index' })
-  }).catch((error) => {
+  } else {
     loading.value = false
-    if (error.code == "ERR_NETWORK")
-      return loginError.value = "Something went wrong. Please try again later."
-
-    if (error.response.status === 401)
-      return loginError.value = "Invalid Login 😕"
-
-    loginError.value = error
-  })
+    return loginError.value = "Invalid Login 😕"
+  }
 }
+
 
 
 </script>
@@ -52,18 +45,18 @@ const login = () => {
           <VRow>
             <!-- email -->
             <VCol cols="12">
-              <VTextField v-model="form.email" label="Email" type="email" :disabled="loading"/>
+              <VTextField v-model="form.email" label="Email" type="email" :disabled="loading" />
             </VCol>
 
             <!-- password -->
             <VCol cols="12">
               <VTextField v-model="form.password" label="Password" :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                @click:append-inner="isPasswordVisible = !isPasswordVisible" :disabled="loading"/>
+                @click:append-inner="isPasswordVisible = !isPasswordVisible" :disabled="loading" />
 
               <!-- remember me checkbox -->
               <div class="d-flex align-center justify-space-between flex-wrap mt-4 mb-4">
-                <VCheckbox v-model="form.remember" label="Remember me" :disabled="loading"/>
+                <VCheckbox v-model="form.remember" label="Remember me" :disabled="loading" />
               </div>
 
               <VAlert color="error" class="mb-5 text-center" v-show="loginError">
