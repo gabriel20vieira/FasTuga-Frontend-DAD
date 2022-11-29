@@ -50,42 +50,44 @@ const register = async () => {
       </VCardText>
 
       <VCardText>
-        <VRow>
-          <!-- Name -->
-          <VCol cols="12">
-            <VTextField v-model="form.name" label="Name" :disabled="loading" :error-messages="loginErrors.name" />
-          </VCol>
-          <!-- email -->
-          <VCol cols="12">
-            <VTextField v-model="form.email" label="Email" type="email" :disabled="loading"
-              :error-messages="loginErrors.email" />
-          </VCol>
-          <!-- password -->
-          <VCol cols="12">
-            <VTextField v-model="form.password" label="Password" :type="isPasswordVisible ? 'text' : 'password'"
-              :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-              @click:append-inner="isPasswordVisible = !isPasswordVisible" class="mb-1" :disabled="loading"
-              :error-messages="loginErrors.password" />
-          </VCol>
+        <VForm @submit.prevent="() => { }">
+          <VRow>
+            <!-- Name -->
+            <VCol cols="12">
+              <VTextField v-model="form.name" label="Name" :disabled="loading" :error-messages="loginErrors.name" />
+            </VCol>
+            <!-- email -->
+            <VCol cols="12">
+              <VTextField v-model="form.email" label="Email" type="email" :disabled="loading"
+                :error-messages="loginErrors.email" />
+            </VCol>
+            <!-- password -->
+            <VCol cols="12">
+              <VTextField v-model="form.password" label="Password" :type="isPasswordVisible ? 'text' : 'password'"
+                :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                @click:append-inner="isPasswordVisible = !isPasswordVisible" class="mb-1" :disabled="loading"
+                :error-messages="loginErrors.password" />
+            </VCol>
 
-          <VCol cols="12">
-            <VAlert color="error" class="mb-5 text-center" v-show="loginErrors.other">
-              {{ loginErrors.other }}
-            </VAlert>
+            <VCol cols="12">
+              <VAlert color="error" class="mb-5 text-center" v-show="loginErrors.other">
+                {{ loginErrors.other }}
+              </VAlert>
 
-            <VBtn block @click="register" :loading="loading">
-              Sign up
-            </VBtn>
-          </VCol>
+              <VBtn type="submit" block @click="register" :loading="loading">
+                Sign up
+              </VBtn>
+            </VCol>
 
-          <!-- login instead -->
-          <VCol cols="12" class="text-center text-base">
-            <span>Already have an account?</span>
-            <RouterLink class="text-primary ms-2" to="login">
-              Sign in here!
-            </RouterLink>
-          </VCol>
-        </VRow>
+            <!-- login instead -->
+            <VCol cols="12" class="text-center text-base">
+              <span>Already have an account?</span>
+              <RouterLink class="text-primary ms-2" to="login">
+                Sign in here!
+              </RouterLink>
+            </VCol>
+          </VRow>
+        </VForm>
       </VCardText>
     </VCard>
   </div>

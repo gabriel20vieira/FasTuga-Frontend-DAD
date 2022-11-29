@@ -9,7 +9,7 @@ const userStore = useUserStore()
 const form = ref({
   email: '',
   password: '',
-  remember: false,
+  remember: true,
 })
 
 const isPasswordVisible = ref(false)
@@ -64,7 +64,7 @@ const login = async () => {
               </VAlert>
 
               <!-- login button -->
-              <VBtn block @click="login" :loading="loading">
+              <VBtn type="submit" block @click="login" :loading="loading">
                 Login
               </VBtn>
             </VCol>
