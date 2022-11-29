@@ -1,4 +1,5 @@
 <script setup>
+import { useUserStore } from '@/stores/user';
 import { inject, onMounted, ref } from 'vue';
 import ConfirmationDialog from '../layouts/components/ConfirmationDialog.vue';
 import UserDetailsDialog from '../layouts/components/EmployeeDialog.vue';
@@ -6,51 +7,54 @@ import EmployeesTable from '../layouts/components/EmployeesTable.vue';
 
 const axios = inject('axios')
 const toast = inject('toast')
+const userStore = useUserStore()
 
 const isTableLoading = ref(true)
 const tableLength = ref(1)
 const users = ref([])
 const userBeingEdited = ref(null)
 const isDialogVisible = ref(false)
+const isDialogLoading = ref(false)
 const confirmDialog = ref(null)
 
-const loadUsers = (page) => {
-  isTableLoading.value = true
-  axios.get(`users?page=${page || 1}`).then((response) => {
-    users.value = response.data.data
+const loadUsers = async (page) => {
+  //Only shows loading on the first load (ex. Save/Edit/Del a user won't show a loading)
+  if (users == [])
+    isTableLoading.value = true
+
+  await userStore.loadAllUsers(page).then((res) => {
+    users.value = res.data.data
     isTableLoading.value = false
-    tableLength.value = response.data.meta.last_page || 1;
+    tableLength.value = res.data.meta.last_page || 1;
   }).catch((error) => {
     console.log(error)
     toast.error(error.message)
   })
 }
 
-const saveEmployee = (user, operation) => {
+const saveEmployee = async (user, operation) => {
+  isDialogLoading.value = true
   if (operation === 'create') {
     user.password = "123" //HARDCODED Password
-    axios.post('users', user)
-      .then((response) => {
-        //TODO: Update Store
-        toast.success("Employee created successfully!")
-        closeDialog()
-      })
-      .catch((error) => {
-        console.log(error)
-        toast.error(error.response.data.message ? error.response.data.message : error.message)
-      })
+    await axios.post('users', user).then(async (res) => {
+      await loadUsers()
+      toast.success(`Employee ${res.data.data.name} created successfully!`)
+      closeDialog()
+    }).catch((error) => {
+      console.log(error)
+      toast.error(error.response.data.message ? error.response.data.message : error.message)
+    })
   } else {
-    axios.put(`users/${user.id}`, user)
-      .then((response) => {
-        //TODO: Update Store
-        toast.success("Employee updated successfully!")
-        closeDialog()
-      })
-      .catch((error) => {
-        console.log(error)
-        toast.error(error.response.data.message ? error.response.data.message : error.message)
-      })
+    await axios.put(`users/${user.id}`, user).then(async (res) => {
+      await loadUsers()
+      toast.success(`Employee ${res.data.data.name} updated successfully!`)
+      closeDialog()
+    }).catch((error) => {
+      console.log(error)
+      toast.error(error.response.data.message ? error.response.data.message : error.message)
+    })
   }
+  isDialogLoading.value = false
 }
 
 const clickEdit = (user) => {
@@ -60,7 +64,8 @@ const clickEdit = (user) => {
 
 const clickDelete = async (user) => {
   if (await confirmDialog.value.open({ message: "Are you sure you want to delete this employee?" })) {
-    await axios.delete(`users/${user.id}`).then(() => {
+    await axios.delete(`users/${user.id}`).then(async () => {
+      await loadUsers()
       toast.success("Employee removed successfully!")
       confirmDialog.value.close()
     }).catch((error) => {
@@ -106,7 +111,7 @@ const next = (page) => {
       </VCol>
     </template>
 
-    <UserDetailsDialog :user="userBeingEdited" @close="closeDialog" @save="saveEmployee" />
+    <UserDetailsDialog :user="userBeingEdited" @close="closeDialog" @save="saveEmployee" :isLoading="isDialogLoading" />
   </VDialog>
 
   <ConfirmationDialog ref="confirmDialog" />

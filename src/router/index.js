@@ -16,12 +16,12 @@ router.beforeEach((to, from, next) => {
   if (to.name == 'index') {
     return next()
   }
-  if (to.name == 'users') {
-    //TODO: Perguntar ao stor como ir buscar o userStore com os dados
-    if (userStore.user.type != 'EM') {
-      return next({ name: 'index' })
-    }
-  }
+  // if (to.name == 'users') {
+  //   //TODO: Perguntar ao stor como ir buscar o userStore com os dados
+  //   if (userStore.user.type != 'EM') {
+  //     return next({ name: 'index' })
+  //   }
+  // }
   // if (to.name == 'User') {
   //   if (userStore.user.type == 'A' || userStore.user.id == to.params.id) {
   //     return next()

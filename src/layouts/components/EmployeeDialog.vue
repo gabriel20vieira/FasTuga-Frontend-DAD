@@ -28,6 +28,9 @@ const user = ref({
 const props = defineProps({
   user: {
     type: Object
+  },
+  isLoading: {
+    type: Boolean
   }
 })
 
@@ -118,6 +121,7 @@ onUnmounted(() => {
         Save
       </VBtn>
     </VCardActions>
+    <VProgressLinear :active="props.isLoading" indeterminate />
   </VCard>
 
   <ConfirmationDialog ref="confirmDialog" />

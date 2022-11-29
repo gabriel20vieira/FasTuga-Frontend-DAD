@@ -28,6 +28,10 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  async function loadAllUsers(page) {
+    return await axios.get(`users?page=${page || 1}`)
+  }
+
   function clearUser() {
     delete axios.defaults.headers.common.Authorization
     sessionStorage.removeItem('token')
@@ -68,5 +72,5 @@ export const useUserStore = defineStore('user', () => {
     return false
   }
 
-  return { user, userId, login, logout, restoreToken }
+  return { user, userId, login, logout, restoreToken, loadAllUsers }
 })
