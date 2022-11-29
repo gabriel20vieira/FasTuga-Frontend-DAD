@@ -1,13 +1,18 @@
 <script setup>
 import defaultAvatar from "@/assets/images/avatars/avatar-8.png";
-import { uploadImage } from "@/utils/utils";
+import { CHEF, CUSTOMER, DELIVERY, MANAGER, uploadImage, userRole } from "@/utils/utils";
 import { emailRules, nameRules } from '@/utils/validations';
 import { computed } from "@vue/reactivity";
 import { onUnmounted } from "vue";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
 
 const form = ref(null)
-const roles = [{ type: "EC", title: "Chef" }, { type: "ED", title: "Delivery" }, { type: "EM", title: "Manager" }, { type: "C", title: "Customer" }]
+const roles = [
+  { type: CHEF, title: userRole(CHEF) },
+  { type: DELIVERY, title: userRole(DELIVERY) },
+  { type: MANAGER, title: userRole(MANAGER) },
+  { type: CUSTOMER, title: userRole(CUSTOMER) }
+]
 const confirmDialog = ref(null)
 const refInputEl = ref()
 const employeePhoto = ref(defaultAvatar)

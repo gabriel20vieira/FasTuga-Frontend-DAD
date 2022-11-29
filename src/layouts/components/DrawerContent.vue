@@ -1,6 +1,7 @@
 <script setup>
 import logo from '@/assets/logo.svg?raw';
 import { useUserStore } from "@/stores/user";
+import { MANAGER } from '@/utils/utils';
 import {
   VerticalNavLink,
   VerticalNavSectionTitle
@@ -27,7 +28,7 @@ import {
       to: 'account-settings',
       icon: { icon: 'mdi-account-cog-outline' }
     }" />
-    <VerticalNavLink :item="{
+    <VerticalNavLink v-show="useUserStore().user?.type == MANAGER" :item="{
       title: 'Employees',
       to: 'users',
       icon: { icon: 'mdi-account-group-outline' }

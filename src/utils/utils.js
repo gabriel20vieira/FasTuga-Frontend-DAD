@@ -12,15 +12,20 @@ export function uploadImage(file) {
   }
 }
 
+export const CHEF = 'EC'
+export const DELIVERY = 'ED'
+export const MANAGER = 'EM'
+export const CUSTOMER = 'C'
+
 export function userRole(role) {
   switch (role) {
-    case 'EC':
+    case CHEF:
       return 'Chef'
-    case 'ED':
+    case DELIVERY:
       return 'Delivery'
-    case 'EM':
+    case MANAGER:
       return 'Manager'
-    case 'C':
+    case CUSTOMER:
       return 'Customer'
     default:
       return 'Employee'
