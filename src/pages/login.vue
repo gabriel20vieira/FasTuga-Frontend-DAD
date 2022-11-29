@@ -73,7 +73,7 @@ const login = async () => {
             <VCol cols="12" class="text-center text-base">
               <span>Don't have an account?</span>
               <RouterLink class="text-primary ms-2" :to="{ name: 'register' }">
-                Signup here!
+                Sign up here!
               </RouterLink>
             </VCol>
           </VRow>

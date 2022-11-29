@@ -1,158 +1,93 @@
 <script setup>
-import { useTheme } from 'vuetify'
-import logo from '@/assets/logo.svg?raw'
-import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
-import authV1MaskDark from '@/assets/images/pages/auth-v1-mask-dark.png'
-import authV1MaskLight from '@/assets/images/pages/auth-v1-mask-light.png'
-import authV1Tree2 from '@/assets/images/pages/auth-v1-tree-2.png'
-import authV1Tree from '@/assets/images/pages/auth-v1-tree.png'
+import { useRouter } from 'vue-router';
+const axios = inject('axios')
+const router = useRouter()
 
 const form = ref({
-  username: '',
+  name: '',
+  email: '',
+  password: ''
+})
+
+const isPasswordVisible = ref(false)
+const loading = ref(false)
+
+const loginErrors = ref({
+  name: '',
   email: '',
   password: '',
-  privacyPolicies: false,
+  other: ''
 })
-const vuetifyTheme = useTheme()
-const authThemeMask = computed(() => {
-  return vuetifyTheme.global.name.value === 'light' ? authV1MaskLight : authV1MaskDark
-})
-const isPasswordVisible = ref(false)
+
+const register = async () => {
+  loginErrors.value.name = loginErrors.value.email = loginErrors.value.password = loginErrors.value.other = ''
+  loading.value = true
+
+  await axios.post('register', form.value).then((res) => {
+    toast.success("Register successful!")
+    router.push({ name: 'login' })
+  }).catch((error) => {
+    loading.value = false
+
+    if (error.code == "ERR_NETWORK") {
+      return loginErrors.value.other = "Something went wrong.. 😕"
+    }
+
+    loginErrors.value.name = error.response.data.errors.name ? error.response.data.errors.name[0] : ''
+    loginErrors.value.email = error.response.data.errors.email ? error.response.data.errors.email[0] : ''
+    loginErrors.value.password = error.response.data.errors.password ? error.response.data.errors.password[0] : ''
+  })
+}
 </script>
 
 <template>
   <div class="auth-wrapper d-flex align-center justify-center pa-4">
-    <VCard
-      class="auth-card pa-4 pt-7"
-      max-width="448"
-    >
-      <VCardItem class="justify-center">
-        <template #prepend>
-          <div class="d-flex">
-            <div v-html="logo" />
-          </div>
-        </template>
-
-        <VCardTitle class="font-weight-semibold text-2xl text-uppercase">
-          Materio
-        </VCardTitle>
-      </VCardItem>
-
+    <VCard class="auth-card pa-4 pt-7" max-width="448">
       <VCardText class="pt-2">
-        <h5 class="text-h5 font-weight-semibold mb-1">
-          Adventure starts here 🚀
+        <h5 class="text-h5 font-weight-semibold mb-1 align">
+          Create Account
         </h5>
-        <p class="mb-0">
-          Make your app management easy and fun!
-        </p>
       </VCardText>
 
       <VCardText>
-        <VForm @submit.prevent="() => {}">
-          <VRow>
-            <!-- Username -->
-            <VCol cols="12">
-              <VTextField
-                v-model="form.username"
-                label="Username"
-              />
-            </VCol>
-            <!-- email -->
-            <VCol cols="12">
-              <VTextField
-                v-model="form.email"
-                label="Email"
-                type="email"
-              />
-            </VCol>
+        <VRow>
+          <!-- Name -->
+          <VCol cols="12">
+            <VTextField v-model="form.name" label="Name" :disabled="loading" :error-messages="loginErrors.name" />
+          </VCol>
+          <!-- email -->
+          <VCol cols="12">
+            <VTextField v-model="form.email" label="Email" type="email" :disabled="loading"
+              :error-messages="loginErrors.email" />
+          </VCol>
+          <!-- password -->
+          <VCol cols="12">
+            <VTextField v-model="form.password" label="Password" :type="isPasswordVisible ? 'text' : 'password'"
+              :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+              @click:append-inner="isPasswordVisible = !isPasswordVisible" class="mb-1" :disabled="loading"
+              :error-messages="loginErrors.password" />
+          </VCol>
 
-            <!-- password -->
-            <VCol cols="12">
-              <VTextField
-                v-model="form.password"
-                label="Password"
-                :type="isPasswordVisible ? 'text' : 'password'"
-                :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                @click:append-inner="isPasswordVisible = !isPasswordVisible"
-              />
-              <div class="d-flex align-center mt-1 mb-4">
-                <VCheckbox
-                  id="privacy-policy"
-                  v-model="form.privacyPolicies"
-                  inline
-                />
-                <VLabel
-                  for="privacy-policy"
-                  style="opacity: 1;"
-                >
-                  <span class="me-1">I agree to</span>
-                  <a
-                    href="javascript:void(0)"
-                    class="text-primary"
-                  >privacy policy & terms</a>
-                </VLabel>
-              </div>
+          <VCol cols="12">
+            <VAlert color="error" class="mb-5 text-center" v-show="loginErrors.other">
+              {{ loginErrors.other }}
+            </VAlert>
 
-              <VBtn
-                block
-                type="submit"
-              >
-                Sign up
-              </VBtn>
-            </VCol>
+            <VBtn block @click="register" :loading="loading">
+              Sign up
+            </VBtn>
+          </VCol>
 
-            <!-- login instead -->
-            <VCol
-              cols="12"
-              class="text-center text-base"
-            >
-              <span>Already have an account?</span>
-              <RouterLink
-                class="text-primary ms-2"
-                to="login"
-              >
-                Sign in instead
-              </RouterLink>
-            </VCol>
-
-            <VCol
-              cols="12"
-              class="d-flex align-center"
-            >
-              <VDivider />
-              <span class="mx-4">or</span>
-              <VDivider />
-            </VCol>
-
-            <!-- auth providers -->
-            <VCol
-              cols="12"
-              class="text-center"
-            >
-              <AuthProvider />
-            </VCol>
-          </VRow>
-        </VForm>
+          <!-- login instead -->
+          <VCol cols="12" class="text-center text-base">
+            <span>Already have an account?</span>
+            <RouterLink class="text-primary ms-2" to="login">
+              Sign in here!
+            </RouterLink>
+          </VCol>
+        </VRow>
       </VCardText>
     </VCard>
-
-    <VImg
-      class="auth-footer-start-tree d-none d-md-block"
-      :src="authV1Tree"
-      :width="250"
-    />
-
-    <VImg
-      :src="authV1Tree2"
-      class="auth-footer-end-tree d-none d-md-block"
-      :width="350"
-    />
-
-    <!-- bg img -->
-    <VImg
-      class="auth-footer-mask d-none d-md-block"
-      :src="authThemeMask"
-    />
   </div>
 </template>
 
