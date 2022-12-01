@@ -24,8 +24,14 @@ const loadUsers = async (page) => {
 
   await userStore.loadAllUsers(page).then((res) => {
     users.value = res.data.data
-    isTableLoading.value = false
     tableLength.value = res.data.meta.last_page || 1;
+
+    //Fetch employees photos and store the url
+    users.value.forEach(async (user, index) => {
+      users.value[index].photo = await userStore.fetchEmployeePhoto(user)
+    })
+
+    isTableLoading.value = false
   }).catch((error) => {
     console.log(error)
     toast.error(error.message)

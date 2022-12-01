@@ -1,6 +1,5 @@
 <script setup>
 import { CHEF, DELIVERY, MANAGER, userRole } from "@/utils/utils";
-import avatarNoneUrl from "../../assets/images/avatars/avatar-5.png";
 import TablePagination from "../components/TablePagination.vue";
 
 const props = defineProps({
@@ -52,10 +51,6 @@ const deleteClick = (user) => {
   emit("delete", user);
 };
 
-const photoFullUrl = (employee) => {
-  return avatarNoneUrl;
-};
-
 const clickNewTablePage = (page) => {
   emit("newPage", page);
 }
@@ -72,12 +67,10 @@ const roleIcon = (role) => {
 const clickAddNew = () => {
   emit("addNew")
 }
-
 </script>
 
 <template>
   <VCard cols="12">
-
     <VCardText class="pt-4 pb-2">
       <VCardTitle class="pa-0 table-header">
         <VCardTitle class="pl-0 pt-1 table-title">Employees</VCardTitle>
@@ -114,7 +107,7 @@ const clickAddNew = () => {
         <tr v-for="employee in employees" :key="employee.id">
           <td v-if="showId">{{ employee.id }}</td>
           <td>
-            <div class="left"><img :src="photoFullUrl(employee)" class="rounded-circle img_photo" width="35"
+            <div class="left"><img :src="employee.photo" class="rounded-circle img_photo" width="35"
                 style="margin-top: 5px;" /></div>
             <div class="right">{{ employee.name }}</div>
           </td>

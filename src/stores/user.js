@@ -1,3 +1,4 @@
+import defaultAvatar from '@/assets/images/avatars/avatar-8.png'
 import { defineStore } from 'pinia'
 import { computed, inject, ref } from 'vue'
 
@@ -7,12 +8,16 @@ export const useUserStore = defineStore('user', () => {
 
   const user = ref(null)
 
-  // const userPhotoUrl = computed(() => {
-  //     if (!user.value?.photo_url) {
-  //         return avatarNoneUrl
-  //     }
-  //     return serverBaseUrl + '/storage/fotos/' + user.value.photo_url
-  // })
+  const userPhoto = computed(() => {
+    if (!user.value?.photo_url) {
+      return avatarNoneUrl
+    }
+    return serverBaseUrl + '/image/' + user.value.photo_url
+  })
+
+  async function fetchEmployeePhoto(user) {
+    return user.photo_url ? serverBaseUrl + '/api/image/' + user.photo_url : defaultAvatar
+  }
 
   const userId = computed(() => {
     return user.value?.id ?? -1
@@ -75,5 +80,5 @@ export const useUserStore = defineStore('user', () => {
     return false
   }
 
-  return { user, userId, login, logout, restoreToken, loadAllUsers }
+  return { user, userId, login, logout, restoreToken, loadAllUsers, fetchEmployeePhoto }
 })

@@ -62,7 +62,6 @@ const clickUploadImage = (file) => {
   }
 }
 
-
 const newData = computed(() => {
   return operation.value === 'create' ?
     user.value.name != '' || user.value.email != '' :
@@ -89,7 +88,7 @@ onUnmounted(() => {
     <VCardText>
       <VRow>
         <VCol style="position:relative">
-          <VAvatar rounded color="primary" size="192" variant="tonal" :image="employeePhoto" />
+          <VAvatar rounded color="primary" size="192" variant="tonal" :image="user.photo" />
           <VBtn color="secondary" icon="mdi-upload" class="photo-upload-btn" @click="refInputEl?.click()" />
           <input ref="refInputEl" type="file" name="file" accept=".jpeg,.png,.jpg" hidden @input="clickUploadImage">
         </VCol>
