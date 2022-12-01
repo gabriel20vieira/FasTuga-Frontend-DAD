@@ -10,9 +10,9 @@ export const useUserStore = defineStore('user', () => {
 
   const userPhoto = computed(() => {
     if (!user.value?.photo_url) {
-      return avatarNoneUrl
+      return defaultAvatar
     }
-    return serverBaseUrl + '/image/' + user.value.photo_url
+    return serverBaseUrl + '/api/image/' + user.value.photo_url
   })
 
   async function fetchEmployeePhoto(user) {
@@ -80,5 +80,5 @@ export const useUserStore = defineStore('user', () => {
     return false
   }
 
-  return { user, userId, login, logout, restoreToken, loadAllUsers, fetchEmployeePhoto }
+  return { user, userId, userPhoto, login, logout, restoreToken, loadAllUsers, fetchEmployeePhoto }
 })

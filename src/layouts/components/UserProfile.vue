@@ -1,5 +1,4 @@
 <script setup>
-import avatar1 from '@/assets/images/avatars/avatar-1.png';
 import { useUserStore } from "@/stores/user";
 import { userRole } from "@/utils/utils";
 
@@ -16,14 +15,14 @@ const logout = async () => {
   }
 }
 
-const test = () => {
+const goToProfile = () => {
   router.push({ name: 'account-settings' })
 }
 </script>
 
 <template>
   <VAvatar style="cursor: pointer;" color="primary" variant="tonal">
-    <VImg :src="avatar1" />
+    <VImg :src="userStore.userPhoto" />
 
     <!-- SECTION Menu -->
     <VMenu activator="parent" width="230" location="bottom end" offset="14px">
@@ -33,7 +32,7 @@ const test = () => {
           <template #prepend>
             <VListItemAction start>
               <VAvatar color="primary" size="40" variant="tonal">
-                <VImg :src="avatar1" />
+                <VImg :src="userStore.userPhoto" />
               </VAvatar>
             </VListItemAction>
           </template>
@@ -49,7 +48,7 @@ const test = () => {
         <VDivider class="my-2" />
 
         <!-- 👉 Profile -->
-        <VListItem link @click="test">
+        <VListItem link @click="goToProfile">
           <template #prepend>
             <VIcon class="me-2" icon="mdi-account-outline" size="22" />
           </template>
