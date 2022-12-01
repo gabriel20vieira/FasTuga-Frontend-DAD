@@ -56,12 +56,8 @@ const saveClick = async (user) => {
   }
 };
 
-const clickUploadImage = (file) => {
-  const fileReader = uploadImage(file)
-  fileReader.onload = () => {
-    if (typeof fileReader.result === 'string' && fileReader.result.includes("image/"))
-      employeePhoto.value = fileReader.result
-  }
+const clickUploadImage = async (file) => {
+  employeePhoto.value = await uploadImage(file)
 }
 
 const newData = computed(() => {

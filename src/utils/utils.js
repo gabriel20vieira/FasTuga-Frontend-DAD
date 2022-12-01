@@ -1,15 +1,15 @@
-export function uploadImage(file) {
-  const fileReader = new FileReader()
-  const { files } = file.target
-  if (files && files.length) {
-    fileReader.readAsDataURL(files[0])
-    return fileReader
-    /*
-    fileReader.onload = () => {
-      if (typeof fileReader.result === 'string') return fileReader.result
+export async function uploadImage(file) {
+  return new Promise(function (resolve) {
+    const fileReader = new FileReader()
+    const { files } = file.target
+    if (files && files.length) {
+      fileReader.readAsDataURL(files[0])
+
+      fileReader.onload = () => {
+        if (typeof fileReader.result === 'string') return resolve(fileReader.result)
+      }
     }
-    */
-  }
+  })
 }
 
 export const CHEF = 'EC'
