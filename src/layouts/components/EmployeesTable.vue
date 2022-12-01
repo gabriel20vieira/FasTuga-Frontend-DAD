@@ -1,6 +1,9 @@
 <script setup>
+import defaultAvatar from "@/assets/images/avatars/avatar-2.png";
 import { CHEF, DELIVERY, MANAGER, userRole } from "@/utils/utils";
 import TablePagination from "../components/TablePagination.vue";
+
+const serverBaseUrl = inject("serverBaseUrl")
 
 const props = defineProps({
   employees: {
@@ -64,6 +67,12 @@ const roleIcon = (role) => {
   }
 }
 
+const photoFullUrl = (user) => {
+  return user.photo_url
+    ? serverBaseUrl + "/storage/fotos/" + user.photo_url
+    : defaultAvatar
+}
+
 const clickAddNew = () => {
   emit("addNew")
 }
@@ -107,7 +116,7 @@ const clickAddNew = () => {
         <tr v-for="employee in employees" :key="employee.id">
           <td v-if="showId">{{ employee.id }}</td>
           <td>
-            <div class="left"><img :src="employee.photo" class="rounded-circle img_photo" width="35"
+            <div class="left"><img :src="photoFullUrl(employee)" class="rounded-circle img_photo" width="35"
                 style="margin-top: 5px;" /></div>
             <div class="right">{{ employee.name }}</div>
           </td>

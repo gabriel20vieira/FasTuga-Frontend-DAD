@@ -1,10 +1,12 @@
 <script setup>
-import defaultAvatar from "@/assets/images/avatars/avatar-8.png";
+import defaultAvatar from "@/assets/images/avatars/avatar-2.png";
 import { CHEF, CUSTOMER, DELIVERY, MANAGER, uploadImage, userRole } from "@/utils/utils";
 import { emailRules, nameRules } from '@/utils/validations';
 import { computed } from "@vue/reactivity";
 import { onUnmounted } from "vue";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
+
+const serverBaseUrl = inject("serverBaseUrl")
 
 const form = ref(null)
 const roles = [
@@ -65,7 +67,7 @@ const clickUploadImage = (file) => {
 const newData = computed(() => {
   return operation.value === 'create' ?
     user.value.name != '' || user.value.email != '' :
-    JSON.stringify(user.value) != JSON.stringify(props.user) || employeePhoto.value != defaultAvatar
+    JSON.stringify(user.value) != JSON.stringify(props.user) || employeePhoto.value != photoFullUrl(props.user)
 })
 
 const operation = computed(() => (!props.user) ? 'create' : 'update')
@@ -74,13 +76,21 @@ const dialogTitle = computed(() => operation.value === 'create' ? 'New Employee'
 
 onMounted(() => {
   //if a user was passed (edit user) it populates de fields, else (new user) keeps the default + empty values
-  if (props.user)
+  if (props.user) {
+    employeePhoto.value = photoFullUrl(props.user)
     user.value = { ...props.user }
+  }
 })
 
 onUnmounted(() => {
   emit("close");
 })
+
+const photoFullUrl = (user) => {
+  return user.photo_url
+    ? serverBaseUrl + "/storage/fotos/" + user.photo_url
+    : defaultAvatar
+}
 </script>
 
 <template>
@@ -88,7 +98,7 @@ onUnmounted(() => {
     <VCardText>
       <VRow>
         <VCol style="position:relative">
-          <VAvatar rounded color="primary" size="192" variant="tonal" :image="user.photo" />
+          <VAvatar rounded color="primary" size="192" variant="tonal" :image="employeePhoto" />
           <VBtn color="secondary" icon="mdi-upload" class="photo-upload-btn" @click="refInputEl?.click()" />
           <input ref="refInputEl" type="file" name="file" accept=".jpeg,.png,.jpg" hidden @input="clickUploadImage">
         </VCol>
