@@ -51,9 +51,13 @@ const saveClick = async (user) => {
     return emit("close");
 
   const validation = await form.value.validate();
-  if (validation.valid) {
-    emit("save", user, operation.value);
-  }
+  if (!validation.valid)
+    return;
+
+  if (newPhoto.value)
+    user.image = employeePhoto
+
+  emit("save", user, operation.value);
 };
 
 const clickUploadImage = async (file) => {
@@ -63,7 +67,11 @@ const clickUploadImage = async (file) => {
 const newData = computed(() => {
   return operation.value === 'create' ?
     user.value.name != '' || user.value.email != '' :
-    JSON.stringify(user.value) != JSON.stringify(props.user) || employeePhoto.value != photoFullUrl(props.user)
+    JSON.stringify(user.value) != JSON.stringify(props.user) || newPhoto.value
+})
+
+const newPhoto = computed(() => {
+  return employeePhoto.value != photoFullUrl(user.value)
 })
 
 const operation = computed(() => (!props.user) ? 'create' : 'update')
@@ -73,8 +81,8 @@ const dialogTitle = computed(() => operation.value === 'create' ? 'New Employee'
 onMounted(() => {
   //if a user was passed (edit user) it populates de fields, else (new user) keeps the default + empty values
   if (props.user) {
-    employeePhoto.value = photoFullUrl(props.user)
     user.value = { ...props.user }
+    employeePhoto.value = photoFullUrl(user.value)
   }
 })
 
@@ -117,7 +125,7 @@ const photoFullUrl = (user) => {
       </VRow>
     </VCardText>
     <VCardActions class="pr-5">
-      <VSwitch v-model="user.blocked" label="Block Account" class="pl-3" :true-value="1" :false-value="0" />
+      <VSwitch v-model="user.blocked" label="Block Account" class="pl-3" />
       <VSpacer />
       <VBtn color="on-secondary" variant="outlined" @click="closeClick">
         Close
