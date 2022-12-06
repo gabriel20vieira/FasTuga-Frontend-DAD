@@ -1,30 +1,25 @@
 <script setup>
-import { useUserStore } from '@/stores/user';
+import { useUsersStore } from '@/stores/users';
 import { inject, onMounted, ref } from 'vue';
 import ConfirmationDialog from '../layouts/components/ConfirmationDialog.vue';
 import UserDetailsDialog from '../layouts/components/EmployeeDialog.vue';
 import EmployeesTable from '../layouts/components/EmployeesTable.vue';
 
-const axios = inject('axios')
 const toast = inject('toast')
-const userStore = useUserStore()
+const usersStore = useUsersStore()
 
 const isTableLoading = ref(true)
 const tableLength = ref(1)
-const users = ref([])
 const userBeingEdited = ref(null)
 const isDialogVisible = ref(false)
 const isDialogLoading = ref(false)
 const confirmDialog = ref(null)
+const customersFilter = ref(false)
 
 const loadUsers = async (page) => {
-  //Only shows loading on the first load (ex. Save/Edit/Del a user won't show a loading)
-  if (users == [])
-    isTableLoading.value = true
+  isTableLoading.value = true
 
-  await userStore.loadAllUsers(page).then((res) => {
-    users.value = res.data.data
-    tableLength.value = res.data.meta.last_page || 1;
+  await usersStore.fetchAllUsers().then(() => {
     isTableLoading.value = false
   }).catch((error) => {
     console.log(error)
@@ -36,24 +31,22 @@ const saveEmployee = async (user, operation) => {
   isDialogLoading.value = true
   if (operation === 'create') {
     user.password = "123" //HARDCODED Password
-    await axios.post('users', user).then(async (res) => {
-      await loadUsers()
-      toast.success(`Employee ${res.data.data.name} created successfully!`)
+    await usersStore.createEmployee(user).then(() => {
+      toast.success(`Employee ${user.name} created successfully!`)
       closeDialog()
     }).catch((error) => {
-      console.log(error)
-      toast.error(error.response.data.message ? error.response.data.message : error.message)
+      return toast.error(error.response.data.message ? error.response.data.message : error.message)
     })
   } else {
-    await axios.put(`users/${user.id}`, user).then(async (res) => {
-      await loadUsers()
-      toast.success(`Employee ${res.data.data.name} updated successfully!`)
+    await usersStore.editEmployee(user).then(() => {
+      toast.success(`Employee ${user.name} updated successfully!`)
       closeDialog()
     }).catch((error) => {
-      console.log(error)
-      toast.error(error.response.data.message ? error.response.data.message : error.message)
+      console.log('TESTE: ', error)
+      return toast.error(error.response.data.message ? error.response.data.message : error.message)
     })
   }
+
   isDialogLoading.value = false
 }
 
@@ -64,8 +57,7 @@ const clickEdit = (user) => {
 
 const clickDelete = async (user) => {
   if (await confirmDialog.value.open({ message: "Are you sure you want to delete this employee?" })) {
-    await axios.delete(`users/${user.id}`).then(async () => {
-      await loadUsers()
+    await usersStore.deleteEmployee(user).then(() => {
       toast.success("Employee removed successfully!")
       confirmDialog.value.close()
     }).catch((error) => {
@@ -91,8 +83,21 @@ const next = (page) => {
 
 <template>
   <VCol cols="12">
-    <EmployeesTable :employees="users" @edit="clickEdit" @delete="clickDelete" @newPage="next"
-      :isTableLoading="isTableLoading" :tableLength="tableLength" @addNew="(isDialogVisible = true)" />
+    <VCard cols="12">
+      <VCardText class="pt-4 pb-2">
+        <VCardTitle class="pa-0 table-header">
+          <VCardTitle class="pl-0 pt-1 table-title">Users</VCardTitle>
+          <VSwitch v-model="customersFilter" label="Show Customers" class="pr-8" />
+          <VBtn class="pl-4" @click="(isDialogVisible = true)">
+            <VIcon icon="mdi-add" size="18" class="mr-1" />
+            Add Employee
+          </VBtn>
+        </VCardTitle>
+      </VCardText>
+
+      <EmployeesTable :employees="customersFilter ? usersStore.getCustomers : usersStore.getEmployees" @edit="clickEdit"
+        @delete="clickDelete" @newPage="next" :isTableLoading="isTableLoading" :tableLength="tableLength" />
+    </VCard>
   </VCol>
 
   <VDialog v-model="isDialogVisible" max-width="625" persistent>
@@ -101,3 +106,13 @@ const next = (page) => {
 
   <ConfirmationDialog ref="confirmDialog" />
 </template>
+
+<style scoped>
+.table-header {
+  display: flex;
+}
+
+.table-title {
+  flex: auto;
+}
+</style>

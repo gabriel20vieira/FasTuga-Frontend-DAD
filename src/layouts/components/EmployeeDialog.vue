@@ -12,8 +12,7 @@ const form = ref(null)
 const roles = [
   { type: CHEF, title: userRole(CHEF) },
   { type: DELIVERY, title: userRole(DELIVERY) },
-  { type: MANAGER, title: userRole(MANAGER) },
-  { type: CUSTOMER, title: userRole(CUSTOMER) }
+  { type: MANAGER, title: userRole(MANAGER) }
 ]
 const confirmDialog = ref(null)
 const refInputEl = ref()
@@ -76,7 +75,7 @@ const newPhoto = computed(() => {
 
 const operation = computed(() => (!props.user) ? 'create' : 'update')
 
-const dialogTitle = computed(() => operation.value === 'create' ? 'New Employee' : 'Update Employee')
+const dialogTitle = computed(() => operation.value === 'create' ? 'New Account' : 'Update Account')
 
 onMounted(() => {
   //if a user was passed (edit user) it populates de fields, else (new user) keeps the default + empty values
@@ -103,22 +102,23 @@ const photoFullUrl = (user) => {
       <VRow>
         <VCol style="position:relative">
           <VAvatar rounded color="primary" size="192" variant="tonal" :image="employeePhoto" />
-          <VBtn color="secondary" icon="mdi-upload" class="photo-upload-btn" @click="refInputEl?.click()" />
+          <VBtn v-if="user.type != CUSTOMER" color="secondary" icon="mdi-upload" class="photo-upload-btn"
+            @click="refInputEl?.click()" />
           <input ref="refInputEl" type="file" name="file" accept=".jpeg,.png,.jpg" hidden @input="clickUploadImage">
         </VCol>
         <VCol xs="12" sm="7" lg="7" xl="7" class="pt-0">
           <VForm ref="form" @submit.prevent="() => { }">
             <VCol class="pl-0 pr-0">
               <VTextField v-model="user.name" label="Name" prepend-inner-icon="mdi-account-outline" :rules="nameRules"
-                required />
+                required :disabled="(user.type == CUSTOMER)" />
             </VCol>
             <VCol class="pl-0 pr-0">
               <VTextField v-model="user.email" label="E-mail" type="email" prepend-inner-icon="mdi-email-outline"
-                :rules="emailRules" required />
+                :rules="emailRules" required :disabled="(user.type == CUSTOMER)" />
             </VCol>
             <VCol class="pl-0 pr-0">
-              <VSelect v-model="user.type" :items="roles" item-value="type" item-text="title" label="Role"
-                prepend-inner-icon="mdi-account-cog-outline" required />
+              <VSelect v-if="(user.type != CUSTOMER)" v-model="user.type" :items="roles" item-value="type"
+                item-text="title" label="Role" prepend-inner-icon="mdi-account-cog-outline" />
             </VCol>
           </VForm>
         </VCol>
