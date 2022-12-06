@@ -67,6 +67,11 @@ const clickDelete = async (user) => {
   }
 }
 
+const openDialog = () => {
+  isDialogVisible.value = true
+  customersFilter.value = false //Switches to employees only table when creating new employee
+}
+
 const closeDialog = () => {
   userBeingEdited.value = null
   isDialogVisible.value = false
@@ -75,10 +80,6 @@ const closeDialog = () => {
 onMounted(() => {
   loadUsers()
 })
-
-const next = (page) => {
-  loadUsers(page);
-}
 </script>
 
 <template>
@@ -88,7 +89,7 @@ const next = (page) => {
         <VCardTitle class="pa-0 table-header">
           <VCardTitle class="pl-0 pt-1 table-title">Users</VCardTitle>
           <VSwitch v-model="customersFilter" label="Show Customers" class="pr-8" />
-          <VBtn class="pl-4" @click="(isDialogVisible = true)">
+          <VBtn class="pl-4" @click="openDialog">
             <VIcon icon="mdi-add" size="18" class="mr-1" />
             Add Employee
           </VBtn>
@@ -96,7 +97,7 @@ const next = (page) => {
       </VCardText>
 
       <EmployeesTable :employees="customersFilter ? usersStore.getCustomers : usersStore.getEmployees" @edit="clickEdit"
-        @delete="clickDelete" @newPage="next" :isTableLoading="isTableLoading" :tableLength="tableLength" />
+        @delete="clickDelete" :isTableLoading="isTableLoading" />
     </VCard>
   </VCol>
 

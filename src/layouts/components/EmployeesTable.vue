@@ -1,11 +1,9 @@
 <script setup>
 import defaultAvatar from "@/assets/images/avatars/avatar-2.png";
-import { useUsersStore } from '@/stores/users';
+import { arrayNbrPages, arrayPaginate } from "@/utils/pagination";
 import { CHEF, CUSTOMER, DELIVERY, MANAGER, userRole } from "@/utils/utils";
+import { ref } from "vue";
 import TablePagination from "../components/TablePagination.vue";
-
-const serverBaseUrl = inject("serverBaseUrl")
-const usersStore = useUsersStore()
 
 const props = defineProps({
   employees: {
@@ -40,15 +38,9 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  tableLength: {
-    type: Number,
-    default: 1,
-  },
 })
 
-const current = ref(1)
-
-const emit = defineEmits(["edit", "delete", "newPage"]);
+const emit = defineEmits(["edit", "delete"]);
 
 const editClick = (user) => {
   emit("edit", user);
@@ -58,8 +50,9 @@ const deleteClick = (user) => {
   emit("delete", user);
 };
 
+const currentPage = ref(1)
 const clickNewTablePage = (page) => {
-  current.value = page
+  currentPage.value = page
 }
 
 const roleIcon = (role) => {
@@ -71,6 +64,7 @@ const roleIcon = (role) => {
   }
 }
 
+const serverBaseUrl = inject("serverBaseUrl")
 const photoFullUrl = (user) => {
   return user.photo_url
     ? serverBaseUrl + "/storage/fotos/" + user.photo_url
@@ -102,7 +96,7 @@ const photoFullUrl = (user) => {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="employee in employees" :key="employee.id">
+      <tr v-for="(employee, index) in arrayPaginate(employees, currentPage)" :key="employee.id">
         <td v-if="showId">{{ employee.id }}</td>
         <td>
           <div class="left"><img :src="photoFullUrl(employee)" class="rounded-circle img_photo" width="35"
@@ -138,7 +132,8 @@ const photoFullUrl = (user) => {
     </tbody>
   </VTable>
   <VDivider />
-  <TablePagination @newPage="clickNewTablePage" :tableLength="1" :isTableLoading="props.isTableLoading" />
+  <TablePagination @newPage="clickNewTablePage" :tableLength="arrayNbrPages(employees)"
+    :isTableLoading="props.isTableLoading" />
 </template>
 
 <style scoped>
