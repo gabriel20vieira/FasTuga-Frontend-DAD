@@ -22,7 +22,9 @@ const goToProfile = () => {
 
 <template>
   <VAvatar style="cursor: pointer;" color="primary" variant="tonal">
-    <VImg :src="userStore.userPhoto" />
+    <div class="rounded-circle overflow-hidden w-100">
+      <VImg :src="userStore.userPhoto" :class="'card-avatar'" />
+    </div>
 
     <!-- SECTION Menu -->
     <VMenu activator="parent" width="230" location="bottom end" offset="14px">
@@ -32,7 +34,9 @@ const goToProfile = () => {
           <template #prepend>
             <VListItemAction start>
               <VAvatar color="primary" size="40" variant="tonal">
-                <VImg :src="userStore.userPhoto" />
+                <div class="rounded-circle overflow-hidden w-100">
+                  <VImg :src="userStore.userPhoto" :class="'card-avatar'" />
+                </div>
               </VAvatar>
             </VListItemAction>
           </template>
@@ -66,3 +70,11 @@ const goToProfile = () => {
     </VMenu>
   </VAvatar>
 </template>
+
+<style lang="scss">
+.card-avatar {
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  scale: 2;
+}
+</style>

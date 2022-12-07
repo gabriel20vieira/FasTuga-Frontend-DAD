@@ -83,6 +83,11 @@ const saveChanges = async () => {
 	}
 }
 
+onMounted(() => {
+	accountData = setAccountData()
+	customerData = setCustomerData()
+})
+
 </script>
 
 <template>
@@ -91,8 +96,10 @@ const saveChanges = async () => {
 			<VCard title="Account Details">
 				<VCardText class="d-flex">
 					<!-- 👉 Avatar -->
-					<VAvatar rounded="lg" size="100" class="me-6" :image="accountDataLocal.image" aspect-ratio="1.5" />
-
+					<!-- <VAvatar rounded="lg" class="me-6" :image="accountDataLocal.image" :size="100" /> -->
+					<div class="rounded-circle overflow-hidden card-avatar-width me-6">
+						<VImg :src="userStore.userPhoto" class="card-avatar" />
+					</div>
 					<!-- 👉 Upload Photo -->
 					<form ref="refForm" class="d-flex flex-column justify-center gap-5">
 						<div class="d-flex flex-wrap gap-2">
@@ -169,3 +176,15 @@ const saveChanges = async () => {
 		</VCol>
 	</VRow>
 </template>
+
+<style lang="scss">
+.card-avatar {
+	aspect-ratio: 1/1;
+	object-fit: cover;
+	scale: 2;
+}
+
+.card-avatar-width {
+	width: 8%;
+}
+</style>
