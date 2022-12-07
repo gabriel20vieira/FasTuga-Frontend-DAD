@@ -28,6 +28,11 @@ import {
       to: 'account-settings',
       icon: { icon: 'mdi-account-cog-outline' }
     }" />
+    <VerticalNavLink :item="{
+      title: 'Statistics',
+      to: 'statistics',
+      icon: { icon: 'mdi-account-details-outline' }
+    }" />
     <VerticalNavLink v-show="useUserStore().user?.type == MANAGER" :item="{
       title: 'Employees',
       to: 'users',
