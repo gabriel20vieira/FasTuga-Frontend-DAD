@@ -31,3 +31,15 @@ export function userRole(role) {
       return 'Employee'
   }
 }
+
+export function buildUrl(base, parameters = {}) {
+  let params = []
+  if (Object.entries(parameters).length > 0) {
+    for (const [key, value] of Object.entries(parameters)) {
+      if (value) {
+        params.push(`${key}=${encodeURIComponent(value)}`)
+      }
+    }
+  }
+  return base + (params.length > 0 ? '?' + params.join('&') : '')
+}

@@ -1,16 +1,18 @@
 <script setup>
+import { useUserStore } from '@/stores/user';
 import AccountSettingsAccount from '@/views/pages/account-settings/AccountSettingsAccount.vue';
 import AccountSettingsSecurity from '@/views/pages/account-settings/AccountSettingsSecurity.vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute()
 const activeTab = ref(route.params.tab)
+const userStore = useUserStore()
 
 // tabs
 const tabs = [
   {
     title: 'Account',
-    icon: 'mdi-account-outline',
+    icon: 'mdi-account-cog-outline',
     tab: 'account',
   },
   {
@@ -41,6 +43,8 @@ const tabs = [
       <VWindowItem value="security">
         <AccountSettingsSecurity />
       </VWindowItem>
+
+
     </VWindow>
   </div>
 </template>

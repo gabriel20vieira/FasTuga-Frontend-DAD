@@ -2,11 +2,30 @@ import defaultAvatar from '@/assets/images/avatars/avatar-8.png'
 import { defineStore } from 'pinia'
 import { computed, inject, ref } from 'vue'
 
+export const UserType = {
+  CHEF: 'EC',
+  DELIVERY: 'ED',
+  MANAGER: 'EM',
+  CUSTOMER: 'C',
+}
+
+export const PaymentTypes = {
+  VISA: 'VISA',
+  PAYPAL: 'PAYPAL',
+  MBWAY: 'MBWAY',
+}
+
+export const userTypes = [UserType.CHEF, UserType.DELIVERY, UserType.MANAGER, UserType.CUSTOMER]
+
+export const paymentTypes = [PaymentTypes.MBWAY, PaymentTypes.PAYPAL, PaymentTypes.VISA]
+
 export const useUserStore = defineStore('user', () => {
   const axios = inject('axios')
   const serverBaseUrl = inject('serverBaseUrl')
+  const toast = inject('toast')
 
   const user = ref(null)
+  const customer = ref(null)
 
   const userPhoto = computed(() => {
     if (!user.value?.photo_url) {
@@ -15,14 +34,102 @@ export const useUserStore = defineStore('user', () => {
     return serverBaseUrl + '/api/image/' + user.value.photo_url
   })
 
+  const isManager = computed(() => {
+    return isType(UserType.MANAGER)
+  })
+
+  const isChef = computed(() => {
+    return isType(UserType.CHEF)
+  })
+
+  const isCustomer = computed(() => {
+    return isType(UserType.CUSTOMER)
+  })
+
+  const isDelivery = computed(() => {
+    return isType(UserType.DELIVERY)
+  })
+
+  function isType(type) {
+    return user.value?.type == type
+  }
+
+  async function updatePassword(password, confirmation, callback = null) {
+    if (password && confirmation) {
+      if (password == confirmation) {
+        axios
+          .post('/change-password', {
+            password: `${password}`,
+            password_confirmation: `${confirmation}`,
+          })
+          .then(res => {
+            toast.success(res.message ?? 'Password changes with success! 🤗')
+            if (callback) {
+              callback(true)
+            }
+          })
+          .catch(err => {
+            toast.error(err.response.data.message)
+            callback(false)
+          })
+      } else {
+        toast.error("Passwords don't match. 😮")
+      }
+    } else {
+      toast.error('Write something at least. 😑')
+    }
+    return null
+  }
+
+  async function updateUser(id, userData, callback = null) {
+    axios
+      .patch(`/users/${id}`, userData)
+      .then(res => {
+        toast.success(res.data.message)
+        user.value = res.data.data
+        if (callback) {
+          callback(true)
+        }
+      })
+      .catch(err => {
+        toast.error(err.response.data.message)
+        if (callback) {
+          callback(false)
+        }
+      })
+  }
+
+  async function updateCustomer(id, userData, callback = null) {
+    axios
+      .patch(`/customers/${id}`, userData)
+      .then(res => {
+        toast.success(res.data.message)
+        customer.value = res.data.data.customer
+        if (callback) {
+          callback(true)
+        }
+      })
+      .catch(err => {
+        toast.error(err.response.data.message)
+        if (callback) {
+          callback(false)
+        }
+      })
+  }
+
   const userId = computed(() => {
     return user.value?.id ?? -1
+  })
+
+  const customerId = computed(() => {
+    return customer.value?.id ?? -1
   })
 
   async function loadUser() {
     try {
       const response = await axios.get('users/me')
       user.value = response.data.data
+      customer.value = response.data.data?.customer ?? null
     } catch (error) {
       clearUser()
       throw error
@@ -43,7 +150,7 @@ export const useUserStore = defineStore('user', () => {
       //Remember me
       if (credentials.remember) sessionStorage.setItem('token', response.data.token)
 
-      user.value = response.data.data
+      await loadUser()
       return true
     } catch (error) {
       clearUser()
@@ -72,5 +179,22 @@ export const useUserStore = defineStore('user', () => {
     return false
   }
 
-  return { user, userId, userPhoto, login, logout, restoreToken }
+  return {
+    user,
+    userId,
+    userPhoto,
+    customer,
+    customerId,
+    login,
+    logout,
+    restoreToken,
+    isType,
+    isChef,
+    isCustomer,
+    isDelivery,
+    isManager,
+    updatePassword,
+    updateUser,
+    updateCustomer,
+  }
 })

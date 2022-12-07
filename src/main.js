@@ -21,6 +21,7 @@ app.provide(
     baseURL: serverBaseUrl + '/api',
     headers: {
       'Content-type': 'application/json',
+      Accept: 'application/json',
     },
   }),
 )
