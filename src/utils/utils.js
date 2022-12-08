@@ -43,3 +43,12 @@ export function buildUrl(base, parameters = {}) {
   }
   return base + (params.length > 0 ? '?' + params.join('&') : '')
 }
+
+export function newAnalyticsTransactionsItem(title, stats, icon, color) {
+  return {
+    title: title,
+    stats: stats,
+    icon: icon,
+    color: color,
+  }
+}
