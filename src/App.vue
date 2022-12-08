@@ -3,7 +3,9 @@ import { useUserStore } from "@/stores/user";
 import { onBeforeMount } from 'vue';
 
 
-onBeforeMount(async () => await useUserStore().restoreToken())
+onBeforeMount(async () => {
+  await useUserStore().restoreToken()
+})
 
 </script>
 

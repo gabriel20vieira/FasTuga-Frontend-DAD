@@ -22,8 +22,9 @@ const changeAvatar = file => {
 	if (files && files.length) {
 		fileReader.readAsDataURL(files[0])
 		fileReader.onload = () => {
-			if (typeof fileReader.result === 'string')
+			if (typeof fileReader.result === 'string') {
 				accountDataLocal.value.image = fileReader.result
+			}
 		}
 	}
 }
@@ -98,7 +99,7 @@ onMounted(() => {
 					<!-- 👉 Avatar -->
 					<!-- <VAvatar rounded="lg" class="me-6" :image="accountDataLocal.image" :size="100" /> -->
 					<div class="rounded-circle overflow-hidden card-avatar-width me-6">
-						<VImg :src="userStore.userPhoto" class="card-avatar" />
+						<VImg :src="accountDataLocal.image" class="card-avatar" />
 					</div>
 					<!-- 👉 Upload Photo -->
 					<form ref="refForm" class="d-flex flex-column justify-center gap-5">
@@ -181,10 +182,11 @@ onMounted(() => {
 .card-avatar {
 	aspect-ratio: 1/1;
 	object-fit: cover;
-	scale: 2;
+	scale: 1.8;
 }
 
 .card-avatar-width {
-	width: 8%;
+	width: 8em;
+	height: 15%;
 }
 </style>

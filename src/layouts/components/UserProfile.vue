@@ -7,12 +7,16 @@ const userStore = useUserStore()
 const router = useRouter()
 
 const logout = async () => {
-  if (await userStore.logout()) {
-    router.push({ name: 'index' })
-    toast.success("User has logged out of the application.")
-  } else {
+  await userStore.logout().then((res) => {
+    if (res) {
+      router.push({ name: 'index' })
+      toast.success("User has logged out of the application.")
+    } else {
+      toast.error("There was a problem logging out of the application!")
+    }
+  }).catch((res) => {
     toast.error("There was a problem logging out of the application!")
-  }
+  })
 }
 
 const goToProfile = () => {
