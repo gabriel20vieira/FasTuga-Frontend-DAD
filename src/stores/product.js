@@ -7,6 +7,13 @@ export const ProductType = {
   DRINK: 'drink',
 }
 
+export const productType = [
+  ProductType.COLD_DISH.toUpperCase(),
+  ProductType.DESSERT.toUpperCase(),
+  ProductType.DRINK.toUpperCase(),
+  ProductType.HOT_DISH.toUpperCase(),
+]
+
 export const useProductStore = defineStore('product', () => {
   const axios = inject('axios')
 
@@ -42,5 +49,5 @@ export const useProductStore = defineStore('product', () => {
     }
   }
 
-  return { products, productsFiltered, ProductType, loadProducts, isTypeValid, filter }
+  return { products, productsFiltered, ProductType, loadProducts, isTypeValid, filter, productType }
 })

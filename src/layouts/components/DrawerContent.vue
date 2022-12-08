@@ -1,10 +1,7 @@
 <script setup>
 import logo from '@/assets/logo.svg?raw';
 import { useUserStore } from "@/stores/user";
-import {
-  VerticalNavLink,
-  VerticalNavSectionTitle
-} from '@layouts';
+import { VerticalNavLink, VerticalNavSectionTitle } from '@layouts';
 </script>
 
 <template>
@@ -22,11 +19,26 @@ import {
       to: 'index',
       icon: { icon: 'mdi-home-outline' }
     }" />
-    <VerticalNavLink v-if="false" :item="{
+    <!-- <VerticalNavLink v-if="false" :item="{
       title: 'Account Settings',
       to: 'account-settings',
       icon: { icon: 'mdi-account-cog-outline' }
+    }" /> -->
+
+    <!-- 👉 Pages -->
+    <VerticalNavSectionTitle v-show="!useUserStore().user" :item="{ heading: 'Pages' }" />
+
+    <VerticalNavLink v-show="!useUserStore().user" :item="{
+      title: 'Login',
+      to: 'login',
+      icon: { icon: 'mdi-login' }
     }" />
+    <VerticalNavLink v-show="!useUserStore().user" :item="{
+      title: 'Register',
+      to: 'register',
+      icon: { icon: 'mdi-account-plus-outline' },
+    }" />
+
     <VerticalNavLink v-show="(useUserStore().isManager ?? false)" :item="{
       title: 'Statistics',
       to: 'statistics',
@@ -37,18 +49,10 @@ import {
       to: 'users',
       icon: { icon: 'mdi-account-group-outline' }
     }" />
-
-    <!-- 👉 Pages -->
-    <VerticalNavSectionTitle v-show="!useUserStore().user" :item="{ heading: 'Pages' }" />
-    <VerticalNavLink v-show="!useUserStore().user" :item="{
-      title: 'Login',
-      to: 'login',
-      icon: { icon: 'mdi-login' }
-    }" />
-    <VerticalNavLink v-show="!useUserStore().user" :item="{
-      title: 'Register',
-      to: 'register',
-      icon: { icon: 'mdi-account-plus-outline' },
+    <VerticalNavLink :item="{
+      title: 'Menu',
+      to: 'menu',
+      icon: { icon: 'mdi-hamburger' }
     }" />
 
     <!-- 👉 User Interface -->
