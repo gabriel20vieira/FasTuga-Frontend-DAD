@@ -1,12 +1,19 @@
 <script setup>
+import { paymentTypes } from '@/stores/user';
 import { useRouter } from 'vue-router';
 const axios = inject('axios')
+const toast = inject('toast')
 const router = useRouter()
 
 const form = ref({
   name: '',
   email: '',
-  password: ''
+  password: '',
+  password_confirmation: '',
+  phone: '',
+  nif: '',
+  default_payment_type: 'PAYPAL',
+  default_payment_reference: '',
 })
 
 const isPasswordVisible = ref(false)
@@ -14,13 +21,41 @@ const loading = ref(false)
 
 const loginErrors = ref({
   name: '',
-  email: '',
   password: '',
+  password_confirmation: '',
+  phone: '',
+  nif: '',
+  default_payment_type: '',
+  default_payment_reference: '',
   other: ''
 })
 
+function resetLoginErrors() {
+  loginErrors.value.name = ''
+  loginErrors.value.email = ''
+  loginErrors.value.password = ''
+  loginErrors.value.password_confirmation = ''
+  loginErrors.value.phone = ''
+  loginErrors.value.nif = ''
+  loginErrors.value.default_payment_type = ''
+  loginErrors.value.default_payment_reference = ''
+  loginErrors.value.other = ''
+}
+
+function setLoginErrors(data) {
+  loginErrors.value.name = data?.name
+  loginErrors.value.email = data?.email
+  loginErrors.value.password = data?.password
+  loginErrors.value.password_confirmation = data.password_confirmation
+  loginErrors.value.phone = data?.phone
+  loginErrors.value.nif = data?.nif
+  loginErrors.value.default_payment_type = data?.default_payment_type
+  loginErrors.value.default_payment_reference = data?.default_payment_reference
+  loginErrors.value.other = data?.other
+}
+
 const register = async () => {
-  loginErrors.value.name = loginErrors.value.email = loginErrors.value.password = loginErrors.value.other = ''
+  resetLoginErrors()
   loading.value = true
 
   await axios.post('register', form.value).then((res) => {
@@ -28,14 +63,10 @@ const register = async () => {
     router.push({ name: 'login' })
   }).catch((error) => {
     loading.value = false
-
     if (error.code == "ERR_NETWORK") {
       return loginErrors.value.other = "Something went wrong.. 😕"
     }
-
-    loginErrors.value.name = error.response.data.errors.name ? error.response.data.errors.name[0] : ''
-    loginErrors.value.email = error.response.data.errors.email ? error.response.data.errors.email[0] : ''
-    loginErrors.value.password = error.response.data.errors.password ? error.response.data.errors.password[0] : ''
+    setLoginErrors(error.response.data.errors)
   })
 }
 </script>
@@ -56,17 +87,56 @@ const register = async () => {
             <VCol cols="12">
               <VTextField v-model="form.name" label="Name" :disabled="loading" :error-messages="loginErrors.name" />
             </VCol>
+
             <!-- email -->
             <VCol cols="12">
               <VTextField v-model="form.email" label="Email" type="email" :disabled="loading"
                 :error-messages="loginErrors.email" />
             </VCol>
+
             <!-- password -->
             <VCol cols="12">
               <VTextField v-model="form.password" label="Password" :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
                 @click:append-inner="isPasswordVisible = !isPasswordVisible" class="mb-1" :disabled="loading"
                 :error-messages="loginErrors.password" />
+            </VCol>
+
+            <!-- password confirmation -->
+            <VCol cols="12">
+              <VTextField v-model="form.password_confirmation" label="Password confirmation"
+                :type="isPasswordVisible ? 'text' : 'password'"
+                :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                @click:append-inner="isPasswordVisible = !isPasswordVisible" class="mb-1" :disabled="loading"
+                :error-messages="loginErrors.password_confirmation" />
+            </VCol>
+
+            <VCol>
+              <VSpacer></VSpacer>
+            </VCol>
+
+            <!-- phone -->
+            <VCol cols="12">
+              <VTextField v-model="form.phone" label="Phone" class="mb-1" :disabled="loading"
+                :error-messages="loginErrors.phone" />
+            </VCol>
+
+            <!-- nif -->
+            <VCol cols="12">
+              <VTextField v-model="form.nif" label="NIF" class="mb-1" :disabled="loading"
+                :error-messages="loginErrors.nif" />
+            </VCol>
+
+            <!-- default payment type -->
+            <VCol cols="12">
+              <VSelect v-model="form.default_payment_type" label="Payment type" class="mb-1" :disabled="loading"
+                :error-messages="loginErrors.default_payment_type" :items="paymentTypes" />
+            </VCol>
+
+            <!-- default payment reference -->
+            <VCol cols="12">
+              <VTextField v-model="form.default_payment_reference" label="Payment reference" class="mb-1"
+                :disabled="loading" :error-messages="loginErrors.default_payment_reference" />
             </VCol>
 
             <VCol cols="12">
