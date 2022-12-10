@@ -35,7 +35,6 @@ async function makeOrder() {
 
 	await cartStore.makeOrder(async (res, err) => {
 		if (res) {
-			console.log(res)
 			toast.success(res.data.message)
 			await userStore.loadUser()
 			router.push({ name: 'index' })
