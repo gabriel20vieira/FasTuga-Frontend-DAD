@@ -20,13 +20,13 @@ export const useProductStore = defineStore('product', () => {
   const products = ref([])
   const productsFiltered = ref([])
 
-  async function loadProducts() {
+  async function load() {
     try {
       const response = await axios.get('products')
       products.value = response.data.data
       productsFiltered.value = response.data.data
     } catch (error) {
-      products.value = null
+      products.value = []
       throw error
     }
   }
@@ -49,5 +49,5 @@ export const useProductStore = defineStore('product', () => {
     }
   }
 
-  return { products, productsFiltered, ProductType, loadProducts, isTypeValid, filter, productType }
+  return { products, productsFiltered, ProductType, load, isTypeValid, filter, productType }
 })

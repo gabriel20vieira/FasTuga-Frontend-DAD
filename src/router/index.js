@@ -16,6 +16,7 @@ router.beforeEach((to, from, next) => {
   if (to.name == 'index') {
     return next()
   }
+
   // if (to.name == 'users') {
   //   //TODO: Perguntar ao stor como ir buscar o userStore com os dados
   //   if (userStore.user.type != 'EM') {
@@ -28,7 +29,7 @@ router.beforeEach((to, from, next) => {
   //   }
   //   return next({ name: 'home' })
   // }
-  next()
+  return next()
 })
 
 export default router

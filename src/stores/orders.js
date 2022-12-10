@@ -1,25 +1,24 @@
 import { defineStore } from 'pinia'
 import { inject, ref } from 'vue'
 
-export const useStatisticsStore = defineStore('statistics', () => {
+export const useOrdersStore = defineStore('orders', () => {
   const axios = inject('axios')
 
-  const statistics = ref(null)
+  const orders = ref(null)
 
   async function load() {
     await axios
-      .get('statistics')
+      .get('orders')
       .then(res => {
-        if (res) {
-          statistics.value = res.data
-        }
+        orders.value = res.data.data
       })
       .catch(err => {
         throw err
       })
   }
 
-  load()
-
-  return { statistics, load }
+  return {
+    load,
+    orders,
+  }
 })

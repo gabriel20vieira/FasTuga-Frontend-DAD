@@ -1,10 +1,17 @@
 <script setup>
+import { useOrdersStore } from "@/stores/orders";
+import { useProductStore } from "@/stores/product";
 import { useUserStore } from "@/stores/user";
 import { onBeforeMount } from 'vue';
 
+const userStore = useUserStore()
+const productStore = useProductStore()
+const orderStore = useOrdersStore()
 
 onBeforeMount(async () => {
-  await useUserStore().restoreToken()
+  await userStore.restoreToken()
+  await productStore.load()
+  await orderStore.load()
 })
 
 </script>

@@ -54,6 +54,10 @@ export const useUserStore = defineStore('user', () => {
     return user.value == null
   })
 
+  const isLogged = computed(() => {
+    return !isAnonymous
+  })
+
   function isType(type) {
     return user.value?.type == type
   }
@@ -202,5 +206,6 @@ export const useUserStore = defineStore('user', () => {
     updateCustomer,
     loadUser,
     isAnonymous,
+    isLogged,
   }
 })
