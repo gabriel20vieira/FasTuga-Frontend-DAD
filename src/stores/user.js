@@ -196,5 +196,6 @@ export const useUserStore = defineStore('user', () => {
     updatePassword,
     updateUser,
     updateCustomer,
+    loadUser,
   }
 })
