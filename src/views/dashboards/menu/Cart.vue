@@ -42,9 +42,11 @@ async function makeOrder() {
 		}
 
 		if (err) {
-			errors.value.type = err.response.data.errors['payment.type'] ?? []
-			errors.value.reference = err.response.data.errors['payment.reference'] ?? []
-			toast.error(err.response.data.message.replace('.', ' '))
+			if (err.response.data.errors) {
+				errors.value.type = err.response.data.errors['payment.type'] ?? []
+				errors.value.reference = err.response.data.errors['payment.reference'] ?? []
+			}
+			toast.error(capitalizeFirstLetter(err.response.data.message.replace('.', ' ')))
 			console.log(errors.value)
 		}
 	})
@@ -73,10 +75,12 @@ async function makeOrder() {
 				<div class="mt-3">
 					<span>Points to use: {{ cartStore.order?.points_used_to_pay ?? 0 }}</span>
 					<span class="ms-5">
-						<VBtn icon variant="text" color="primary" size="small" @click="cartStore.removeUsePoints()">
+						<VBtn :disabled="cartStore.currentUserPoints < 10" icon variant="text" color="primary"
+							size="small" @click="cartStore.removeUsePoints()">
 							<VIcon icon="mdi-minus" size="20" />
 						</VBtn>
-						<VBtn icon variant="text" color="primary" size="small" @click="cartStore.addUsePoints()">
+						<VBtn :disabled="cartStore.currentUserPoints < 10" icon variant="text" color="primary"
+							size="small" @click="cartStore.addUsePoints()">
 							<VIcon icon="mdi-plus" size="20" />
 						</VBtn>
 					</span>

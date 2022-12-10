@@ -46,8 +46,8 @@ onMounted(() => {
 						<VRow class="me-md-12 ms-md-12 gap-sm-8 justify-content-center py-12">
 							<VCol class="mx-md-5" cols="4" md="3" v-for="product in products" :key="product.id">
 								<VCard @click="cartStore.add(product)">
-									<VImg :aspect-ratio="1.5" :src="imageUrl(product.photo_url)"
-										:lazy-src="imageUrl(product.photo_url)" cover />
+									<VImg cover :aspect-ratio="1.5" :src="imageUrl(product.photo_url)"
+										:lazy-src="imageUrl(product.photo_url)" />
 
 									<VCardItem>
 										<VCardText class="mx-0 my-0 px-0 py-0 text-nowrap">
