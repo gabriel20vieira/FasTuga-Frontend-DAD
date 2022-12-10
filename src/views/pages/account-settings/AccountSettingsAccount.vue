@@ -94,7 +94,7 @@ onMounted(() => {
 <template>
 	<VRow>
 		<VCol cols="12">
-			<VCard title="Account Details">
+			<VCard title="Account Settings">
 				<VCardText class="d-flex">
 					<!-- 👉 Avatar -->
 					<!-- <VAvatar rounded="lg" class="me-6" :image="accountDataLocal.image" :size="100" /> -->
