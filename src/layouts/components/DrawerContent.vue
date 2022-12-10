@@ -49,6 +49,11 @@ import { VerticalNavLink, VerticalNavSectionTitle } from '@layouts';
       to: 'users',
       icon: { icon: 'mdi-account-group-outline' }
     }" />
+    <VerticalNavLink v-show="(useUserStore().isManager ?? false)" :item="{
+      title: 'Orders',
+      to: 'orders-history',
+      icon: { icon: 'mdi-account-group-outline' }
+    }" />
     <VerticalNavLink :item="{
       title: 'Menu',
       to: 'menu',
