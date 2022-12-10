@@ -50,6 +50,10 @@ export const useUserStore = defineStore('user', () => {
     return isType(UserType.DELIVERY)
   })
 
+  const isAnonymous = computed(() => {
+    return user.value == null
+  })
+
   function isType(type) {
     return user.value?.type == type
   }
@@ -197,5 +201,6 @@ export const useUserStore = defineStore('user', () => {
     updateUser,
     updateCustomer,
     loadUser,
+    isAnonymous,
   }
 })

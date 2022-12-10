@@ -44,7 +44,7 @@ onMounted(() => {
 					<VWindowItem v-for="item in tabItems" :key="item" :value="item" class="text-center">
 
 						<VRow class="me-md-12 ms-md-12 gap-sm-8 justify-content-center py-12">
-							<VCol class="mx-md-5" cols="6" md="4" v-for="product in products" :key="product.id">
+							<VCol class="mx-md-5" cols="4" md="3" v-for="product in products" :key="product.id">
 								<VCard @click="cartStore.add(product)">
 									<VImg :aspect-ratio="1.5" :src="imageUrl(product.photo_url)"
 										:lazy-src="imageUrl(product.photo_url)" cover />
@@ -63,7 +63,7 @@ onMounted(() => {
 			</VCard>
 		</VCol>
 
-		<VCol md="4" cols="4">
+		<VCol md="4" cols="4" sm="12">
 			<VCard>
 				<Cart />
 			</VCard>

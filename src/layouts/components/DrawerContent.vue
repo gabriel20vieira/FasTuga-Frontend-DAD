@@ -49,7 +49,7 @@ import { VerticalNavLink, VerticalNavSectionTitle } from '@layouts';
       to: 'users',
       icon: { icon: 'mdi-account-group-outline' }
     }" />
-    <VerticalNavLink :item="{
+    <VerticalNavLink v-show="useUserStore().isAnonymous || useUserStore().isCustomer" :item="{
       title: 'Menu',
       to: 'menu',
       icon: { icon: 'mdi-hamburger' }
