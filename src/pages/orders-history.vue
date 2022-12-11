@@ -1,7 +1,7 @@
 <script setup>
+import OrderDialog from '@/layouts/components/OrderDialog.vue';
 import OrdersTable from '@/layouts/components/OrdersTable.vue';
 import { onMounted, ref } from 'vue';
-import ConfirmationDialog from '../layouts/components/ConfirmationDialog.vue';
 
 const axios = inject('axios')
 const toast = inject('toast')
@@ -9,6 +9,8 @@ const toast = inject('toast')
 const orders = ref([])
 const isTableLoading = ref(true)
 const tableLength = ref(1)
+const orderBeingViewed = ref({})
+const isDialogVisible = ref(false)
 
 const loadOrders = (page) => {
   isTableLoading.value = true
@@ -16,7 +18,7 @@ const loadOrders = (page) => {
     orders.value = response.data.data
     isTableLoading.value = false
     tableLength.value = response.data.meta.last_page || 1;
-    console.log('TESTE: ', orders.value[0])
+    console.log('TESTE: ', orders.value[12])
   }).catch((error) => {
     console.log(error)
     toast.error(error.message)
@@ -30,6 +32,11 @@ onMounted(() => {
 const nextPage = (page) => {
   loadOrders(page);
 }
+
+const clickViewOrder = (user) => {
+  orderBeingViewed.value = { ...user }
+  isDialogVisible.value = true
+}
 </script>
 
 <template>
@@ -41,11 +48,14 @@ const nextPage = (page) => {
         </VCardTitle>
       </VCardText>
 
-      <OrdersTable :orders="orders" :isTableLoading="isTableLoading" :tableLength="tableLength" @newPage="nextPage" />
+      <OrdersTable :orders="orders" :isTableLoading="isTableLoading" :tableLength="tableLength" @newPage="nextPage"
+        @viewOrder="clickViewOrder" />
     </VCard>
   </VCol>
 
-  <ConfirmationDialog ref="confirmDialog" />
+  <VDialog v-model="isDialogVisible" max-width="625">
+    <OrderDialog :order="orderBeingViewed" @close="isDialogVisible = false"/>
+  </VDialog>
 </template>
 
 <style scoped>

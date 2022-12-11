@@ -32,6 +32,15 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
+  async function fetchUser(id) {
+    try {
+      const response = await axios.get(`users/${id}`)
+      return response.data.data
+    } catch (error) {
+      throw error
+    }
+  }
+
   async function createEmployee(employee) {
     const response = await axios.post('users', employee)
     users.value.unshift(response.data.data) //Adds employee to the beginning of the array
@@ -63,5 +72,6 @@ export const useUsersStore = defineStore('users', () => {
     createEmployee,
     editEmployee,
     deleteEmployee,
+    fetchUser
   }
 })

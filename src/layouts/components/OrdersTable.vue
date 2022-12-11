@@ -8,26 +8,6 @@ const props = defineProps({
   },
   showId: {
     type: Boolean,
-    default: false,
-  },
-  showEmail: {
-    type: Boolean,
-    default: true,
-  },
-  showRole: {
-    type: Boolean,
-    default: true,
-  },
-  showPhoto: {
-    type: Boolean,
-    default: true,
-  },
-  showEditButton: {
-    type: Boolean,
-    default: true,
-  },
-  showDeleteButton: {
-    type: Boolean,
     default: true,
   },
   isTableLoading: {
@@ -40,10 +20,14 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["newPage"]);
+const emit = defineEmits(["newPage", "viewOrder"]);
 const clickNewTablePage = (page) => {
   emit("newPage", page);
 }
+
+const viewClick = (user) => {
+  emit("viewOrder", user);
+};
 
 const getStatus = (status) => {
   switch (status) {
@@ -80,7 +64,7 @@ const getStatusColor = (status) => {
   <VTable>
     <thead>
       <tr>
-        <th class="text-uppercase">
+        <th v-if="props.showId" class="text-uppercase">
           #
         </th>
         <th class="text-uppercase">
@@ -96,16 +80,19 @@ const getStatusColor = (status) => {
           Payment
         </th>
         <th class="text-uppercase">
-          Amount
+          Total
         </th>
         <th class="text-uppercase">
           Status
+        </th>
+        <th class="text-uppercase" style="text-align-last: center">
+          Action
         </th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="order in orders" :key="order.id">
-        <td>{{ order.id }}</td>
+        <td v-if="props.showId">{{ order.id }}</td>
         <td>{{ order.ticket_number }}</td>
         <td>{{ order.date }}</td>
         <td>{{ order.items.length }}</td>
@@ -115,6 +102,14 @@ const getStatusColor = (status) => {
           <VChip :color="getStatusColor(order.status)">
             {{ getStatus(order.status) }}
           </VChip>
+        </td>
+        <td style="text-align-last: center">
+          <VBtn icon variant="text" @click="viewClick(order)" width="30px" height="30px">
+            <VIcon icon="mdi-eye" size="18" />
+            <VTooltip activator="parent" location="end">
+              View
+            </VTooltip>
+          </VBtn>
         </td>
       </tr>
     </tbody>
