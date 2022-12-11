@@ -5,6 +5,7 @@ import AccountSettingsSecurity from '@/views/pages/account-settings/AccountSetti
 
 import { useRoute } from 'vue-router';
 
+
 const route = useRoute()
 const activeTab = ref(route.params.tab)
 
@@ -25,6 +26,7 @@ const tabs = [
 		tab: 'security',
 	}
 ]
+
 
 </script>
 

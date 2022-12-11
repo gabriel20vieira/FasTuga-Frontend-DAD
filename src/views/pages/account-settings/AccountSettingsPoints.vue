@@ -24,8 +24,8 @@ const orders = useOrdersStore()
 						<VCardText class="py-3 text-subtitle-1">
 							<b>Email: </b>{{ userStore.user?.email }}
 						</VCardText>
-						<VCardText class="py-3 text-subtitle-1">
-							<b>Points: </b>{{ userStore.user?.customer.points ?? '' }}
+						<VCardText class="py-3 text-subtitle-1" v-if="userStore.isCustomer">
+							<b>Points: </b>{{ userStore.user?.customer?.points ?? '' }}
 						</VCardText>
 					</div>
 				</VCardText>
@@ -33,7 +33,7 @@ const orders = useOrdersStore()
 				<VDivider />
 
 				<!-- height -->
-				<VCol cols="12">
+				<VCol cols="12" v-if="userStore.isCustomer">
 					<VCard title="Order history" class="hide-scroll">
 						<VTable height="40vh">
 							<thead>
