@@ -13,23 +13,28 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore()
+
   if (to.name == 'index') {
     return next()
   }
 
-  // if (to.name == 'users') {
-  //   //TODO: Perguntar ao stor como ir buscar o userStore com os dados
-  //   if (userStore.user.type != 'EM') {
-  //     return next({ name: 'index' })
-  //   }
-  // }
-  // if (to.name == 'User') {
-  //   if (userStore.user.type == 'A' || userStore.user.id == to.params.id) {
-  //     return next()
-  //   }
-  //   return next({ name: 'home' })
-  // }
-  return next()
+  switch (to.name) {
+    case 'login':
+    case 'register':
+      if (userStore.isLogged) {
+        return next({ name: 'index' })
+      }
+    case 'statistics':
+      if (userStore.isCustomer) {
+        return next({ name: 'index' })
+      }
+    case 'menu':
+      if (!userStore.isAnonymous && !userStore.isCustomer) {
+        return next({ name: 'index' })
+      }
+    default:
+      return next()
+  }
 })
 
 export default router
