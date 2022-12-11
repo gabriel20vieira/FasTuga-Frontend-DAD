@@ -22,7 +22,7 @@ const tabs = [
 	},
 	{
 		title: 'Security',
-		icon: 'mdi-lock-open-outline',
+		icon: 'mdi-lock-outline',
 		tab: 'security',
 	}
 ]

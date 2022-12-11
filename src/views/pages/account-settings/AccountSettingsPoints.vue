@@ -3,7 +3,11 @@ import { useOrdersStore } from '@/stores/orders';
 import { useUserStore } from '@/stores/user';
 
 const userStore = useUserStore()
-const orders = useOrdersStore()
+const orderStore = useOrdersStore()
+
+onBeforeMount(async () => {
+	await orderStore.load()
+})
 
 </script>
 
@@ -53,7 +57,7 @@ const orders = useOrdersStore()
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="order in orders.orders" :key="order.id">
+								<tr v-for="order in orderStore.orders" :key="order.id">
 									<td>{{ order.ticket_number }}</td>
 									<td class="text-center">
 										{{ order.points_used_to_pay }}

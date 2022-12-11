@@ -42,9 +42,9 @@ onMounted(async () => {
 				<VWindow v-model="navigationTab" class="menu-card hide-scroll">
 					<VWindowItem v-for="item in tabItems" :key="item" :value="item">
 
-						<VRow class="justify-content-center py-8 px-6">
+						<VRow class="align-cards py-8 px-6">
 							<VCol v-for="product in products" :key="product.id" cols="12" lg="4" sm="6">
-								<VCard>
+								<VCard class="h-100">
 									<VBtn size="2.6em" variant="elevated" color="primary" class="me-n3 mt-n1 add-cart"
 										icon @click="cartStore.add(product)">
 										<VIcon size="24" icon="mdi-cart-plus" />
@@ -61,7 +61,7 @@ onMounted(async () => {
 
 									<VCardItem>
 										<VCardText class="mx-0 my-0 px-0 py-0 text-nowrap">
-											{{ product.price }}€ - {{ product.name }}
+											<b>{{ product.price }}€</b><br>{{ product.name }}
 										</VCardText>
 									</VCardItem>
 
@@ -102,8 +102,8 @@ onMounted(async () => {
 	overflow-y: auto !important;
 }
 
-.justify-content-center {
-	justify-content: space-evenly !important;
+.align-cards {
+	justify-content: flex-start !important;
 }
 
 .hide-scroll {

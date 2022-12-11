@@ -46,7 +46,7 @@ async function makeOrder() {
 				errors.value.reference = err.response.data.errors['payment.reference'] ?? []
 			}
 			toast.error(capitalizeFirstLetter(err.response.data.message.replace('.', ' ')))
-			console.log(errors.value)
+			// console.log(errors.value)
 		}
 	})
 }

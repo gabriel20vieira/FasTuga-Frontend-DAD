@@ -11,9 +11,6 @@ const orderStore = useOrdersStore()
 onBeforeMount(async () => {
   await userStore.restoreToken()
   await productStore.load()
-  if (userStore.isCustomer) {
-    await orderStore.load()
-  }
 })
 
 </script>
