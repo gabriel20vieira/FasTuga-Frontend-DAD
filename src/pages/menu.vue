@@ -30,7 +30,7 @@ onMounted(async () => {
 	<VRow>
 		<VCol md="8" sm="12">
 			<VCard>
-				<VTabs v-model="navigationTab" centered style="height: 4em;">
+				<VTabs v-model="navigationTab" grow style="height: 3.5em;">
 					<VTab v-for="item in tabItems" :key="item" :value="item" style="height:auto; font-size: 1.1em;">
 						{{ item }}
 					</VTab>
@@ -43,12 +43,12 @@ onMounted(async () => {
 					<VWindowItem v-for="item in tabItems" :key="item" :value="item">
 
 						<VRow class="align-cards py-8 px-6">
-							<VCol v-for="product in products" :key="product.id" cols="12" lg="4" sm="6">
+							<VCol v-for="product in products" :key="product.id" cols="12" lg="3" sm="4">
 								<VCard class="h-100">
-									<VBtn size="2.6em" variant="elevated" color="primary" class="me-n3 mt-n1 add-cart"
+									<!-- <VBtn size="2.6em" variant="elevated" color="primary" class="me-n3 mt-n1 add-cart"
 										icon @click="cartStore.add(product)">
 										<VIcon size="24" icon="mdi-cart-plus" />
-									</VBtn>
+									</VBtn> -->
 
 									<!-- Details -->
 									<!-- <VBtn size="2.6em" variant="elevated" color="primary"
@@ -60,11 +60,19 @@ onMounted(async () => {
 										:lazy-src="imageUrl(product.photo_url)" />
 
 									<VCardItem>
+										<VCardTitle>
+											{{ product.name }}
+										</VCardTitle>
 										<VCardText class="mx-0 my-0 px-0 py-0 text-nowrap">
-											<b>{{ product.price }}€</b><br>{{ product.name }}
+											<p class="font-weight-medium text-base mb-0">
+												{{ product.price }}€
+											</p>
 										</VCardText>
 									</VCardItem>
-
+									<VBtn block class="rounded-t-0" @click="cartStore.add(product)">
+										<VIcon size="20" icon="mdi-cart-plus" class="mr-2"/>
+										Add to cart
+									</VBtn>
 								</VCard>
 							</VCol>
 						</VRow>

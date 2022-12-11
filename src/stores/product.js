@@ -8,10 +8,10 @@ export const ProductType = {
 }
 
 export const productType = [
-  ProductType.COLD_DISH.toUpperCase(),
-  ProductType.DESSERT.toUpperCase(),
-  ProductType.DRINK.toUpperCase(),
   ProductType.HOT_DISH.toUpperCase(),
+  ProductType.COLD_DISH.toUpperCase(),
+  ProductType.DRINK.toUpperCase(),
+  ProductType.DESSERT.toUpperCase(),
 ]
 
 export const useProductStore = defineStore('product', () => {

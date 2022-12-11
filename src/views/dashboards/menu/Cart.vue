@@ -24,7 +24,6 @@ function capitalizeFirstLetter(string) {
 }
 
 async function makeOrder() {
-
 	errors.value.type = []
 	errors.value.reference = []
 
@@ -62,10 +61,10 @@ async function makeOrder() {
 		<VCardText class="pt-4">
 			<div class="d-flex align-center">
 				<h4 :class="['text-h4', 'me-2', { 'text-decoration-line-through': cartStore.isUsingPoints }]">
-					{{ cartStore.totalRound == 0 ? ' - ' : cartStore.totalRound }}€
+					{{ cartStore.totalRound == 0 ? '0.00' : cartStore.totalRound }}€
 				</h4>
 				<h4 class="text-h4 me-2" v-if="cartStore.isUsingPoints">
-					{{ cartStore.totalDiscount == 0 ? ' - ' : cartStore.totalDiscount }}€
+					{{ cartStore.totalDiscount == 0 ? '0.00' : cartStore.totalDiscount }}€
 				</h4>
 			</div>
 			<div v-if="(userStore?.isCustomer ?? false)" class="mt-2">
@@ -94,13 +93,14 @@ async function makeOrder() {
 				<VTextField class="mt-4" v-model="paymentReference" label="Payment reference"
 					:error-messages="errors?.reference" />
 			</div>
-			<div class="mt-4" v-if="cartStore.hasItems">
-				<VBtn :loading="cartStore.loading" width="100%" variant="elevated" color="primary" @click="makeOrder">
+			<div class="mt-4">
+				<VBtn :disabled="!cartStore.hasItems" :loading="cartStore.loading" width="100%" variant="elevated"
+					color="primary" @click="makeOrder">
 					Order
 				</VBtn>
 			</div>
 
-			<VDivider class="my-5" v-if="cartStore.hasItems" />
+			<VDivider class="my-5" />
 
 			<VList class="card-list mt-9">
 				<VListItem v-if="((cartStore.order?.products.length ?? 0) == 0)">
@@ -121,9 +121,9 @@ async function makeOrder() {
 					</VListItemSubtitle>
 
 					<template #append>
-						<div>
-							<h6 class="text-sm mb-2">
-								{{ product.price }}€ x {{ product.quantity }}
+						<div class="text-end">
+							<h6 class="text-sm">
+								{{ product.price }}€ x{{ product.quantity }}
 							</h6>
 							<div class="transition" v-if="product.quantity > 1">
 								<VBtn icon variant="text" color="primary" size="small"
@@ -134,8 +134,8 @@ async function makeOrder() {
 									<VIcon icon="mdi-plus" size="20" />
 								</VBtn>
 							</div>
-							<VBtn class="transition" v-if="product.quantity == 1" icon variant="text" color="error"
-								size="small" @click="cartStore.remove(product)">
+							<VBtn class="transition" v-else icon variant="text" color="error" size="small"
+								@click="cartStore.remove(product)">
 								<VIcon icon="mdi-trash-can-outline" size="20" />
 							</VBtn>
 						</div>

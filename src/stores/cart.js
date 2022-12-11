@@ -85,7 +85,7 @@ export const useCartStore = defineStore('cart', () => {
 
   const totalRound = computed(() => {
     let value = Math.round(total.value * 100) / 100
-    return value < 0 ? 0 : value
+    return value < 0 ? 0 : value.toFixed(2)
   })
 
   const accumulatedPoints = computed(() => {
