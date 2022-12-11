@@ -51,7 +51,7 @@ export const useUserStore = defineStore('user', () => {
   })
 
   const isAnonymous = computed(() => {
-    return sessionStorage.getItem('token') == null
+    return user.value == null || sessionStorage.getItem('token') == null
   })
 
   const isLogged = computed(() => {
