@@ -4,6 +4,7 @@ import { useUserStore } from "@/stores/user";
 import { VerticalNavLink, VerticalNavSectionTitle } from '@layouts';
 
 const userStore = useUserStore()
+
 </script>
 
 <template>
@@ -28,14 +29,14 @@ const userStore = useUserStore()
     }" />
 
     <!-- 👉 Pages -->
-    <VerticalNavSectionTitle v-show="!userStore.user" :item="{ heading: 'Pages' }" />
+    <VerticalNavSectionTitle v-show="userStore.isAnonymous" :item="{ heading: 'Pages' }" />
 
-    <VerticalNavLink v-show="!userStore.user" :item="{
+    <VerticalNavLink v-show="userStore.isAnonymous" :item="{
       title: 'Login',
       to: 'login',
       icon: { icon: 'mdi-login' }
     }" />
-    <VerticalNavLink v-show="!userStore.user" :item="{
+    <VerticalNavLink v-show="userStore.isAnonymous" :item="{
       title: 'Register',
       to: 'register',
       icon: { icon: 'mdi-account-plus-outline' },
