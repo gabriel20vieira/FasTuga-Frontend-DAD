@@ -45,17 +45,22 @@ const userStore = useUserStore()
     <VerticalNavLink v-show="(userStore.isManager ?? false)" :item="{
       title: 'Statistics',
       to: 'statistics',
-      icon: { icon: 'mdi-account-details-outline' }
+      icon: { icon: 'mdi-chart-timeline-variant-shimmer' }
     }" />
     <VerticalNavLink v-show="(userStore.isManager ?? false)" :item="{
       title: 'Employees',
       to: 'users',
       icon: { icon: 'mdi-account-group-outline' }
     }" />
+    <VerticalNavLink v-show="useUserStore.isManager ?? false" :item="{
+      title: 'Orders',
+      to: 'orders-history',
+      icon: { icon: 'mdi-clipboard-list-outline' }
+    }" />
     <VerticalNavLink v-show="userStore.isAnonymous || userStore.isCustomer" :item="{
       title: 'Menu',
       to: 'menu',
-      icon: { icon: 'mdi-hamburger' }
+      icon: { icon: 'mdi-food' }
     }" />
 
     <!-- 👉 User Interface -->

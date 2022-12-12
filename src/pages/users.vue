@@ -42,7 +42,6 @@ const saveEmployee = async (user, operation) => {
       toast.success(`Employee ${user.name} updated successfully!`)
       closeDialog()
     }).catch((error) => {
-      console.log('TESTE: ', error)
       return toast.error(error.response.data.message ? error.response.data.message : error.message)
     })
   }
