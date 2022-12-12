@@ -4,7 +4,6 @@ import { useUserStore } from "@/stores/user";
 import { VerticalNavLink, VerticalNavSectionTitle } from '@layouts';
 
 const userStore = useUserStore()
-
 </script>
 
 <template>
@@ -22,11 +21,21 @@ const userStore = useUserStore()
       to: 'index',
       icon: { icon: 'mdi-home-outline' }
     }" />
-    <VerticalNavLink v-show="(userStore.isManager ?? false)" :item="{
+    <VerticalNavLink :item="{
+      title: 'Board',
+      to: 'customer-board',
+      icon: { icon: 'mdi-clipboard-list-outline' }
+    }" />
+    <VerticalNavLink v-show="userStore.isAnonymous || userStore.isCustomer" :item="{
+      title: 'Menu',
+      to: 'menu',
+      icon: { icon: 'mdi-food' }
+    }" />
+    <!-- <VerticalNavLink v-show="(userStore.isManager ?? false)" :item="{
       title: 'Dashboard',
       to: 'dashboard',
       icon: { icon: 'mdi-view-dashboard-outline' }
-    }" />
+    }" /> -->
 
     <!-- 👉 Pages -->
     <VerticalNavSectionTitle v-show="userStore.isAnonymous" :item="{ heading: 'Pages' }" />
@@ -52,15 +61,10 @@ const userStore = useUserStore()
       to: 'users',
       icon: { icon: 'mdi-account-group-outline' }
     }" />
-    <VerticalNavLink v-show="useUserStore.isManager ?? false" :item="{
+    <VerticalNavLink v-show="(userStore.isManager ?? false)" :item="{
       title: 'Orders',
       to: 'orders-history',
       icon: { icon: 'mdi-clipboard-list-outline' }
-    }" />
-    <VerticalNavLink v-show="userStore.isAnonymous || userStore.isCustomer" :item="{
-      title: 'Menu',
-      to: 'menu',
-      icon: { icon: 'mdi-food' }
     }" />
 
     <!-- 👉 User Interface -->

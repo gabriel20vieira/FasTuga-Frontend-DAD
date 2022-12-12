@@ -12,6 +12,7 @@ const statisticsStore = useStatisticsStore()
 var statistics = ref([])
 
 onMounted(async () => {
+	console.log('TESTE: ')
 	await statisticsStore.load().then(() => {
 		statistics.value = [
 			newAnalyticsTransactionsItem(
