@@ -18,7 +18,7 @@ const loadOrders = (page) => {
     orders.value = response.data.data
     isTableLoading.value = false
     tableLength.value = response.data.meta.last_page || 1;
-    console.log('TESTE: ', orders.value[12])
+    console.log('TESTE: ', orders.value[9].delivered.name)
   }).catch((error) => {
     console.log(error)
     toast.error(error.message)
@@ -54,7 +54,7 @@ const clickViewOrder = (user) => {
   </VCol>
 
   <VDialog v-model="isDialogVisible" max-width="625">
-    <OrderDialog :order="orderBeingViewed" @close="isDialogVisible = false"/>
+    <OrderDialog :order="orderBeingViewed" @close="isDialogVisible = false" />
   </VDialog>
 </template>
 

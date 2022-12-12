@@ -15,21 +15,12 @@ const props = defineProps({
 
 const dialogTitle = computed(() => `Order #${order.value.id}`)
 
-onMounted(async () => {
+onMounted(() => {
   if (props.order) {
     order.value = { ...props.order }
-
-    if (order.value.customer) {
-      const customer = await usersStore.fetchUser(order.value.customer.id)
-      order.value.customer.name = customer ? customer.name : undefined
-    }
-
-    if (order.value.delivered_by) {
-      const deliverer = await usersStore.fetchUser(order.value.delivered_by)
-      order.value.delivered_by_name = deliverer ? deliverer.name : undefined
-    }
   }
 })
+
 
 const emit = defineEmits(["close"]);
 onUnmounted(() => {
@@ -45,9 +36,9 @@ onUnmounted(() => {
       <div class="v-card-text pl-1 pt-0">
         <h6 class="text-sm font-weight-semibold mb-3">{{ order.customer ? 'Invoice to:' : 'Payment info:' }}</h6>
         <table>
-          <tr v-if="order.customer">
+          <tr v-if="order.user">
             <td class="pe-6">Name:</td>
-            <td>{{ order.customer.name }}</td>
+            <td>{{ order.user.name }}</td>
           </tr>
           <tr v-if="order.customer">
             <td class="pe-6">NIF:</td>
@@ -82,8 +73,8 @@ onUnmounted(() => {
         </thead>
         <tbody>
           <tr v-for="item in order.items" :key="item.id">
-            <td>{{ item.product_id ? item.product_id.name : "N/A" }}</td>
-            <td>{{ item.preparation_by }}</td>
+            <td>{{ item.product ? item.product.name : "N/A" }}</td>
+            <td>{{ item.preparated ? item.preparated.name : '' }}</td>
             <td class="text-end">{{ item.price }}€</td>
           </tr>
         </tbody>
@@ -93,9 +84,10 @@ onUnmounted(() => {
 
       <div class="v-card-text pl-2 pr-3 d-flex justify-space-between flex-column flex-sm-row print-row">
         <div class="d-flex mb-1">
-          <h6 class="text-sm font-weight-semibold" v-if="order.delivered_by_name">Deliverer:&nbsp;</h6><span> {{
-              order.delivered_by_name
-          }}</span>
+          <h6 class="text-sm font-weight-semibold" v-if="order.delivered">
+            Deliverer:&nbsp;
+          </h6>
+          <span> {{ order.delivered?.name }}</span>
         </div>
         <div>
           <table class="w-100">
