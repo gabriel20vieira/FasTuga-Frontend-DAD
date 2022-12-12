@@ -1,3 +1,5 @@
+import { inject } from 'vue'
+
 export async function uploadImage(file) {
   return new Promise(function (resolve) {
     const fileReader = new FileReader()
@@ -42,6 +44,11 @@ export function buildUrl(base, parameters = {}) {
     }
   }
   return base + (params.length > 0 ? '?' + params.join('&') : '')
+}
+
+export function imageUrl(image) {
+  const serverBaseUrl = inject('serverBaseUrl')
+  return `${serverBaseUrl}/api/image/${image}`
 }
 
 export function newAnalyticsTransactionsItem(title, stats, icon, color) {

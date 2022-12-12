@@ -3,15 +3,10 @@ import Cart from '@/views/dashboards/menu/Cart.vue';
 
 import { useCartStore } from "@/stores/cart";
 import { productType, useProductStore } from "@/stores/product";
-import { inject } from "vue";
+import { imageUrl } from '@/utils/utils';
 
 const productStore = useProductStore()
 const cartStore = useCartStore()
-const serverBaseUrl = inject('serverBaseUrl');
-
-const imageUrl = (image) => {
-	return `${serverBaseUrl}/api/image/${image}`
-}
 
 const navigationTab = ref(productType[0])
 const tabItems = productType
@@ -70,7 +65,7 @@ onMounted(async () => {
 										</VCardText>
 									</VCardItem>
 									<VBtn block class="rounded-t-0" @click="cartStore.add(product)">
-										<VIcon size="20" icon="mdi-cart-plus" class="mr-2"/>
+										<VIcon size="20" icon="mdi-cart-plus" class="mr-2" />
 										Add to cart
 									</VBtn>
 								</VCard>

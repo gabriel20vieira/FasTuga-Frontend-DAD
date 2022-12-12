@@ -2,6 +2,8 @@
 import logo from '@/assets/logo.svg?raw';
 import { useUserStore } from "@/stores/user";
 import { VerticalNavLink, VerticalNavSectionTitle } from '@layouts';
+
+const userStore = useUserStore()
 </script>
 
 <template>
@@ -15,73 +17,75 @@ import { VerticalNavLink, VerticalNavSectionTitle } from '@layouts';
   <!-- 👉 Nav items -->
   <ul>
     <VerticalNavLink :item="{
-      title: 'Dashboard',
+      title: 'Home',
       to: 'index',
       icon: { icon: 'mdi-home-outline' }
     }" />
-    <!-- <VerticalNavLink v-if="false" :item="{
-      title: 'Account Settings',
-      to: 'account-settings',
-      icon: { icon: 'mdi-account-cog-outline' }
-    }" /> -->
+    <VerticalNavLink v-show="(userStore.isManager ?? false)" :item="{
+      title: 'Dashboard',
+      to: 'dashboard',
+      icon: { icon: 'mdi-view-dashboard-outline' }
+    }" />
 
     <!-- 👉 Pages -->
-    <VerticalNavSectionTitle v-show="!useUserStore().user" :item="{ heading: 'Pages' }" />
+    <VerticalNavSectionTitle v-show="!userStore.user" :item="{ heading: 'Pages' }" />
 
-    <VerticalNavLink v-show="!useUserStore().user" :item="{
+    <VerticalNavLink v-show="!userStore.user" :item="{
       title: 'Login',
       to: 'login',
       icon: { icon: 'mdi-login' }
     }" />
-    <VerticalNavLink v-show="!useUserStore().user" :item="{
+    <VerticalNavLink v-show="!userStore.user" :item="{
       title: 'Register',
       to: 'register',
       icon: { icon: 'mdi-account-plus-outline' },
     }" />
 
-    <VerticalNavLink v-show="(useUserStore().isManager ?? false)" :item="{
+    <VerticalNavLink v-show="(userStore.isManager ?? false)" :item="{
       title: 'Statistics',
       to: 'statistics',
       icon: { icon: 'mdi-account-details-outline' }
     }" />
-    <VerticalNavLink v-show="(useUserStore().isManager ?? false)" :item="{
+    <VerticalNavLink v-show="(userStore.isManager ?? false)" :item="{
       title: 'Employees',
       to: 'users',
       icon: { icon: 'mdi-account-group-outline' }
     }" />
-    <VerticalNavLink v-show="useUserStore().isAnonymous || useUserStore().isCustomer" :item="{
+    <VerticalNavLink v-show="userStore.isAnonymous || userStore.isCustomer" :item="{
       title: 'Menu',
       to: 'menu',
       icon: { icon: 'mdi-hamburger' }
     }" />
 
     <!-- 👉 User Interface -->
-    <VerticalNavSectionTitle :item="{ heading: 'User Interface' }" />
+    <div v-if="false">
+      <VerticalNavSectionTitle :item="{ heading: 'User Interface' }" />
 
-    <VerticalNavLink :item="{
-      title: 'Typography',
-      to: 'typography',
-      icon: { icon: 'mdi-alpha-t-box-outline' }
-    }" />
-    <VerticalNavLink :item="{
-      title: 'Icons',
-      to: 'icons',
-      icon: { icon: 'mdi-eye-outline' }
-    }" />
-    <VerticalNavLink :item="{
-      title: 'Cards',
-      to: 'card-basic',
-      icon: { icon: 'mdi-credit-card-outline' }
-    }" />
-    <VerticalNavLink :item="{
-      title: 'Tables',
-      to: 'tables',
-      icon: { icon: 'mdi-table' }
-    }" />
-    <VerticalNavLink :item="{
-      title: 'Form Layouts',
-      to: 'form-layouts',
-      icon: { icon: 'mdi-form-select' }
-    }" />
+      <VerticalNavLink :item="{
+        title: 'Typography',
+        to: 'typography',
+        icon: { icon: 'mdi-alpha-t-box-outline' }
+      }" />
+      <VerticalNavLink :item="{
+        title: 'Icons',
+        to: 'icons',
+        icon: { icon: 'mdi-eye-outline' }
+      }" />
+      <VerticalNavLink :item="{
+        title: 'Cards',
+        to: 'card-basic',
+        icon: { icon: 'mdi-credit-card-outline' }
+      }" />
+      <VerticalNavLink :item="{
+        title: 'Tables',
+        to: 'tables',
+        icon: { icon: 'mdi-table' }
+      }" />
+      <VerticalNavLink :item="{
+        title: 'Form Layouts',
+        to: 'form-layouts',
+        icon: { icon: 'mdi-form-select' }
+      }" />
+    </div>
   </ul>
 </template>

@@ -7,6 +7,8 @@ import DrawerContent from './DrawerContent.vue';
 import Footer from '@/layouts/components/Footer.vue';
 import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue';
 import UserProfile from '@/layouts/components/UserProfile.vue';
+
+const userStore = useUserStore()
 </script>
 
 <template>
@@ -18,7 +20,7 @@ import UserProfile from '@/layouts/components/UserProfile.vue';
 
       <NavbarThemeSwitcher class="me-2" />
 
-      <UserProfile v-show="useUserStore().user" />
+      <UserProfile v-show="userStore.isLogged" />
     </template>
 
     <!-- 👉 Drawer content -->
