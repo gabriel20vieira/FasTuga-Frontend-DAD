@@ -11,19 +11,26 @@ const router = createRouter({
   },
 })
 
+const redirectOnUnauthorized = '/404'
+const authorization = {
+  login: store => store.isAnonymous,
+  register: store => store.isAnonymous,
+  menu: store => store.isAnonymous || store.isCustomer,
+  'manage-menu': store => store.isManager,
+  statistics: store => store.isManager,
+  users: store => store.isManager,
+  dashboard: store => store.isManager,
+}
+
 router.beforeEach(async to => {
   const userStore = useUserStore()
   await userStore.restoreToken()
 
-  switch (to.name) {
-    case 'login':
-    case 'register':
-      if (userStore.isLogged) {
-        return '/'
-      }
-      break
-    default:
-      break
+  let condition = authorization[to.name]
+  if (condition) {
+    if (condition(userStore) == false) {
+      return redirectOnUnauthorized
+    }
   }
 })
 
