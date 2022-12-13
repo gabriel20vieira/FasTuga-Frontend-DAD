@@ -11,25 +11,19 @@ const router = createRouter({
   },
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async to => {
   const userStore = useUserStore()
-
-  if (to.name == 'index') {
-    return next()
-  }
+  await userStore.restoreToken()
 
   switch (to.name) {
     case 'login':
     case 'register':
       if (userStore.isLogged) {
-        return next({ name: 'index' })
+        return '/'
       }
-    case 'menu':
-      if (!userStore.isAnonymous && !userStore.isCustomer) {
-        return next({ name: 'index' })
-      }
+      break
     default:
-      return next()
+      break
   }
 })
 

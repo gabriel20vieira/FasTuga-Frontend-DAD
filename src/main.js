@@ -35,12 +35,9 @@ const app = createApp(App)
 
 app.provide('serverBaseUrl', serverBaseUrl)
 app.provide('axios', axiosInstance)
-
+app.use(pinia)
 app.use(vuetify)
 app.use(router)
-app.use(pinia)
-
 app.use(Toaster, toasterInstance)
 app.provide('toast', app.config.globalProperties.$toast)
-
 app.mount('#app')

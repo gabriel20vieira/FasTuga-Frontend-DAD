@@ -7,7 +7,7 @@ const userStore = useUserStore()
 const productStore = useProductStore()
 
 onBeforeMount(async () => {
-  await userStore.restoreToken()
+  // await userStore.restoreToken()
   await productStore.load()
 })
 
