@@ -12,7 +12,7 @@ const products = computed(() => {
 </script>
 
 <template>
-  <VRow class="" style="height: 100vh;">
+  <VRow class="" style="height: 20vh;">
     <VCol class="text-center">
       <h2>FasTuga e alguma imagem</h2>
     </VCol>

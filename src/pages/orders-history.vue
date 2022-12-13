@@ -18,7 +18,6 @@ const loadOrders = (page) => {
     orders.value = response.data.data
     isTableLoading.value = false
     tableLength.value = response.data.meta.last_page || 1;
-    console.log('TESTE: ', orders.value[9].delivered.name)
   }).catch((error) => {
     console.log(error)
     toast.error(error.message)

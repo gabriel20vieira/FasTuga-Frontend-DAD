@@ -71,7 +71,7 @@ async function makeOrder() {
 				<div class="mt-3">
 					<span>Points to use: {{ cartStore.order?.points_used_to_pay ?? 0 }}</span>
 					<span class="ms-5">
-						<VBtn :disabled="cartStore.currentUserPoints < 10" icon variant="text" color="primary"
+						<VBtn :disabled="cartStore.order?.points_used_to_pay <= 0" icon variant="text" color="primary"
 							size="small" @click="cartStore.removeUsePoints()">
 							<VIcon icon="mdi-minus" size="20" />
 						</VBtn>
