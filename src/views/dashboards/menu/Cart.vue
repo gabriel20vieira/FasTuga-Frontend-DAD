@@ -1,6 +1,7 @@
 <script setup>
 import { useCartStore } from '@/stores/cart';
 import { paymentTypes, useUserStore } from '@/stores/user';
+import { capitalizeFirstLetter } from '@/utils/utils';
 import { useRouter } from 'vue-router';
 
 const serverBaseUrl = inject('serverBaseUrl')
@@ -17,11 +18,6 @@ const errors = ref({
 	reference: [],
 })
 
-function capitalizeFirstLetter(string) {
-	if (string) {
-		return string.charAt(0).toUpperCase() + string.slice(1);
-	}
-}
 
 async function makeOrder() {
 	errors.value.type = []
@@ -35,7 +31,9 @@ async function makeOrder() {
 	await cartStore.makeOrder(async (res, err) => {
 		if (res) {
 			toast.success(res.data.message)
-			await userStore.loadUser()
+			if (userStore?.isLogged) {
+				await userStore.loadUser()
+			}
 			router.push({ name: 'index' })
 		}
 

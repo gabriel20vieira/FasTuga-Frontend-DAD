@@ -1,4 +1,5 @@
 <script setup>
+import ProductDetailsDialog from '@/layouts/components/ProductDetailsDialog.vue';
 import Cart from '@/views/dashboards/menu/Cart.vue';
 
 import { useCartStore } from "@/stores/cart";
@@ -10,10 +11,24 @@ const cartStore = useCartStore()
 
 const navigationTab = ref(productType[0])
 const tabItems = productType
+const isDialogVisible = ref(false)
+const showProduct = ref(null)
 const products = computed(() => {
 	productStore.filter(navigationTab.value.toLowerCase())
 	return productStore.productsFiltered
 })
+
+const dialogOpen = (product) => {
+	showProduct.value = product
+	if (product) {
+		showProduct.value.image = product?.photo_url
+	}
+	isDialogVisible.value = true
+}
+
+const dialogClose = () => {
+	isDialogVisible.value = false
+}
 
 onMounted(async () => {
 	await productStore.load()
@@ -40,19 +55,9 @@ onMounted(async () => {
 						<VRow class="align-cards py-8 px-6">
 							<VCol v-for="product in products" :key="product.id" cols="12" lg="3" sm="4">
 								<VCard class="h-100">
-									<!-- <VBtn size="2.6em" variant="elevated" color="primary" class="me-n3 mt-n1 add-cart"
-										icon @click="cartStore.add(product)">
-										<VIcon size="24" icon="mdi-cart-plus" />
-									</VBtn> -->
-
-									<!-- Details -->
-									<!-- <VBtn size="2.6em" variant="elevated" color="primary"
-										class="me-n3 mt-n1 cart-details" icon @click="cartStore.add(product)">
-										<VIcon size="22" icon="mdi-more" />
-									</VBtn> -->
-
 									<VImg cover :aspect-ratio="1.5" :src="imageUrl(product.photo_url)"
-										:lazy-src="imageUrl(product.photo_url)" />
+										:lazy-src="imageUrl(product.photo_url)" @click="dialogOpen(product)"
+										style="cursor: pointer;" />
 
 									<VCardItem>
 										<VCardTitle>
@@ -82,6 +87,10 @@ onMounted(async () => {
 			</VCard>
 		</VCol>
 	</VRow>
+
+	<VDialog v-model="isDialogVisible" max-width="700">
+		<ProductDetailsDialog @close="dialogClose" :product="showProduct" />
+	</VDialog>
 </template>
 
 
