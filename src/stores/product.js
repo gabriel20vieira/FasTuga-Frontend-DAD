@@ -14,17 +14,22 @@ export const productType = [
   ProductType.DESSERT.toUpperCase(),
 ]
 
+export const productType_LC = [ProductType.HOT_DISH, ProductType.COLD_DISH, ProductType.DRINK, ProductType.DESSERT]
+
 export const useProductStore = defineStore('product', () => {
   const axios = inject('axios')
 
   const products = ref([])
   const productsFiltered = ref([])
 
+  const lastFilter = ref(null)
+
   async function load() {
     try {
-      const response = await axios.get('products')
+      const params = new URLSearchParams([['size', 9999]])
+      const response = await axios.get('products', { params })
       products.value = response.data.data
-      productsFiltered.value = response.data.data
+      productsFiltered.value = filter(lastFilter.type)
     } catch (error) {
       products.value = []
       throw error
@@ -33,7 +38,24 @@ export const useProductStore = defineStore('product', () => {
 
   async function filter(type = null) {
     if (isTypeValid(type)) {
+      lastFilter.value = type
       productsFiltered.value = products.value.filter(product => product.type == type)
+    }
+  }
+
+  async function save(product) {
+    if (product) {
+      if (product?.id) {
+        return await axios.patch(`products/${product.id}`, product)
+      } else {
+        return await axios.post('products', product)
+      }
+    }
+  }
+
+  async function destroy(product) {
+    if (product && product?.id) {
+      return await axios.delete(`products/${product.id}`)
     }
   }
 
@@ -49,5 +71,5 @@ export const useProductStore = defineStore('product', () => {
     }
   }
 
-  return { products, productsFiltered, ProductType, load, isTypeValid, filter, productType }
+  return { products, productsFiltered, ProductType, load, isTypeValid, filter, productType, save, destroy }
 })

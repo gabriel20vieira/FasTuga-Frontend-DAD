@@ -47,6 +47,10 @@ export function buildUrl(base, parameters = {}) {
 }
 
 export function imageUrl(image) {
+  if (!image) {
+    return null
+  }
+
   const serverBaseUrl = inject('serverBaseUrl')
   return `${serverBaseUrl}/api/image/${image}`
 }

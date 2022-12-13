@@ -24,10 +24,6 @@ router.beforeEach((to, from, next) => {
       if (userStore.isLogged) {
         return next({ name: 'index' })
       }
-    case 'statistics':
-      if (userStore.isCustomer) {
-        return next({ name: 'index' })
-      }
     case 'menu':
       if (!userStore.isAnonymous && !userStore.isCustomer) {
         return next({ name: 'index' })
