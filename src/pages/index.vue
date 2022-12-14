@@ -6,7 +6,8 @@ const productStore = useProductStore()
 
 const products = computed(() => {
   productStore.filter('hot dish')
-  return productStore.productsFiltered
+  // return productStore.productsFiltered
+  return []
 })
 
 </script>

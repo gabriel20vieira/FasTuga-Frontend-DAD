@@ -1,5 +1,6 @@
 <script setup>
 import { paymentTypes, userTypes, useUserStore } from '@/stores/user';
+import { emailRules, nameRules, nifRules, paymentReferenceRules, phoneRules } from '@/utils/validations';
 import { computed } from '@vue/reactivity';
 
 const userStore = useUserStore();
@@ -133,11 +134,12 @@ onMounted(() => {
 						<VRow>
 
 							<VCol md="6" cols="12">
-								<VTextField v-model="accountDataLocal.name" label="Name" />
+								<VTextField v-model="accountDataLocal.name" label="Name" :rules="nameRules" />
 							</VCol>
 
 							<VCol cols="12" md="6">
-								<VTextField v-model="accountDataLocal.email" label="E-mail" type="email" />
+								<VTextField v-model="accountDataLocal.email" label="E-mail" type="email"
+									:rules="emailRules" />
 							</VCol>
 
 							<VCol cols="12" md="6">
@@ -146,11 +148,11 @@ onMounted(() => {
 							</VCol>
 
 							<VCol cols="12" md="6" v-if="userStore.isCustomer">
-								<VTextField v-model="customerDataLocal.phone" label="Phone" />
+								<VTextField v-model="customerDataLocal.phone" label="Phone" :rules="phoneRules" />
 							</VCol>
 
 							<VCol cols="12" md="6" v-if="userStore.isCustomer">
-								<VTextField v-model="customerDataLocal.nif" label="NIF" />
+								<VTextField v-model="customerDataLocal.nif" label="NIF" :rules="nifRules" />
 							</VCol>
 
 							<VCol cols="12" md="6" v-if="userStore.isCustomer">
@@ -160,7 +162,8 @@ onMounted(() => {
 
 							<VCol cols="12" md="6" v-if="userStore.isCustomer">
 								<VTextField v-model="customerDataLocal.default_payment_reference"
-									label="Payment reference" />
+									label="Payment reference"
+									:rules="paymentReferenceRules(customerDataLocal.default_payment_reference, customerDataLocal.default_payment_type)" />
 							</VCol>
 
 							<VCol cols="12" class="d-flex flex-wrap gap-4">

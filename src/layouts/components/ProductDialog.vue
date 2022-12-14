@@ -3,6 +3,7 @@
 import ConfirmationDialog from "@/layouts/components/ConfirmationDialog.vue";
 import { productType_LC, useProductStore } from "@/stores/product";
 import { imageUrl, uploadImage } from "@/utils/utils";
+import { nameRules, priceRules } from "@/utils/validations";
 import { computed } from "@vue/reactivity";
 import { onUnmounted } from "vue";
 
@@ -110,6 +111,7 @@ onUnmounted(() => {
 
 <template>
 	<VCard :title="props.product ? 'Edit' : 'Create'" class="py-2">
+		<VProgressLinear :active="loading" indeterminate />
 		<VCardText>
 			<VRow>
 				<VCol cols="12" xs="12" sm="5">
@@ -123,15 +125,16 @@ onUnmounted(() => {
 				</VCol>
 				<VCol cols="12" xs="12" sm="7" class="pt-0">
 					<VCol class="px-0">
-						<VTextField v-model="product.name" label="Name" required :error-messages="errors?.name" />
+						<VTextField v-model="product.name" label="Name" required :error-messages="errors?.name"
+							:rules="nameRules" />
 					</VCol>
 					<VCol class="px-0">
 						<VSelect v-model="product.type" :items="productType_LC" label="Type" required
 							:error-messages="errors?.type" />
 					</VCol>
 					<VCol class="px-0">
-						<VTextField type="number" v-model="product.price" label="Price" required
-							:error-messages="errors?.price" />
+						<VTextField type="number" min="0" v-model="product.price" label="Price" required
+							:error-messages="errors?.price" :rules="priceRules" />
 					</VCol>
 					<VCol class="px-0">
 						<VTextarea v-model="product.description" label="Description" required
@@ -152,7 +155,6 @@ onUnmounted(() => {
 				Save
 			</VBtn>
 		</VCardActions>
-		<VProgressLinear :active="loading" indeterminate />
 	</VCard>
 
 	<ConfirmationDialog ref="confirmDialog" />
