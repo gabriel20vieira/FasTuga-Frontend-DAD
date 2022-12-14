@@ -99,7 +99,7 @@ const photoFullUrl = (user) => {
       <tr v-for="(employee, index) in arrayPaginate(employees, currentPage)" :key="employee.id">
         <td v-if="showId">{{ employee.id }}</td>
         <td>
-          <div class="left"><img :src="photoFullUrl(employee)" class="rounded-circle img_photo" width="35"
+          <div class="left"><img :src="photoFullUrl(employee)" class="rounded-circle img_photo" width="35" height="35"
               style="margin-top: 5px;" /></div>
           <div class="right">{{ employee.name }}</div>
         </td>
