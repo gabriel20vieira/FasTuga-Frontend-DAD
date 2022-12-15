@@ -1,32 +1,40 @@
 <script setup>
-import ProductDetailsDialog from '@/layouts/components/ProductDetailsDialog.vue';
-import Cart from '@/views/menu/Cart.vue';
 
-import { useCartStore } from "@/stores/cart";
+import ProductDialog from "@/layouts/components/ProductDialog.vue";
 import { productType, useProductStore } from "@/stores/product";
 import { imageUrl } from '@/utils/utils';
 
+// Stores
 const productStore = useProductStore()
-const cartStore = useCartStore()
+
+// Reactive
 
 const navigationTab = ref(productType[0])
 const tabItems = productType
+const editProduct = ref(null)
 const isDialogVisible = ref(false)
-const showProduct = ref(null)
+
 const products = computed(() => {
 	productStore.filter(navigationTab.value.toLowerCase())
 	return productStore.productsFiltered
 })
 
+// Actions
+
 const dialogOpen = (product) => {
-	showProduct.value = product
+	editProduct.value = product
 	if (product) {
-		showProduct.value.image = product?.photo_url
+		editProduct.value.image = product?.photo_url
 	}
 	isDialogVisible.value = true
 }
 
 const dialogClose = () => {
+	isDialogVisible.value = false
+}
+
+const dialogSave = () => {
+	productStore.load()
 	isDialogVisible.value = false
 }
 
@@ -37,10 +45,13 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-	<VRow>
-		<VCol md="8" sm="12">
+	<VRow class="d-flex">
+		<VCol sm="12" md="12" lg="10" offset-lg="1">
 			<VCard>
 				<VTabs v-model="navigationTab" grow style="height: 3.5em;">
+					<VBtn color="primary" class="add-cart-btn" @click="dialogOpen(null)">
+						<VIcon icon="mdi-hamburger-plus" class="mr-2" /> New product
+					</VBtn>
 					<VTab v-for="item in tabItems" :key="item" :value="item" style="height:auto; font-size: 1.1em;">
 						{{ item }}
 					</VTab>
@@ -56,8 +67,7 @@ onBeforeMount(async () => {
 							<VCol v-for="product in products" :key="product.id" cols="12" lg="3" sm="4">
 								<VCard class="h-100">
 									<VImg cover :aspect-ratio="1.5" :src="imageUrl(product.photo_url)"
-										:lazy-src="imageUrl(product.photo_url)" @click="dialogOpen(product)"
-										style="cursor: pointer;" />
+										:lazy-src="imageUrl(product.photo_url)" />
 
 									<VCardItem>
 										<VCardTitle>
@@ -69,9 +79,9 @@ onBeforeMount(async () => {
 											</p>
 										</VCardText>
 									</VCardItem>
-									<VBtn block class="rounded-t-0" @click="cartStore.add(product)">
-										<VIcon size="20" icon="mdi-cart-plus" class="mr-2" />
-										Add to cart
+									<VBtn block class="rounded-t-0" @click="dialogOpen(product)">
+										<VIcon size="20" icon="mdi-pencil-outline" class="mr-2" />
+										Edit
 									</VBtn>
 								</VCard>
 							</VCol>
@@ -80,35 +90,16 @@ onBeforeMount(async () => {
 				</VWindow>
 			</VCard>
 		</VCol>
-
-		<VCol md="4" sm="12">
-			<VCard>
-				<Cart />
-			</VCard>
-		</VCol>
 	</VRow>
 
-	<VDialog v-model="isDialogVisible" max-width="700">
-		<ProductDetailsDialog @close="dialogClose" :product="showProduct" />
+	<VDialog v-model="isDialogVisible" max-width="700" persistent>
+		<ProductDialog @close="dialogClose" @save="dialogSave" :product="editProduct" />
 	</VDialog>
+
 </template>
 
 
 <style lang="scss">
-.add-cart {
-	position: absolute;
-	z-index: 999;
-	top: 1em;
-	right: 2em;
-}
-
-.cart-details {
-	position: absolute;
-	z-index: 999;
-	top: 4.5em;
-	right: 2em;
-}
-
 .menu-card {
 	max-height: 80vh !important;
 	overflow-y: auto !important;
@@ -128,5 +119,11 @@ onBeforeMount(async () => {
 .hide-scroll::-webkit-scrollbar {
 	display: none;
 	/* Safari and Chrome */
+}
+
+.add-cart-btn {
+	height: auto !important;
+	font-size: 1.1em;
+	border-radius: 0%;
 }
 </style>

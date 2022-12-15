@@ -23,7 +23,7 @@ export const useUsersStore = defineStore('users', () => {
 
   async function fetchAllUsers() {
     try {
-      const response = await axios.get('users')
+      const response = await axios.get('users?size=9999')
       users.value = response.data.data
       return users.value
     } catch (error) {
@@ -72,6 +72,6 @@ export const useUsersStore = defineStore('users', () => {
     createEmployee,
     editEmployee,
     deleteEmployee,
-    fetchUser
+    fetchUser,
   }
 })

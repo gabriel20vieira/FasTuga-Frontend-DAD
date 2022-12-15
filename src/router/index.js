@@ -11,29 +11,26 @@ const router = createRouter({
   },
 })
 
-router.beforeEach((to, from, next) => {
+const redirectOnUnauthorized = '/404'
+const authorization = {
+  login: store => store.isAnonymous,
+  register: store => store.isAnonymous,
+  menu: store => store.isAnonymous || store.isCustomer,
+  'manage-menu': store => store.isManager,
+  statistics: store => store.isManager,
+  users: store => store.isManager,
+  dashboard: store => store.isManager,
+  'account-settings': store => store.isLogged,
+  'orders-history': store => store.isLogged,
+}
+
+router.beforeResolve(async to => {
   const userStore = useUserStore()
+  await userStore.restoreToken()
 
-  if (to.name == 'index') {
-    return next()
-  }
-
-  switch (to.name) {
-    case 'login':
-    case 'register':
-      if (userStore.isLogged) {
-        return next({ name: 'index' })
-      }
-    case 'statistics':
-      if (userStore.isCustomer) {
-        return next({ name: 'index' })
-      }
-    case 'menu':
-      if (!userStore.isAnonymous && !userStore.isCustomer) {
-        return next({ name: 'index' })
-      }
-    default:
-      return next()
+  let condition = authorization[to.name]
+  if (condition && condition(userStore) == false) {
+    return redirectOnUnauthorized
   }
 })
 

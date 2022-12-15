@@ -16,13 +16,12 @@ const isDialogLoading = ref(false)
 const confirmDialog = ref(null)
 const customersFilter = ref(false)
 
-const loadUsers = async (page) => {
+const loadUsers = async () => {
   isTableLoading.value = true
 
   await usersStore.fetchAllUsers().then(() => {
     isTableLoading.value = false
   }).catch((error) => {
-    console.log(error)
     toast.error(error.message)
   })
 }
@@ -60,7 +59,6 @@ const clickDelete = async (user) => {
       toast.success("Employee removed successfully!")
       confirmDialog.value.close()
     }).catch((error) => {
-      console.log(error)
       toast.error(error.response.data.message ? error.response.data.message : error.message)
     })
   }

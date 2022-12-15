@@ -47,6 +47,10 @@ export function buildUrl(base, parameters = {}) {
 }
 
 export function imageUrl(image) {
+  if (!image) {
+    return null
+  }
+
   const serverBaseUrl = inject('serverBaseUrl')
   return `${serverBaseUrl}/api/image/${image}`
 }
@@ -57,5 +61,11 @@ export function newAnalyticsTransactionsItem(title, stats, icon, color) {
     stats: stats,
     icon: icon,
     color: color,
+  }
+}
+
+export function capitalizeFirstLetter(string) {
+  if (string) {
+    return string.charAt(0).toUpperCase() + string.slice(1)
   }
 }

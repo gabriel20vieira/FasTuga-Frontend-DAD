@@ -1,6 +1,5 @@
 <script setup>
 import AccountSettingsAccount from '@/views/pages/account-settings/AccountSettingsAccount.vue';
-import AccountSettingsPoints from '@/views/pages/account-settings/AccountSettingsPoints.vue';
 import AccountSettingsSecurity from '@/views/pages/account-settings/AccountSettingsSecurity.vue';
 
 import { useRoute } from 'vue-router';
@@ -14,11 +13,6 @@ const tabs = [
 		title: 'Account',
 		icon: 'mdi-account-outline',
 		tab: 'account',
-	},
-	{
-		title: 'Settings',
-		icon: 'mdi-account-cog-outline',
-		tab: 'settings',
 	},
 	{
 		title: 'Security',
@@ -43,10 +37,6 @@ const tabs = [
 		<VWindow v-model="activeTab" class="mt-5 disable-tab-transition" :touch="false">
 
 			<VWindowItem value="account">
-				<AccountSettingsPoints />
-			</VWindowItem>
-
-			<VWindowItem value="settings">
 				<AccountSettingsAccount />
 			</VWindowItem>
 

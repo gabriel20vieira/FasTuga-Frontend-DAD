@@ -9,11 +9,13 @@ import '@core/scss/index.scss'
 import Toaster from '@meforma/vue-toaster'
 import axios from 'axios'
 import { createPinia } from 'pinia'
+import { io } from 'socket.io-client'
 import { createApp } from 'vue'
 
 loadFonts()
 
 const serverBaseUrl = 'http://127.0.0.1:8000'
+const socketConnection = 'http://localhost:8080'
 
 const pinia = createPinia()
 
@@ -35,10 +37,11 @@ const app = createApp(App)
 
 app.provide('serverBaseUrl', serverBaseUrl)
 app.provide('axios', axiosInstance)
+app.provide('socket', io(socketConnection))
 
+app.use(pinia)
 app.use(vuetify)
 app.use(router)
-app.use(pinia)
 
 app.use(Toaster, toasterInstance)
 app.provide('toast', app.config.globalProperties.$toast)
