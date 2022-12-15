@@ -1,5 +1,8 @@
 <script setup>
+import { useUserStore } from "@/stores/user";
 import TablePagination from "../components/TablePagination.vue";
+
+const userStore = useUserStore()
 
 const props = defineProps({
   orders: {
@@ -56,6 +59,7 @@ const getStatusColor = (status) => {
       return ''
   }
 }
+
 </script>
 
 <template>
@@ -64,7 +68,7 @@ const getStatusColor = (status) => {
   <VTable>
     <thead>
       <tr>
-        <th v-if="props.showId" class="text-uppercase">
+        <th v-if="(props.showId && userStore.isManager)" class="text-uppercase">
           #
         </th>
         <th class="text-uppercase">
@@ -92,7 +96,7 @@ const getStatusColor = (status) => {
     </thead>
     <tbody>
       <tr v-for="order in orders" :key="order.id">
-        <td v-if="props.showId">{{ order.id }}</td>
+        <td v-if="(props.showId && userStore.isManager)">{{ order.id }}</td>
         <td>{{ order.ticket_number }}</td>
         <td>{{ order.date }}</td>
         <td>{{ order.items.length }}</td>

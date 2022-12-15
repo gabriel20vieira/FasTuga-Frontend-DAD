@@ -41,7 +41,6 @@ const userStore = useUserStore()
       to: 'register',
       icon: { icon: 'mdi-account-plus-outline' },
     }" />
-
     <VerticalNavLink v-show="(userStore.isManager ?? false)" :item="{
       title: 'Statistics',
       to: 'statistics',
@@ -52,7 +51,7 @@ const userStore = useUserStore()
       to: 'users',
       icon: { icon: 'mdi-account-group-outline' }
     }" />
-    <VerticalNavLink v-show="userStore.isManager ?? false" :item="{
+    <VerticalNavLink v-show="(userStore.isManager || userStore.isCustomer) ?? false" :item="{
       title: 'Orders',
       to: 'orders-history',
       icon: { icon: 'mdi-clipboard-list-outline' }

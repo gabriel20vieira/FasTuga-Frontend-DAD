@@ -22,7 +22,7 @@ const authorization = {
   dashboard: store => store.isManager,
   'account-settings': store => store.isLogged,
 }
-
+    
 router.beforeEach(async to => {
   const userStore = useUserStore()
   await userStore.restoreToken()

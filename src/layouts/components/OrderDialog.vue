@@ -1,9 +1,9 @@
 <script setup>
-import { useUsersStore } from '@/stores/users';
+import { useUserStore } from '@/stores/user';
 import { computed } from "@vue/reactivity";
 import { onUnmounted } from "vue";
 
-const usersStore = useUsersStore()
+const userStore = useUserStore()
 
 const order = ref({})
 
@@ -63,7 +63,7 @@ onUnmounted(() => {
             <th class="text-uppercase">
               Item
             </th>
-            <th class="text-uppercase">
+            <th v-if="!userStore.isCustomer" class="text-uppercase">
               Prepared By
             </th>
             <th class="text-uppercase text-end">
@@ -74,7 +74,7 @@ onUnmounted(() => {
         <tbody>
           <tr v-for="item in order.items" :key="item.id">
             <td>{{ item.product ? item.product.name : "N/A" }}</td>
-            <td>{{ item.preparated ? item.preparated.name : '' }}</td>
+            <td v-if="!userStore.isCustomer">{{ item.preparated ? item.preparated.name : '' }}</td>
             <td class="text-end">{{ item.price }}€</td>
           </tr>
         </tbody>
@@ -84,10 +84,12 @@ onUnmounted(() => {
 
       <div class="v-card-text pl-2 pr-3 d-flex justify-space-between flex-column flex-sm-row print-row">
         <div class="d-flex mb-1">
-          <h6 class="text-sm font-weight-semibold" v-if="order.delivered">
-            Deliverer:&nbsp;
-          </h6>
-          <span> {{ order.delivered?.name }}</span>
+          <div v-if="!userStore.isCustomer">
+            <h6 class="text-sm font-weight-semibold" v-if="order.delivered">
+              Deliverer:&nbsp;
+            </h6>
+            <span> {{ order.delivered?.name }}</span>
+          </div>
         </div>
         <div>
           <table class="w-100">
