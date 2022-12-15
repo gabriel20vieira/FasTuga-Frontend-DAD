@@ -160,6 +160,7 @@ export const useUserStore = defineStore('user', () => {
       //Remember me
       if (credentials.remember) sessionStorage.setItem('token', response.data.token)
       await loadUser()
+      soc.login()
       return true
     } catch (error) {
       clearUser()
