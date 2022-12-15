@@ -23,7 +23,7 @@ const userStore = useUserStore()
     }" />
     <VerticalNavLink :item="{
       title: 'Board',
-      to: 'customer-board',
+      to: 'board',
       icon: { icon: 'mdi-clipboard-list-outline' }
     }" />
     <VerticalNavLink v-show="userStore.isAnonymous || userStore.isCustomer" :item="{

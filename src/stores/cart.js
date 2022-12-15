@@ -49,6 +49,7 @@ export const useCartStore = defineStore('cart', () => {
       .then(res => {
         let completed = res.data.data
         soc.send('orders-update', completed)
+        soc.send('board-update')
         return res
       })
       .finally(() => {
