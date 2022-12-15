@@ -1,6 +1,6 @@
 <script setup>
 import ProductDetailsDialog from '@/layouts/components/ProductDetailsDialog.vue';
-import Cart from '@/views/dashboards/menu/Cart.vue';
+import Cart from '@/views/menu/Cart.vue';
 
 import { useCartStore } from "@/stores/cart";
 import { productType, useProductStore } from "@/stores/product";
@@ -30,7 +30,7 @@ const dialogClose = () => {
 	isDialogVisible.value = false
 }
 
-onMounted(async () => {
+onBeforeMount(async () => {
 	await productStore.load()
 })
 

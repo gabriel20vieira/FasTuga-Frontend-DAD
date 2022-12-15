@@ -22,7 +22,6 @@ const loadUsers = async () => {
   await usersStore.fetchAllUsers().then(() => {
     isTableLoading.value = false
   }).catch((error) => {
-    console.log(error)
     toast.error(error.message)
   })
 }
@@ -60,7 +59,6 @@ const clickDelete = async (user) => {
       toast.success("Employee removed successfully!")
       confirmDialog.value.close()
     }).catch((error) => {
-      console.log(error)
       toast.error(error.response.data.message ? error.response.data.message : error.message)
     })
   }

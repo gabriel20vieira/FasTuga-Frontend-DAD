@@ -38,9 +38,7 @@ const dialogSave = () => {
 	isDialogVisible.value = false
 }
 
-// Bootstrap
-
-onMounted(async () => {
+onBeforeMount(async () => {
 	await productStore.load()
 })
 

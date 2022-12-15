@@ -1,3 +1,4 @@
+import websockets from '@/utils/websockets'
 import { inject, ref } from 'vue'
 
 export const ProductType = {
@@ -18,6 +19,7 @@ export const productType_LC = [ProductType.HOT_DISH, ProductType.COLD_DISH, Prod
 
 export const useProductStore = defineStore('product', () => {
   const axios = inject('axios')
+  const soc = websockets(inject)
 
   const products = ref([])
   const productsFiltered = ref([])
@@ -46,16 +48,25 @@ export const useProductStore = defineStore('product', () => {
   async function save(product) {
     if (product) {
       if (product?.id) {
-        return await axios.patch(`products/${product.id}`, product)
+        return await axios.patch(`products/${product.id}`, product).finally(() => {
+          soc.send('products-update', product)
+          load()
+        })
       } else {
-        return await axios.post('products', product)
+        return await axios.post('products', product).finally(() => {
+          soc.send('products-update')
+          load()
+        })
       }
     }
   }
 
   async function destroy(product) {
     if (product && product?.id) {
-      return await axios.delete(`products/${product.id}`)
+      return await axios.delete(`products/${product.id}`).finally(() => {
+        soc.send('products-update')
+        load()
+      })
     }
   }
 
