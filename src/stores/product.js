@@ -46,16 +46,16 @@ export const useProductStore = defineStore('product', () => {
   async function save(product) {
     if (product) {
       if (product?.id) {
-        return await axios.patch(`products/${product.id}`, product)
+        return await axios.patch(`products/${product.id}`, product).finally(() => load())
       } else {
-        return await axios.post('products', product)
+        return await axios.post('products', product).finally(() => load())
       }
     }
   }
 
   async function destroy(product) {
     if (product && product?.id) {
-      return await axios.delete(`products/${product.id}`)
+      return await axios.delete(`products/${product.id}`).finally(() => load())
     }
   }
 

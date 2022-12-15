@@ -39,8 +39,7 @@ const nifRules = ref([
 ])
 
 const paymentReferenceRules = (value, type) => {
-  let res = 'Payment type is invalid'
-
+  let res = 'Payment reference is invalid'
   switch (type) {
     case 'PAYPAL':
       return [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value) || res]

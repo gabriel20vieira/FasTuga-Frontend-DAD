@@ -15,7 +15,6 @@ export const useCartStore = defineStore('cart', () => {
     },
   }
 
-  const loading = ref(false)
   const total = ref(0)
   const order = ref(structuredClone(baseOrder))
 
@@ -31,8 +30,7 @@ export const useCartStore = defineStore('cart', () => {
     order.value.payment.reference = reference
   }
 
-  async function makeOrder(callback) {
-    loading.value = true
+  async function makeOrder() {
     order.value.items = []
     order.value.products.forEach(p => {
       for (let i = p.quantity; i > 0; i--) {
@@ -42,17 +40,9 @@ export const useCartStore = defineStore('cart', () => {
 
     const { prds: _, ...data } = order.value
 
-    await axios
-      .post('/orders', data)
-      .then(res => {
-        loading.value = false
-        callback(res, null)
-        resetCart()
-      })
-      .catch(err => {
-        loading.value = false
-        callback(null, err)
-      })
+    return await axios.post('/orders', data).finally(() => {
+      resetCart()
+    })
   }
 
   function addUsePoints() {
@@ -165,8 +155,8 @@ export const useCartStore = defineStore('cart', () => {
     currentUserPoints,
     isUsingPoints,
     hasItems,
-    loading,
     fillPayment,
     removeOne,
+    resetCart,
   }
 })

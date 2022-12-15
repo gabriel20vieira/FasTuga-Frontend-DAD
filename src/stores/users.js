@@ -72,6 +72,6 @@ export const useUsersStore = defineStore('users', () => {
     createEmployee,
     editEmployee,
     deleteEmployee,
-    fetchUser
+    fetchUser,
   }
 })
