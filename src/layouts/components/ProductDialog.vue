@@ -138,17 +138,17 @@ onUnmounted(() => {
 					</VCol>
 					<VCol class="px-0">
 						<VTextarea v-model="product.description" label="Description" required
-							:error-messages="errors?.description" />
+							:error-messages="errors?.description" :rules="[v => !!v || 'Description is required']" />
 					</VCol>
 				</VCol>
 			</VRow>
 		</VCardText>
 		<VCardActions class="pr-5">
 			<VSpacer />
-			<VBtn color="on-secondary" variant="outlined" @click="close">
+			<VBtn color="on-secondary" variant="outlined" @click="close" :disabled="loading">
 				Close
 			</VBtn>
-			<VBtn color="error" v-if="props.product" variant="outlined" @click="destroy">
+			<VBtn color="error" v-if="props.product" variant="outlined" @click="destroy" :disabled="loading">
 				Delete
 			</VBtn>
 			<VBtn color="primary" variant="elevated" @click="save" :loading="loading" :disabled="!hasChanges">

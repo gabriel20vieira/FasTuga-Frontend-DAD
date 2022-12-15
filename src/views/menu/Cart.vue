@@ -2,6 +2,8 @@
 import { useCartStore } from '@/stores/cart';
 import { paymentTypes, useUserStore } from '@/stores/user';
 import { capitalizeFirstLetter } from '@/utils/utils';
+import { paymentReferenceRules } from '@/utils/validations';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const serverBaseUrl = inject('serverBaseUrl')
@@ -12,6 +14,7 @@ const userStore = useUserStore()
 
 const paymentType = ref("")
 const paymentReference = ref("")
+const loading = ref(false)
 
 const errors = ref({
 	type: [],
@@ -20,6 +23,9 @@ const errors = ref({
 
 
 async function makeOrder() {
+
+	loading.value = true
+
 	errors.value.type = []
 	errors.value.reference = []
 
@@ -28,22 +34,20 @@ async function makeOrder() {
 		paymentReference.value,
 	)
 
-	await cartStore.makeOrder(async (res, err) => {
-		if (res) {
-			toast.success(res.data.message)
-			if (userStore?.isLogged) {
-				await userStore.loadUser()
-			}
-			router.push({ name: 'index' })
+	await cartStore.makeOrder().then(async res => {
+		loading.value = false
+		toast.success(res.data.message)
+		if (userStore?.isLogged) {
+			await userStore.loadUser()
 		}
-
-		if (err) {
-			if (err.response.data.errors) {
-				errors.value.type = err.response.data.errors['payment.type'] ?? []
-				errors.value.reference = err.response.data.errors['payment.reference'] ?? []
-			}
+		router.push({ name: 'index' })
+		// router.push({ name: 'board' })
+	}).catch(err => {
+		loading.value = false
+		if (err && err.response.data.errors) {
+			errors.value.type = err.response.data.errors['payment.type'] ?? []
+			errors.value.reference = err.response.data.errors['payment.reference'] ?? []
 			toast.error(capitalizeFirstLetter(err.response.data.message.replace('.', ' ')))
-			// console.log(errors.value)
 		}
 	})
 }
@@ -89,11 +93,11 @@ async function makeOrder() {
 				<VSelect class="mt-4" v-model="paymentType" label="Payment type" :items="paymentTypes"
 					:error-messages="errors?.type" />
 				<VTextField class="mt-4" v-model="paymentReference" label="Payment reference"
-					:error-messages="errors?.reference" />
+					:error-messages="errors?.reference" :rules="paymentReferenceRules(paymentReference, paymentType)" />
 			</div>
 			<div class="mt-4">
-				<VBtn :disabled="!cartStore.hasItems" :loading="cartStore.loading" width="100%" variant="elevated"
-					color="primary" @click="makeOrder">
+				<VBtn :disabled="!cartStore.hasItems" :loading="loading" width="100%" variant="elevated" color="primary"
+					@click="makeOrder">
 					Order
 				</VBtn>
 			</div>

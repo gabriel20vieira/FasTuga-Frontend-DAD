@@ -1,35 +1,38 @@
 <script setup>
 import OrderDialog from '@/layouts/components/OrderDialog.vue';
 import OrdersTable from '@/layouts/components/OrdersTable.vue';
+import { useOrdersStore } from '@/stores/orders';
 import { onMounted, ref } from 'vue';
 
-const axios = inject('axios')
 const toast = inject('toast')
+const ordersStore = useOrdersStore()
 
-const orders = ref([])
 const isTableLoading = ref(true)
 const tableLength = ref(1)
 const orderBeingViewed = ref({})
 const isDialogVisible = ref(false)
 
-const loadOrders = (page) => {
-  isTableLoading.value = true
-  axios.get(`orders?page=${page || 1}`).then((response) => {
-    orders.value = response.data.data
-    isTableLoading.value = false
-    tableLength.value = response.data.meta.last_page || 1;
-  }).catch((error) => {
-    console.log(error)
-    toast.error(error.message)
-  })
+const onOk = (response) => {
+  isTableLoading.value = false
+  tableLength.value = response?.data.meta.last_page || 1;
+}
+
+const onError = (error) => {
+  isTableLoading.value = false
+  toast.error(error.message)
 }
 
 onMounted(() => {
-  loadOrders()
+  ordersStore.load()
+    .then((res) => onOk(res))
+    .catch((err) => onError(err))
 })
 
 const nextPage = (page) => {
-  loadOrders(page);
+  isTableLoading.value = true
+  ordersStore.load(page)
+    .then((res) => onOk(res))
+    .catch((err) => onError(err))
 }
 
 const clickViewOrder = (user) => {
@@ -47,8 +50,8 @@ const clickViewOrder = (user) => {
         </VCardTitle>
       </VCardText>
 
-      <OrdersTable :orders="orders" :isTableLoading="isTableLoading" :tableLength="tableLength" @newPage="nextPage"
-        @viewOrder="clickViewOrder" />
+      <OrdersTable :orders="ordersStore.orders" :isTableLoading="isTableLoading" :tableLength="tableLength"
+        @newPage="nextPage" @viewOrder="clickViewOrder" />
     </VCard>
   </VCol>
 
