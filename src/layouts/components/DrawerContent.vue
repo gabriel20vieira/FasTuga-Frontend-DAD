@@ -21,7 +21,7 @@ const userStore = useUserStore()
       to: 'index',
       icon: { icon: 'mdi-home-outline' }
     }" />
-    <VerticalNavLink :item="{
+    <VerticalNavLink v-show="userStore.isAnonymous || userStore.isCustomer" :item="{
       title: 'Board',
       to: 'board',
       icon: { icon: 'mdi-clipboard-list-outline' }
@@ -63,6 +63,11 @@ const userStore = useUserStore()
     <VerticalNavLink v-show="(userStore.isManager || userStore.isCustomer) ?? false" :item="{
       title: 'Orders',
       to: 'orders-history',
+      icon: { icon: 'mdi-clipboard-list-outline' }
+    }" />
+    <VerticalNavLink v-show="(userStore.isChef || userStore.isDelivery) ?? false" :item="{
+      title: 'Board',
+      to: 'employee-board',
       icon: { icon: 'mdi-clipboard-list-outline' }
     }" />
 

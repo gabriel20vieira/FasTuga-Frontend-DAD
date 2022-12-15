@@ -22,6 +22,8 @@ const authorization = {
   dashboard: store => store.isManager,
   'account-settings': store => store.isLogged,
   'orders-history': store => store.isLogged,
+  'employee-board': store => store.isDelivery || store.isChef,
+  board: store => store.isCustomer || store.isAnonymous,
 }
 
 router.beforeResolve(async to => {
