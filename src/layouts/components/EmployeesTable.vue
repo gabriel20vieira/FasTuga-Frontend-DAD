@@ -1,9 +1,12 @@
 <script setup>
 import defaultAvatar from "@/assets/images/avatars/avatar-2.png";
+import { useUserStore } from '@/stores/user';
 import { arrayNbrPages, arrayPaginate } from "@/utils/pagination";
 import { CHEF, CUSTOMER, DELIVERY, MANAGER, userRole } from "@/utils/utils";
 import { ref } from "vue";
 import TablePagination from "../components/TablePagination.vue";
+
+const userStore = useUserStore()
 
 const props = defineProps({
 	employees: {
@@ -112,8 +115,8 @@ const photoFullUrl = (user) => {
 				</td>
 				<td v-if="showEditButton" style="text-align: -webkit-center;">
 					<div style="display: table-cell">
-						<VBtn icon variant="text" @click="editClick(employee)" v-if="showEditButton" width="30px"
-							height="30px">
+						<VBtn icon variant="text" @click="editClick(employee)" v-if="employee.id != userStore.user.id"
+							width="30px" height="30px">
 							<VIcon icon="mdi-pencil" size="18" />
 							<VTooltip activator="parent" location="end">
 								Edit
@@ -121,8 +124,8 @@ const photoFullUrl = (user) => {
 						</VBtn>
 					</div>
 					<div style="display: table-cell" v-if="(employee.type != CUSTOMER)">
-						<VBtn icon variant="text" @click="deleteClick(employee)" v-if="showEditButton" width="30px"
-							height="30px">
+						<VBtn icon variant="text" @click="deleteClick(employee)" v-if="employee.id != userStore.user.id"
+							width="30px" height="30px">
 							<VIcon icon="mdi-trash" size="18" />
 							<VTooltip activator="parent" location="end">
 								Delete
