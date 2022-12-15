@@ -1,14 +1,11 @@
 <script setup>
-import { useProductStore } from "@/stores/product";
-import { useUserStore } from "@/stores/user";
-import { onBeforeMount } from 'vue';
+import websockets from "@/utils/websockets";
+import { inject } from 'vue';
 
-const userStore = useUserStore()
-const productStore = useProductStore()
+const soc = websockets(inject)
 
 onBeforeMount(async () => {
-  // await userStore.restoreToken()
-  await productStore.load()
+  soc.connectionState()
 })
 
 </script>

@@ -23,7 +23,7 @@ const authorization = {
   'account-settings': store => store.isLogged,
 }
 
-router.beforeEach(async to => {
+router.beforeResolve(async to => {
   const userStore = useUserStore()
   await userStore.restoreToken()
 

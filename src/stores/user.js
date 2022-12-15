@@ -1,4 +1,5 @@
 import defaultAvatar from '@/assets/images/avatars/avatar-8.png'
+import websockets from '@/utils/websockets'
 import { defineStore } from 'pinia'
 import { computed, inject, ref } from 'vue'
 
@@ -23,6 +24,7 @@ export const useUserStore = defineStore('user', () => {
   const axios = inject('axios')
   const serverBaseUrl = inject('serverBaseUrl')
   const toast = inject('toast')
+  const soc = websockets(inject)
 
   const user = ref(null)
   const customer = ref(null)
@@ -56,6 +58,14 @@ export const useUserStore = defineStore('user', () => {
 
   const isLogged = computed(() => {
     return user.value != null
+  })
+
+  const userId = computed(() => {
+    return user.value?.id ?? -1
+  })
+
+  const customerId = computed(() => {
+    return customer.value?.id ?? -1
   })
 
   function isType(type) {
@@ -125,14 +135,6 @@ export const useUserStore = defineStore('user', () => {
       })
   }
 
-  const userId = computed(() => {
-    return user.value?.id ?? -1
-  })
-
-  const customerId = computed(() => {
-    return customer.value?.id ?? -1
-  })
-
   async function loadUser() {
     try {
       const response = await axios.get('users/me')
@@ -157,7 +159,6 @@ export const useUserStore = defineStore('user', () => {
 
       //Remember me
       if (credentials.remember) sessionStorage.setItem('token', response.data.token)
-
       await loadUser()
       return true
     } catch (error) {
@@ -168,8 +169,10 @@ export const useUserStore = defineStore('user', () => {
 
   async function logout() {
     try {
-      await axios.post('logout')
-      clearUser()
+      await axios.post('logout').finally(() => {
+        soc.logout()
+        clearUser()
+      })
       return true
     } catch (error) {
       return false
@@ -180,7 +183,10 @@ export const useUserStore = defineStore('user', () => {
     let storedToken = sessionStorage.getItem('token')
     if (storedToken) {
       axios.defaults.headers.common.Authorization = 'Bearer ' + storedToken
-      await loadUser()
+      if (!user.value) {
+        await loadUser()
+        soc.login()
+      }
       return true
     }
     clearUser()
