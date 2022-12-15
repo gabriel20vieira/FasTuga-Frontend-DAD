@@ -16,7 +16,7 @@ const isDialogLoading = ref(false)
 const confirmDialog = ref(null)
 const customersFilter = ref(false)
 
-const loadUsers = async (page) => {
+const loadUsers = async () => {
   isTableLoading.value = true
 
   await usersStore.fetchAllUsers().then(() => {
