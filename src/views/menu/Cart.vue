@@ -41,13 +41,14 @@ async function makeOrder() {
 			await userStore.loadUser()
 		}
 		router.push({ name: 'index' })
+		// router.push({ name: 'board' })
 	}).catch(err => {
 		loading.value = false
-		if (err.response.data.errors) {
+		if (err && err.response.data.errors) {
 			errors.value.type = err.response.data.errors['payment.type'] ?? []
 			errors.value.reference = err.response.data.errors['payment.reference'] ?? []
+			toast.error(capitalizeFirstLetter(err.response.data.message.replace('.', ' ')))
 		}
-		toast.error(capitalizeFirstLetter(err.response.data.message.replace('.', ' ')))
 	})
 }
 

@@ -56,6 +56,10 @@ export const useUserStore = defineStore('user', () => {
     return user.value == null
   })
 
+  const isEmployee = computed(() => {
+    return isChef || isManager || isDelivery
+  })
+
   const isLogged = computed(() => {
     return user.value != null
   })
@@ -214,5 +218,6 @@ export const useUserStore = defineStore('user', () => {
     loadUser,
     isAnonymous,
     isLogged,
+    isEmployee,
   }
 })

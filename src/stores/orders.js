@@ -6,11 +6,12 @@ export const useOrdersStore = defineStore('orders', () => {
 
   const orders = ref(null)
 
-  async function load() {
-    await axios
-      .get('orders')
+  async function load(page = 1) {
+    return await axios
+      .get(`orders?page=${page || 1}`)
       .then(res => {
         orders.value = res.data.data
+        return res
       })
       .catch(err => {
         throw err

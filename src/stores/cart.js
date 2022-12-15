@@ -1,9 +1,13 @@
 import { useUserStore } from '@/stores/user'
+import websockets from '@/utils/websockets'
 import { computed, inject, ref } from 'vue'
+import { useOrdersStore } from './orders'
 
 export const useCartStore = defineStore('cart', () => {
   const axios = inject('axios')
   const userStore = useUserStore()
+  const ordersStore = useOrdersStore()
+  const soc = websockets(inject)
 
   const baseOrder = {
     points_used_to_pay: 0,
@@ -40,9 +44,16 @@ export const useCartStore = defineStore('cart', () => {
 
     const { prds: _, ...data } = order.value
 
-    return await axios.post('/orders', data).finally(() => {
-      resetCart()
-    })
+    return await axios
+      .post('/orders', data)
+      .then(res => {
+        let completed = res.data.data
+        soc.send('orders-update', completed)
+        return res
+      })
+      .finally(() => {
+        resetCart()
+      })
   }
 
   function addUsePoints() {

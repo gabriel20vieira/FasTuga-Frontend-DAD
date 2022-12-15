@@ -21,6 +21,7 @@ const authorization = {
   users: store => store.isManager,
   dashboard: store => store.isManager,
   'account-settings': store => store.isLogged,
+  'orders-history': store => store.isLogged,
 }
 
 router.beforeResolve(async to => {

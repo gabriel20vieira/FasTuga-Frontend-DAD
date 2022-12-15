@@ -1,3 +1,4 @@
+import { useOrdersStore } from '@/stores/orders'
 import { useProductStore } from '@/stores/product'
 import { useUserStore } from '@/stores/user'
 
@@ -7,6 +8,7 @@ const websockets = inject => {
 
   const productStore = useProductStore()
   const userStore = useUserStore()
+  const ordersStore = useOrdersStore()
 
   const login = () => {
     if (userStore.user && userStore.user?.id) {
@@ -40,8 +42,13 @@ const websockets = inject => {
       })
 
       socket.on('products-update', async (product = null) => {
-        console.log('Update produtos')
+        console.log('products-update')
         await productStore.load()
+      })
+
+      socket.on('orders-update', async (product = null) => {
+        console.log('orders-update')
+        await ordersStore.load()
       })
     }
   }
