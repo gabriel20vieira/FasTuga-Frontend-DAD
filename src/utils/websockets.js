@@ -41,14 +41,19 @@ const websockets = inject => {
         toast.error('You are disconnected 😮')
       })
 
-      socket.on('products-update', async (product = null) => {
+      socket.on('products-update', async () => {
         console.log('products-update')
         await productStore.load()
       })
 
-      socket.on('orders-update', async (product = null) => {
+      socket.on('orders-update', async () => {
         console.log('orders-update')
         await ordersStore.load()
+      })
+
+      socket.on('board-update', async () => {
+        console.log('board-update')
+        await ordersStore.fetchBoard()
       })
     }
   }

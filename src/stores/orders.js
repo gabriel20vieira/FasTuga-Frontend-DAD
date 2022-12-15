@@ -5,6 +5,7 @@ export const useOrdersStore = defineStore('orders', () => {
   const axios = inject('axios')
 
   const orders = ref(null)
+  const ordersBoard = ref(null)
 
   async function load(page = 1) {
     return await axios
@@ -18,8 +19,21 @@ export const useOrdersStore = defineStore('orders', () => {
       })
   }
 
+  async function fetchBoard() {
+    return await axios
+      .get('board')
+      .then(res => {
+        ordersBoard.value = res.data
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
   return {
     load,
     orders,
+    fetchBoard,
+    ordersBoard,
   }
 })
