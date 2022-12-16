@@ -1,7 +1,7 @@
 import defaultAvatar from '@/assets/images/avatars/avatar-8.png'
 import websockets from '@/utils/websockets'
-import { defineStore } from 'pinia'
-import { computed, inject, ref } from 'vue'
+import { defineStore, skipHydrate } from 'pinia'
+import { computed, inject } from 'vue'
 
 export const UserType = {
   CHEF: 'EC',
@@ -24,11 +24,14 @@ export const useUserStore = defineStore('user', () => {
   const axios = inject('axios')
   const serverBaseUrl = inject('serverBaseUrl')
   const toast = inject('toast')
-  const soc = websockets(inject)
+  const soc = websockets()
 
-  const user = ref(null)
-  const customer = ref(null)
-  const currentOrders = ref([])
+  // const user = ref(null)
+  // const customer = ref(null)
+  // const currentOrders = ref([])
+  const user = useLocalStorage('user', { id: -1 })
+  const customer = useLocalStorage('customer', { id: -1 })
+  const currentOrders = useLocalStorage('current-orders', [])
 
   const userPhoto = computed(() => {
     if (!user.value?.photo_url) {
@@ -54,7 +57,7 @@ export const useUserStore = defineStore('user', () => {
   })
 
   const isAnonymous = computed(() => {
-    return user.value == null
+    return user.value?.id == -1
   })
 
   const isEmployee = computed(() => {
@@ -62,7 +65,7 @@ export const useUserStore = defineStore('user', () => {
   })
 
   const isLogged = computed(() => {
-    return user.value != null
+    return user.value?.id != -1
   })
 
   const userId = computed(() => {
@@ -74,7 +77,7 @@ export const useUserStore = defineStore('user', () => {
   })
 
   function isType(type) {
-    return user.value?.type == type
+    return isLogged ? user.value?.type == type : false
   }
 
   async function updatePassword(password, confirmation, callback = null) {
@@ -144,7 +147,7 @@ export const useUserStore = defineStore('user', () => {
     try {
       const response = await axios.get('users/me')
       user.value = response.data.data
-      customer.value = response.data.data?.customer ?? null
+      customer.value = response.data.data?.customer ?? { id: -1 }
     } catch (error) {
       clearUser()
       throw error
@@ -154,7 +157,7 @@ export const useUserStore = defineStore('user', () => {
   function clearUser() {
     delete axios.defaults.headers.common.Authorization
     sessionStorage.removeItem('token')
-    user.value = null
+    user.value = { id: -1 }
   }
 
   async function login(credentials) {
@@ -200,10 +203,14 @@ export const useUserStore = defineStore('user', () => {
   }
 
   return {
-    user,
+    user: skipHydrate(user),
+    customer: skipHydrate(customer),
+    currentOrders: skipHydrate(currentOrders),
+    // user,
+    // customer,
+    // currentOrders,
     userId,
     userPhoto,
-    customer,
     customerId,
     login,
     logout,
@@ -220,6 +227,5 @@ export const useUserStore = defineStore('user', () => {
     isAnonymous,
     isLogged,
     isEmployee,
-    currentOrders,
   }
 })

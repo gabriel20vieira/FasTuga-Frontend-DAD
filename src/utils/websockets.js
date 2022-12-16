@@ -1,8 +1,9 @@
 import { useOrdersStore } from '@/stores/orders'
 import { useProductStore } from '@/stores/product'
 import { useUserStore } from '@/stores/user'
+import { inject } from 'vue'
 
-const websockets = inject => {
+const websockets = () => {
   const socket = inject('socket')
   const toast = inject('toast')
 

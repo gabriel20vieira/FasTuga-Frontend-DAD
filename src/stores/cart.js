@@ -1,13 +1,12 @@
 import { useUserStore } from '@/stores/user'
 import websockets from '@/utils/websockets'
-import { computed, inject, ref } from 'vue'
-import { useOrdersStore } from './orders'
+import { defineStore, skipHydrate } from 'pinia'
+import { computed, inject } from 'vue'
 
 export const useCartStore = defineStore('cart', () => {
   const axios = inject('axios')
   const userStore = useUserStore()
-  const ordersStore = useOrdersStore()
-  const soc = websockets(inject)
+  const soc = websockets()
 
   const baseOrder = {
     points_used_to_pay: 0,
@@ -19,8 +18,9 @@ export const useCartStore = defineStore('cart', () => {
     },
   }
 
-  const total = ref(0)
-  const order = ref(structuredClone(baseOrder))
+  const total = useLocalStorage('cart-total', 0)
+  const order = useLocalStorage('cart', structuredClone(baseOrder))
+  // const order = ref(structuredClone(baseOrder))
 
   var found = false
 
@@ -153,8 +153,8 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   return {
-    total,
-    order,
+    total: skipHydrate(total),
+    order: skipHydrate(order),
     add,
     remove,
     clear,

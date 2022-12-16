@@ -1,8 +1,7 @@
 <script setup>
 import websockets from "@/utils/websockets";
-import { inject } from 'vue';
 
-const soc = websockets(inject)
+const soc = websockets()
 
 onBeforeMount(async () => {
   soc.connectionState()

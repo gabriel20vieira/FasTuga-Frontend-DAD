@@ -20,7 +20,7 @@ const userStore = useUserStore()
 
       <NavbarThemeSwitcher class="me-2" />
 
-      <UserProfile v-show="userStore.isLogged" />
+      <UserProfile v-if="userStore.isLogged" />
     </template>
 
     <!-- 👉 Drawer content -->

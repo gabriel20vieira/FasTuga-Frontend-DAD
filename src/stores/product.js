@@ -19,7 +19,7 @@ export const productType_LC = [ProductType.HOT_DISH, ProductType.COLD_DISH, Prod
 
 export const useProductStore = defineStore('product', () => {
   const axios = inject('axios')
-  const soc = websockets(inject)
+  const soc = websockets()
 
   const products = ref([])
   const productsFiltered = ref([])

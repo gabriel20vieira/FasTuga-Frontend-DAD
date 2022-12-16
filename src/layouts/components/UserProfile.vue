@@ -22,6 +22,7 @@ const logout = async () => {
 const goToProfile = () => {
   router.push({ name: 'account-settings' })
 }
+
 </script>
 
 <template>
