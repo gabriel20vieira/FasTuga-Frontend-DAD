@@ -1,6 +1,6 @@
 <script setup>
+import Cart from '@/layouts/components/Cart.vue';
 import ProductDetailsDialog from '@/layouts/components/ProductDetailsDialog.vue';
-import Cart from '@/views/menu/Cart.vue';
 
 import { useCartStore } from "@/stores/cart";
 import { productType, useProductStore } from "@/stores/product";

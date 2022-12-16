@@ -1,3 +1,4 @@
+import { useOrderItemStore } from '@/stores/orderitem'
 import { useOrdersStore } from '@/stores/orders'
 import { useProductStore } from '@/stores/product'
 import { useUserStore } from '@/stores/user'
@@ -10,6 +11,7 @@ const websockets = () => {
   const productStore = useProductStore()
   const userStore = useUserStore()
   const ordersStore = useOrdersStore()
+  const orderItemStore = useOrderItemStore()
 
   const login = () => {
     if (userStore.user && userStore.user?.id) {

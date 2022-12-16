@@ -31,9 +31,14 @@ const userStore = useUserStore()
       to: 'register',
       icon: { icon: 'mdi-account-plus-outline' },
     }" />
-    <VerticalNavLink :item="{
+    <VerticalNavLink v-show="userStore.isAnonymous || userStore.isCustomer" :item="{
       title: 'Board',
       to: 'board',
+      icon: { icon: 'mdi-clipboard-list-outline' }
+    }" />
+    <VerticalNavLink v-show="userStore.isChef" :item="{
+      title: 'Board',
+      to: 'board-chef',
       icon: { icon: 'mdi-clipboard-list-outline' }
     }" />
     <VerticalNavLink v-show="userStore.isAnonymous || userStore.isCustomer" :item="{
@@ -47,17 +52,17 @@ const userStore = useUserStore()
       icon: { icon: 'mdi-view-dashboard-outline' }
     }" /> -->
 
-    <VerticalNavLink v-show="(userStore.isManager ?? false)" :item="{
+    <VerticalNavLink v-show="userStore.isManager" :item="{
       title: 'Statistics',
       to: 'statistics',
       icon: { icon: 'mdi-chart-timeline-variant' }
     }" />
-    <VerticalNavLink v-show="(userStore.isManager ?? false)" :item="{
+    <VerticalNavLink v-show="userStore.isManager" :item="{
       title: 'Employees',
       to: 'users',
       icon: { icon: 'mdi-account-group-outline' }
     }" />
-    <VerticalNavLink v-show="(userStore.isManager || userStore.isCustomer) ?? false" :item="{
+    <VerticalNavLink v-show="userStore.isManager || userStore.isCustomer" :item="{
       title: 'Orders',
       to: 'orders-history',
       icon: { icon: 'mdi-clipboard-list-outline' }
