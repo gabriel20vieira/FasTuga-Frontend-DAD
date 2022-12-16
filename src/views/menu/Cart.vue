@@ -36,12 +36,12 @@ async function makeOrder() {
 
 	await cartStore.makeOrder().then(async res => {
 		loading.value = false
-		toast.success(res.data.message)
+		toast.success(res.data.message + "\tTicket: " + res.data.data.ticket_number)
+		userStore.currentOrders.push(res.data.data)
 		if (userStore?.isLogged) {
 			await userStore.loadUser()
 		}
-		router.push({ name: 'index' })
-		// router.push({ name: 'board' })
+		router.push({ name: 'board' })
 	}).catch(err => {
 		loading.value = false
 		if (err && err.response.data.errors) {

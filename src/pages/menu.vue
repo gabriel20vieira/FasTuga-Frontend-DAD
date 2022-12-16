@@ -11,7 +11,7 @@ const cartStore = useCartStore()
 
 const navigationTab = ref(productType[0])
 const tabItems = productType
-const isDialogVisible = ref(false)
+const isDialogVisibleDetails = ref(false)
 const showProduct = ref(null)
 const products = computed(() => {
 	productStore.filter(navigationTab.value.toLowerCase())
@@ -23,11 +23,11 @@ const dialogOpen = (product) => {
 	if (product) {
 		showProduct.value.image = product?.photo_url
 	}
-	isDialogVisible.value = true
+	isDialogVisibleDetails.value = true
 }
 
 const dialogClose = () => {
-	isDialogVisible.value = false
+	isDialogVisibleDetails.value = false
 }
 
 onBeforeMount(async () => {
@@ -88,7 +88,7 @@ onBeforeMount(async () => {
 		</VCol>
 	</VRow>
 
-	<VDialog v-model="isDialogVisible" max-width="700">
+	<VDialog v-model="isDialogVisibleDetails" max-width="700">
 		<ProductDetailsDialog @close="dialogClose" :product="showProduct" />
 	</VDialog>
 </template>

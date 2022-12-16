@@ -21,25 +21,6 @@ const userStore = useUserStore()
       to: 'index',
       icon: { icon: 'mdi-home-outline' }
     }" />
-    <VerticalNavLink :item="{
-      title: 'Board',
-      to: 'board',
-      icon: { icon: 'mdi-clipboard-list-outline' }
-    }" />
-    <VerticalNavLink v-show="userStore.isAnonymous || userStore.isCustomer" :item="{
-      title: 'Menu',
-      to: 'menu',
-      icon: { icon: 'mdi-food' }
-    }" />
-    <!-- <VerticalNavLink v-show="(userStore.isManager ?? false)" :item="{
-      title: 'Dashboard',
-      to: 'dashboard',
-      icon: { icon: 'mdi-view-dashboard-outline' }
-    }" /> -->
-
-    <!-- 👉 Pages -->
-    <VerticalNavSectionTitle v-show="userStore.isAnonymous" :item="{ heading: 'Pages' }" />
-
     <VerticalNavLink v-show="userStore.isAnonymous" :item="{
       title: 'Login',
       to: 'login',
@@ -50,6 +31,22 @@ const userStore = useUserStore()
       to: 'register',
       icon: { icon: 'mdi-account-plus-outline' },
     }" />
+    <VerticalNavLink :item="{
+      title: 'Board',
+      to: 'board',
+      icon: { icon: 'mdi-clipboard-list-outline' }
+    }" />
+    <VerticalNavLink v-show="userStore.isAnonymous || userStore.isCustomer" :item="{
+      title: 'Menu',
+      to: 'menu',
+      icon: { icon: 'mdi-food-outline' }
+    }" />
+    <!-- <VerticalNavLink v-show="(userStore.isManager ?? false)" :item="{
+      title: 'Dashboard',
+      to: 'dashboard',
+      icon: { icon: 'mdi-view-dashboard-outline' }
+    }" /> -->
+
     <VerticalNavLink v-show="(userStore.isManager ?? false)" :item="{
       title: 'Statistics',
       to: 'statistics',

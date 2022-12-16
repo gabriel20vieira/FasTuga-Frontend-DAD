@@ -1,4 +1,8 @@
 <script setup>
+import { useUserStore } from '@/stores/user';
+
+const userStore = useUserStore()
+
 const props = defineProps({
     boardTitle: {
         type: String,
@@ -10,6 +14,7 @@ const props = defineProps({
     }
 })
 
+
 </script>
 
 <template>
@@ -18,9 +23,11 @@ const props = defineProps({
             {{ props.boardTitle }}
         </VCardTitle>
         <VRow v-if="props.tickets.length > 0" class="align-cards justify-start pl-6 pr-6 pb-4">
-            <VCol v-for="(order, index) in props.tickets" cols="4">
-                <VCard :class="['text-center pt-1 pb-1', { 'bg-primary': index == 0 }]"
-                    style="border-width: 2.5px; min-width: fit-content;">
+            <VCol v-for="order in props.tickets" cols="4">
+                <VCard :class="[
+                    'text-center', 'py-2', 'text-h6',
+                    { 'bg-primary': userStore.currentOrders.find((obj) => obj.id == order.id) }
+                ]" style="border-width: 2.5px; min-width: fit-content;">
                     {{ order.ticket_number }}
                 </VCard>
             </VCol>

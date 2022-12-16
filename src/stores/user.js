@@ -28,6 +28,7 @@ export const useUserStore = defineStore('user', () => {
 
   const user = ref(null)
   const customer = ref(null)
+  const currentOrders = ref([])
 
   const userPhoto = computed(() => {
     if (!user.value?.photo_url) {
@@ -219,5 +220,6 @@ export const useUserStore = defineStore('user', () => {
     isAnonymous,
     isLogged,
     isEmployee,
+    currentOrders,
   }
 })
