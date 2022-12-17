@@ -1,6 +1,7 @@
 <script setup>
 import { useUserStore } from "@/stores/user";
 import { VerticalNavLayout } from '@layouts';
+import { getComputedNavLinkToProp } from '@layouts/utils';
 import DrawerContent from './DrawerContent.vue';
 
 // Components
@@ -17,6 +18,13 @@ const userStore = useUserStore()
     <template #navbar>
 
       <VSpacer />
+
+      <Component v-show="userStore.isAnonymous" is="RouterLink" v-bind="getComputedNavLinkToProp({ to: 'login' })" style="color: rgb(var(--v-theme-default)) !important">
+        <VBtn variant="text" color="default">
+          <VIcon icon="mdi-login" size="24" class="mr-2" />
+          Login
+        </VBtn>
+      </Component>
 
       <NavbarThemeSwitcher class="me-2" />
 

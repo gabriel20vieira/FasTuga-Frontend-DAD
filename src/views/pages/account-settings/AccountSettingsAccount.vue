@@ -131,49 +131,45 @@ onMounted(() => {
 				<VCardText>
 					<!-- 👉 Form -->
 					<VForm class="mt-6">
-						<VRow>
 
-							<VCol md="6" cols="12">
-								<VTextField v-model="accountDataLocal.name" label="Name" :rules="nameRules" />
-							</VCol>
+						<VCol md="6" cols="12">
+							<VTextField v-model="accountDataLocal.name" label="Name" :rules="nameRules" />
+						</VCol>
 
-							<VCol cols="12" md="6">
-								<VTextField v-model="accountDataLocal.email" label="E-mail" type="email"
-									:rules="emailRules" />
-							</VCol>
+						<VCol cols="12" md="6">
+							<VTextField v-model="accountDataLocal.email" label="E-mail" type="email"
+								:rules="emailRules" />
+						</VCol>
 
-							<VCol cols="12" md="6">
-								<VSelect v-model="accountDataLocal.type" label="Type" :items="userTypes"
-									:disabled="true" />
-							</VCol>
+						<VCol cols="12" md="6">
+							<VSelect v-model="accountDataLocal.type" label="Type" :items="userTypes" :disabled="true" />
+						</VCol>
 
-							<VCol cols="12" md="6" v-if="userStore.isCustomer">
-								<VTextField v-model="customerDataLocal.phone" label="Phone" :rules="phoneRules" />
-							</VCol>
+						<VCol cols="12" md="6" v-if="userStore.isCustomer">
+							<VTextField v-model="customerDataLocal.phone" label="Phone" :rules="phoneRules" />
+						</VCol>
 
-							<VCol cols="12" md="6" v-if="userStore.isCustomer">
-								<VTextField v-model="customerDataLocal.nif" label="NIF" :rules="nifRules" />
-							</VCol>
+						<VCol cols="12" md="6" v-if="userStore.isCustomer">
+							<VTextField v-model="customerDataLocal.nif" label="NIF" :rules="nifRules" />
+						</VCol>
 
-							<VCol cols="12" md="6" v-if="userStore.isCustomer">
-								<VSelect v-model="customerDataLocal.default_payment_type" label="Payment type"
-									:items="paymentTypes" />
-							</VCol>
+						<VCol cols="12" md="6" v-if="userStore.isCustomer">
+							<VSelect v-model="customerDataLocal.default_payment_type" label="Payment type"
+								:items="paymentTypes" />
+						</VCol>
 
-							<VCol cols="12" md="6" v-if="userStore.isCustomer">
-								<VTextField v-model="customerDataLocal.default_payment_reference"
-									label="Payment reference"
-									:rules="paymentReferenceRules(customerDataLocal.default_payment_reference, customerDataLocal.default_payment_type)" />
-							</VCol>
+						<VCol cols="12" md="6" v-if="userStore.isCustomer">
+							<VTextField v-model="customerDataLocal.default_payment_reference" label="Payment reference"
+								:rules="paymentReferenceRules(customerDataLocal.default_payment_reference, customerDataLocal.default_payment_type)" />
+						</VCol>
 
-							<VCol cols="12" class="d-flex flex-wrap gap-4">
-								<VBtn @click="saveChanges">Save changes</VBtn>
-								<VBtn color="error" variant="tonal" type="reset" @click.prevent="resetForm"
-									:disabled="!hasChanged">
-									Reset
-								</VBtn>
-							</VCol>
-						</VRow>
+						<VCol cols="12" class="d-flex flex-wrap gap-4">
+							<VBtn @click="saveChanges">Save changes</VBtn>
+							<VBtn color="error" variant="tonal" type="reset" @click.prevent="resetForm"
+								:disabled="!hasChanged">
+								Reset
+							</VBtn>
+						</VCol>
 					</VForm>
 				</VCardText>
 			</VCard>

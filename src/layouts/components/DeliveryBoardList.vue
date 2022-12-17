@@ -59,7 +59,7 @@ const updateOrderStatus = (order) => {
                 <VCardTitle>{{ order.ticket_number }}</VCardTitle>
                 <VDivider />
                 <VCol v-for="item in order.items" class="py-3">
-                    <VCardSubtitle>
+                    <VCardSubtitle style="white-space: pre-line">
                         {{ item.product.name }}
 
                         <VChip v-if="props.showDishStatus" class="mr-1 px-1 h-auto" style="font-size: x-small;"
