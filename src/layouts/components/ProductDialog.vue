@@ -1,5 +1,5 @@
 <script setup>
-
+import defaultPlate from "@/assets/images/defaultPlate.png";
 import ConfirmationDialog from "@/layouts/components/ConfirmationDialog.vue";
 import { productType_LC, useProductStore } from "@/stores/product";
 import { imageUrl, uploadImage } from "@/utils/utils";
@@ -12,6 +12,7 @@ const toast = inject('toast')
 
 const confirmDialog = ref(null)
 const refInputEl = ref()
+const defaultImage = ref(defaultPlate)
 
 const emit = defineEmits(["close", "save"]);
 const props = defineProps(['product'])
@@ -110,20 +111,17 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<VCard :title="props.product ? 'Edit' : 'Create'" class="py-2">
-		<VProgressLinear :active="loading" indeterminate />
+	<VCard :title="props.product ? 'Edit Product' : 'Create Product'" class="product-view">
 		<VCardText>
 			<VRow>
-				<VCol cols="12" xs="12" sm="5">
-					<div class="upload-image-wrapper">
-						<VAvatar rounded color="primary" size="192" variant="tonal" :image="product?.image" />
-						<VBtn color="secondary" icon="mdi-upload" class="upload-image-icon"
-							@click="refInputEl?.click()" />
-						<input ref="refInputEl" type="file" name="file" accept=".jpeg,.png,.jpg" hidden
-							@input="clickUploadImage">
-					</div>
+				<VCol style="position:relative">
+					<VAvatar rounded color="primary" style="height: 192px; width: 256px;" variant="tonal"
+						:image="product?.image ? product.image : defaultImage" />
+					<VBtn color="secondary" icon="mdi-upload" class="upload-btn" @click="refInputEl?.click()" />
+					<input ref="refInputEl" type="file" name="file" accept=".jpeg,.png,.jpg" hidden
+						@input="clickUploadImage">
 				</VCol>
-				<VCol cols="12" xs="12" sm="7" class="pt-0">
+				<VCol cols="12" xs="12" sm="12" md="7" class="pt-0">
 					<VCol class="px-0">
 						<VTextField v-model="product.name" label="Name" required :error-messages="errors?.name"
 							:rules="nameRules" />
@@ -136,12 +134,12 @@ onUnmounted(() => {
 						<VTextField type="number" min="0" v-model="product.price" label="Price" required
 							:error-messages="errors?.price" :rules="priceRules" />
 					</VCol>
-					<VCol class="px-0">
-						<VTextarea v-model="product.description" label="Description" required
-							:error-messages="errors?.description" :rules="[v => !!v || 'Description is required']" />
-					</VCol>
 				</VCol>
 			</VRow>
+			<VCol class="px-0">
+				<VTextarea v-model="product.description" label="Description" required rows="3"
+					:error-messages="errors?.description" :rules="[v => !!v || 'Description is required']" />
+			</VCol>
 		</VCardText>
 		<VCardActions class="pr-5">
 			<VSpacer />
@@ -155,20 +153,17 @@ onUnmounted(() => {
 				Save
 			</VBtn>
 		</VCardActions>
+
+		<VProgressLinear :active="loading" indeterminate />
 	</VCard>
 
 	<ConfirmationDialog ref="confirmDialog" />
 </template>
 
-<style lang="scss">
-.upload-image-wrapper {
-	max-width: 192px;
-	max-height: 192px;
-}
-
-.upload-image-icon {
-	position: relative;
-	bottom: 3.5em;
-	left: 8.5em;
+<style>
+.product-view .upload-btn {
+	position: absolute;
+	top: 163px;
+	left: 230px ;
 }
 </style>
