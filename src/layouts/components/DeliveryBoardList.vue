@@ -28,17 +28,6 @@ const props = defineProps({
     }
 })
 
-const getStatusColor = (status) => {
-    switch (status) {
-        case 'R':
-            return 'success'
-        case 'P':
-            return 'primary'
-        default:
-            return 'warning'
-    }
-}
-
 const isOrderReady = (order) => {
     return !order.items.find(item => item.status != ordersStore.OrderStatus.READY)
 }
@@ -74,7 +63,7 @@ const updateOrderStatus = (order) => {
                         {{ item.product.name }}
 
                         <VChip v-if="props.showDishStatus" class="mr-1 px-1 h-auto" style="font-size: x-small;"
-                            :color="getStatusColor(item.status)">
+                            :color="item.status == ordersStore.OrderStatus.READY ? 'success' : 'warning'">
                             {{ ordersStore.getStatusString(item.status) }}
                         </VChip>
                     </VCardSubtitle>

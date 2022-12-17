@@ -1,9 +1,9 @@
 import websockets from '@/utils/websockets'
 import { defineStore } from 'pinia'
 import { inject, ref } from 'vue'
+import { OrderItemStatus } from './orderitem'
 
 export const OrderStatus = {
-  WAITING: 'W',
   READY: 'R',
   PREPARING: 'P',
   CANCELLED: 'C',
@@ -20,7 +20,7 @@ export const getStatusString = status => {
       return 'Delivered'
     case OrderStatus.CANCELLED:
       return 'Cancelled'
-    case OrderStatus.WAITING:
+    case OrderItemStatus.WAITING:
       return 'Waiting'
     default:
       return 'Unknown'
