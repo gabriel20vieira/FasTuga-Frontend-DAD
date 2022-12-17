@@ -24,6 +24,7 @@ const authorization = {
   'orders-history': store => store.isLogged,
   board: store => store.isAnonymous || store.isCustomer,
   'board-chef': store => store.isChef,
+  'delivery-board': store => store.isDelivery || store.isChef,
 }
 
 router.beforeResolve(async to => {

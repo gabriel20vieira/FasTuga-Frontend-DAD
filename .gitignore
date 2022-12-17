@@ -28,3 +28,7 @@ dist-ssr
 *.sln
 *.sw?
 
+src/@iconify/icons-bundle.js
+.eslintrc-auto-import.json
+package-lock.json
+src/@iconify/icons-bundle.js
