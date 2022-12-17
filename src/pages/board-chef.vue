@@ -12,13 +12,14 @@ const orderItemStore = useOrderItemStore()
 const isLoading = ref(true)
 
 const set = async (item, status) => {
-    console.log(item)
+    isLoading.value = true
     await orderItemStore.set(item, status)
         .then((res) => {
-            toast.success(res.data.message)
+            // toast.success(res.data.message)
             load()
         }).catch((err) => {
             toast.error(err.response.data.message)
+            isLoading.value = false
         })
 }
 
@@ -35,11 +36,11 @@ const setReady = (item) => {
 }
 
 const load = async () => {
-    return await ordersStore.fetchBoard()
+    return await ordersStore.fetchBoard().finally(() => isLoading.value = false)
 }
 
 onBeforeMount(async () => {
-    load().finally(() => isLoading.value = false)
+    await load()
 })
 </script>
 
@@ -47,6 +48,7 @@ onBeforeMount(async () => {
     <VCol cols="12">
         <VCard>
             <VRow no-gutters class="align-cards justify-start">
+                <VProgressLinear :active="isLoading" indeterminate />
 
                 <VCol cols="12" md="6">
                     <VCardTitle class="ma-3">
@@ -54,7 +56,7 @@ onBeforeMount(async () => {
                     </VCardTitle>
                     <div v-if="ordersStore.ordersBoard?.preparing.length ?? 0 > 0" class="justify-start px-6 pb-4">
                         <div v-for="order in ordersStore.ordersBoard.preparing">
-                            <VRow v-for="item in order.items.filter(i => i.status == OrderItemStatus.WAITING)" cols="12"
+                            <VRow v-for="item in order.items" v-show="item.status == OrderItemStatus.WAITING" cols="12"
                                 class="py-5">
                                 <VCard :class="['py-2 px-2', 'text-h6', 'w-100']" style="border-width: 2.5px;">
                                     <VRow class="px-4 py-3">
@@ -91,9 +93,10 @@ onBeforeMount(async () => {
                     <VCardTitle class="ma-3">
                         Preparing
                     </VCardTitle>
+
                     <div v-if="ordersStore.ordersBoard?.preparing.length ?? 0 > 0" class="justify-start px-6 pb-4">
                         <div v-for="order in ordersStore.ordersBoard.preparing">
-                            <VRow v-for="item in order.items.filter(i => i.status == OrderItemStatus.PREPARING)"
+                            <VRow v-for="item in order.items" v-show="item.status == OrderItemStatus.PREPARING"
                                 cols="12" class="py-5">
                                 <VCard :class="['py-2 px-2', 'text-h6', 'w-100']" style="border-width: 2.5px;">
                                     <VRow class="px-4 py-3">
@@ -133,7 +136,7 @@ onBeforeMount(async () => {
                 <!-- <CustomerBoardList :boardTitle="'Ready'"
                     :tickets="ordersStore.ordersBoard ? ordersStore.ordersBoard.ready : []" /> -->
             </VRow>
-            <VProgressLinear :active="isLoading" indeterminate />
+
         </VCard>
     </VCol>
 </template>

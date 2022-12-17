@@ -1,5 +1,6 @@
 <script setup>
 import { useCartStore } from '@/stores/cart';
+import { useOrdersStore } from '@/stores/orders';
 import { paymentTypes, useUserStore } from '@/stores/user';
 import { capitalizeFirstLetter } from '@/utils/utils';
 import { paymentReferenceRules } from '@/utils/validations';
@@ -11,6 +12,7 @@ const toast = inject('toast')
 const router = useRouter()
 const cartStore = useCartStore()
 const userStore = useUserStore()
+const orderStore = useOrdersStore()
 
 const paymentType = ref("")
 const paymentReference = ref("")
@@ -41,6 +43,7 @@ async function makeOrder() {
 		if (userStore?.isLogged) {
 			await userStore.loadUser()
 		}
+		await orderStore.fetchBoard()
 		router.push({ name: 'board' })
 	}).catch(err => {
 		loading.value = false

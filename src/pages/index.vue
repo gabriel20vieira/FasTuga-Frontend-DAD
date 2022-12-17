@@ -6,8 +6,11 @@ const productStore = useProductStore()
 
 const products = computed(() => {
   productStore.filter('hot dish')
-  // return productStore.productsFiltered
-  return []
+  return productStore.productsFiltered
+})
+
+onBeforeMount(async () => {
+  await productStore.load()
 })
 
 </script>
