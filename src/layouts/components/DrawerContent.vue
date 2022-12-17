@@ -1,7 +1,7 @@
 <script setup>
 import logo from '@/assets/logo.svg?raw';
 import { useUserStore } from "@/stores/user";
-import { VerticalNavLink, VerticalNavSectionTitle } from '@layouts';
+import { VerticalNavLink } from '@layouts';
 
 const userStore = useUserStore()
 </script>
@@ -68,7 +68,7 @@ const userStore = useUserStore()
     }" />
 
     <!-- 👉 Pages -->
-    <VerticalNavSectionTitle v-show="userStore.isAnonymous" :item="{ heading: 'Pages' }" />
+    <!-- <VerticalNavSectionTitle v-show="userStore.isAnonymous" :item="{ heading: 'Pages' }" />
 
     <VerticalNavLink v-show="userStore.isAnonymous" :item="{
       title: 'Login',
@@ -79,10 +79,10 @@ const userStore = useUserStore()
       title: 'Register',
       to: 'register',
       icon: { icon: 'mdi-account-plus-outline' },
-    }" />
+    }" /> -->
 
     <!-- 👉 User Interface -->
-    <div v-if="true">
+    <!-- <div v-if="true">
       <VerticalNavSectionTitle :item="{ heading: 'User Interface' }" />
 
       <VerticalNavLink :item="{
@@ -110,6 +110,6 @@ const userStore = useUserStore()
         to: 'form-layouts',
         icon: { icon: 'mdi-form-select' }
       }" />
-    </div>
+    </div> -->
   </ul>
 </template>
