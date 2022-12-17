@@ -17,6 +17,7 @@ async function fetchBoard() {
 <template>
     <VCol cols="12">
         <VCard>
+            <VProgressLinear :active="isLoading" indeterminate />
             <VRow no-gutters class="align-cards justify-start">
                 <VCol>
                     <EmployeeBoardList :boardTitle="'Preparing'" :buttonText="'Ready'" :showDishStatus="true"
@@ -29,10 +30,11 @@ async function fetchBoard() {
 
                 <VCol>
                     <EmployeeBoardList :boardTitle="'Ready'" :buttonText="'Delivered'"
-                        :tickets="ordersStore.ordersBoard ? ordersStore.ordersBoard.ready : []" @refreshBoard="fetchBoard" />
+                        :tickets="ordersStore.ordersBoard ? ordersStore.ordersBoard.ready : []"
+                        @refreshBoard="fetchBoard" />
                 </VCol>
             </VRow>
-            <VProgressLinear :active="isLoading" indeterminate />
+
         </VCard>
     </VCol>
 </template>

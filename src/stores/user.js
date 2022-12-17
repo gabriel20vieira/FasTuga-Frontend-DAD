@@ -2,6 +2,7 @@ import defaultAvatar from '@/assets/images/avatars/avatar-8.png'
 import websockets from '@/utils/websockets'
 import { defineStore, skipHydrate } from 'pinia'
 import { computed, inject } from 'vue'
+import { OrderStatus } from './orders'
 
 export const UserType = {
   CHEF: 'EC',
@@ -202,13 +203,26 @@ export const useUserStore = defineStore('user', () => {
     return false
   }
 
+  async function checkUserCurrentOrders(order) {
+    order = order[0]
+    if (order && (isCustomer || isAnonymous)) {
+      let found = currentOrders.value.find(elem => elem.id == order.id)
+      if (found && order.status == OrderStatus.READY) {
+        toast.success(`Order with ticket "${order.ticket_number}" is ready.`)
+      }
+      if (found && order.status == OrderStatus.DELIVERY) {
+        toast.success(`Order with ticket "${order.ticket_number}" was delivered.`)
+        let idx = currentOrders.value.indexOf(found)
+        currentOrders.value.splice(idx, 1)
+      }
+    }
+  }
+
   return {
     user: skipHydrate(user),
     customer: skipHydrate(customer),
     currentOrders: skipHydrate(currentOrders),
-    // user,
-    // customer,
-    // currentOrders,
+    checkUserCurrentOrders,
     userId,
     userPhoto,
     customerId,

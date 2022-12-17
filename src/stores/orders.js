@@ -32,7 +32,7 @@ export const useOrdersStore = defineStore('orders', () => {
 
   const orders = ref(null)
   const ordersBoard = ref(null)
-  const soc = websockets(inject)
+  const soc = websockets()
 
   async function load(page = 1) {
     return await axios
@@ -57,9 +57,11 @@ export const useOrdersStore = defineStore('orders', () => {
       })
   }
 
-  async function updateOrderStatus(orderID, newStatus) {
-    return await axios.patch(`orders/${orderID}`, { status: newStatus }).finally(() => {
-      soc.send('board-update')
+  async function updateOrderStatus(order, newStatus) {
+    return await axios.patch(`orders/${order.id}`, { status: newStatus }).then(res => {
+      soc.send('board-update', res.data.data)
+      soc.send('orders-update', res.data.data)
+      return res
     })
   }
 

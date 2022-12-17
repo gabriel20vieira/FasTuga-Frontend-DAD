@@ -17,8 +17,9 @@ export const useOrderItemStore = defineStore('orderitem', () => {
       .patch(`orderitems/${item.id}`, {
         status: type,
       })
-      .finally(() => {
-        soc.send('board-update', item)
+      .then(item => {
+        soc.send('items-update', item)
+        return item
       })
   }
 
