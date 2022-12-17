@@ -1,4 +1,3 @@
-import { useOrderItemStore } from '@/stores/orderitem'
 import { useOrdersStore } from '@/stores/orders'
 import { useProductStore } from '@/stores/product'
 import { useUserStore } from '@/stores/user'
@@ -11,7 +10,6 @@ const websockets = () => {
   const productStore = useProductStore()
   const userStore = useUserStore()
   const ordersStore = useOrdersStore()
-  const orderItemStore = useOrderItemStore()
 
   const login = () => {
     if (userStore.user && userStore.user?.id) {
@@ -38,6 +36,7 @@ const websockets = () => {
 
       socket.on('connect', () => {
         // On connection established
+        login(userStore.user)
       })
 
       socket.on('disconnect', () => {
@@ -54,8 +53,14 @@ const websockets = () => {
         await ordersStore.load()
       })
 
-      socket.on('board-update', async () => {
+      socket.on('board-update', async (item = null) => {
         console.log('board-update')
+        await userStore.checkUserCurrentOrders(item)
+        await ordersStore.fetchBoard()
+      })
+
+      socket.on('items-update', async () => {
+        console.log('items-update')
         await ordersStore.fetchBoard()
       })
     }
