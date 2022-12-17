@@ -42,7 +42,7 @@ const paymentReferenceRules = (value, type) => {
   let res = 'Payment reference is invalid'
   switch (type) {
     case 'PAYPAL':
-      return [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value) || res]
+      return [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.(pt|com))+$/.test(value) || res]
     case 'MBWAY':
       return [(value.length == 9 && value[0] == 9) || res]
     case 'VISA':
