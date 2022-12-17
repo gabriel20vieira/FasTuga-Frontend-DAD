@@ -10,22 +10,28 @@ const props = defineProps({
     }
 })
 
-const test = computed(() => {
-    return users.value.filter(user => user.type == CUSTOMER)
-})
+const hover = ref(null)
+const emit = defineEmits(["assignOrder"]);
+
+const assign = (order) => {
+    hover.value = null
+    emit('assignOrder', order)
+}
 </script>
 
 <template>
-    <VCol cols="12" md="6">
+    <VCol cols="12" md="5">
         <VCardTitle class="ma-3">
             {{ props.boardTitle }}
         </VCardTitle>
         <VRow v-if="props.tickets.length > 0" class="align-cards justify-start pl-6 pr-6 pb-4">
-            <VCol v-for="order in props.tickets" cols="4">
-                <VCard class="text-center pt-1 pb-1" style="border-width: 2.5px; min-width: fit-content;">
-                    <VCardTitle>{{ order.id }}</VCardTitle>
+            <VCol v-for="(order, index) in props.tickets" cols="4">
+                <VCard @click="assign(order)" @mouseover="hover = index" @mouseleave="hover = null"
+                    class="text-center pt-1 pb-1" :class="{ 'bg-primary': hover == index }">
+                    <VCardTitle>{{ hover == index ? 'ASSIGN' : order.ticket_number }}</VCardTitle>
                 </VCard>
             </VCol>
         </VRow>
     </VCol>
 </template>
+

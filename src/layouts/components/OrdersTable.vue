@@ -1,8 +1,10 @@
 <script setup>
+import { useOrdersStore } from "@/stores/orders";
 import { useUserStore } from "@/stores/user";
 import TablePagination from "../components/TablePagination.vue";
 
 const userStore = useUserStore()
+const ordersStore = useOrdersStore()
 
 const props = defineProps({
   orders: {
@@ -31,21 +33,6 @@ const clickNewTablePage = (page) => {
 const viewClick = (user) => {
   emit("viewOrder", user);
 };
-
-const getStatus = (status) => {
-  switch (status) {
-    case 'P':
-      return 'Preparing'
-    case 'R':
-      return 'Ready'
-    case 'D':
-      return 'Delivered'
-    case 'C':
-      return 'Cancelled'
-    default:
-      return 'Unknown'
-  }
-}
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -104,7 +91,7 @@ const getStatusColor = (status) => {
         <td>{{ order.total_price }}€</td>
         <td>
           <VChip :color="getStatusColor(order.status)">
-            {{ getStatus(order.status) }}
+            {{ ordersStore.getStatusString(order.status) }}
           </VChip>
         </td>
         <td style="text-align-last: center">

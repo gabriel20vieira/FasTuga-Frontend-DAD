@@ -7,6 +7,9 @@ export const useOrdersStore = defineStore('orders', () => {
   const orders = ref(null)
   const ordersBoard = ref(null)
 
+  const unassignedOrders = ref([])
+  const assignedOrders = ref([])
+
   async function load(page = 1) {
     return await axios
       .get(`orders?page=${page || 1}`)
@@ -24,10 +27,29 @@ export const useOrdersStore = defineStore('orders', () => {
       .get('board')
       .then(res => {
         ordersBoard.value = res.data
+
+        unassignedOrders.value = ordersBoard.value.preparing.filter(order => order.delivered == null)
       })
       .catch(err => {
         console.log(err)
       })
+  }
+
+  function getStatusString(status) {
+    switch (status) {
+      case 'P':
+        return 'Preparing'
+      case 'R':
+        return 'Ready'
+      case 'D':
+        return 'Delivered'
+      case 'C':
+        return 'Cancelled'
+      case 'W':
+        return 'Waiting'
+      default:
+        return 'Unknown'
+    }
   }
 
   return {
@@ -35,5 +57,8 @@ export const useOrdersStore = defineStore('orders', () => {
     orders,
     fetchBoard,
     ordersBoard,
+    unassignedOrders,
+    assignedOrders,
+    getStatusString
   }
 })
