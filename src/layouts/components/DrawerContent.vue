@@ -16,7 +16,7 @@ const userStore = useUserStore()
 
   <!-- 👉 Nav items -->
   <ul>
-    <VerticalNavLink :item="{
+    <VerticalNavLink v-if="userStore.isCustomer" :item="{
       title: 'Home',
       to: 'index',
       icon: { icon: 'mdi-home-outline' }
@@ -67,12 +67,12 @@ const userStore = useUserStore()
     }" />
     <VerticalNavLink v-show="(userStore.isChef || userStore.isDelivery) ?? false" :item="{
       title: 'Board',
-      to: 'employee-board',
+      to: 'delivery-board',
       icon: { icon: 'mdi-clipboard-list-outline' }
     }" />
 
     <!-- 👉 User Interface -->
-    <div v-if="false">
+    <div v-if="true">
       <VerticalNavSectionTitle :item="{ heading: 'User Interface' }" />
 
       <VerticalNavLink :item="{

@@ -16,6 +16,7 @@ onBeforeMount(async () => {
             <VRow no-gutters class="align-cards justify-start">
                 <CustomerBoardList :boardTitle="'Preparing'"
                     :tickets="ordersStore.ordersBoard ? ordersStore.ordersBoard.preparing : []" />
+
                 <VDivider :vertical="$vuetify.display.mdAndUp" :inset="$vuetify.display.mdAndUp" />
 
                 <CustomerBoardList :boardTitle="'Ready'"
