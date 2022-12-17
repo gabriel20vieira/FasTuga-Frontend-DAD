@@ -29,7 +29,7 @@ const loadUsers = async () => {
 const saveEmployee = async (user, operation) => {
   isDialogLoading.value = true
   if (operation === 'create') {
-    user.password = "123" //HARDCODED Password
+    user.password = "123456" //HARDCODED Password
     await usersStore.createEmployee(user).then(() => {
       toast.success(`Employee ${user.name} created successfully!`)
       closeDialog()
