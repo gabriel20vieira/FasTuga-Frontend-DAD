@@ -31,8 +31,7 @@ onUnmounted(() => {
 <template>
   <VCard :title="dialogTitle">
     <VDivider style="border-width: 2px" />
-
-    <VCardText>
+    <VCardText v-bind:style= "[userStore.isDelivery ? {padding:0} : {padding: 20}]" >
       <div v-if="!userStore.isDelivery" class="v-card-text pl-1 pt-0">
         <h6 class="text-sm font-weight-semibold mb-3">{{ order.customer ? 'Invoice to:' : 'Payment info:' }}</h6>
         <table>
@@ -82,7 +81,7 @@ onUnmounted(() => {
 
       <VDivider />
 
-      <div class="v-card-text pl-2 pr-3 d-flex justify-space-between flex-column flex-sm-row print-row">
+      <div v-if="!userStore.isDelivery" class="v-card-text pl-2 pr-3 d-flex justify-space-between flex-column flex-sm-row print-row">
         <div class="d-flex mb-1">
           <div v-if="!userStore.isCustomer">
             <h6 class="text-sm font-weight-semibold" v-if="order.delivered">
@@ -91,7 +90,7 @@ onUnmounted(() => {
             <span> {{ order.delivered?.name }}</span>
           </div>
         </div>
-        <div v-if="!userStore.isDelivery">
+        <div>
           <table class="w-100">
             <tr>
               <td class="pe-16">Subtotal:</td>
