@@ -68,7 +68,7 @@ const getStatusColor = (status) => {
   <VTable>
     <thead>
       <tr>
-        <th v-if="(props.showId && userStore.isManager)" class="text-uppercase">
+        <th v-if="(props.showId && (userStore.isManager || userStore.isDelivery)  )" class="text-uppercase">
           #
         </th>
         <th class="text-uppercase">
@@ -80,10 +80,10 @@ const getStatusColor = (status) => {
         <th class="text-uppercase">
           Items
         </th>
-        <th class="text-uppercase">
+        <th class="text-uppercase" v-if="!userStore.isDelivery">
           Payment
         </th>
-        <th class="text-uppercase">
+        <th class="text-uppercase" v-if="!userStore.isDelivery">
           Total
         </th>
         <th class="text-uppercase">
@@ -96,12 +96,12 @@ const getStatusColor = (status) => {
     </thead>
     <tbody>
       <tr v-for="order in orders" :key="order.id">
-        <td v-if="(props.showId && userStore.isManager)">{{ order.id }}</td>
+        <td v-if="(props.showId && (userStore.isManager || userStore.isDelivery) )">{{ order.id }}</td>
         <td>{{ order.ticket_number }}</td>
         <td>{{ order.date }}</td>
         <td>{{ order.items.length }}</td>
-        <td>{{ order.payment_type }}</td>
-        <td>{{ order.total_price }}€</td>
+        <td v-if="!userStore.isDelivery">{{ order.payment_type }}</td>
+        <td v-if="!userStore.isDelivery">{{ order.total_price }}€</td>
         <td>
           <VChip :color="getStatusColor(order.status)">
             {{ getStatus(order.status) }}

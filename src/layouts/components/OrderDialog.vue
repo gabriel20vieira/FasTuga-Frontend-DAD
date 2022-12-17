@@ -33,7 +33,7 @@ onUnmounted(() => {
     <VDivider style="border-width: 2px" />
 
     <VCardText>
-      <div class="v-card-text pl-1 pt-0">
+      <div v-if="!userStore.isDelivery" class="v-card-text pl-1 pt-0">
         <h6 class="text-sm font-weight-semibold mb-3">{{ order.customer ? 'Invoice to:' : 'Payment info:' }}</h6>
         <table>
           <tr v-if="order.user">
@@ -56,7 +56,7 @@ onUnmounted(() => {
       </div>
 
       <VDivider />
-
+      
       <VTable fixed-header>
         <thead>
           <tr>
@@ -66,7 +66,7 @@ onUnmounted(() => {
             <th v-if="!userStore.isCustomer" class="text-uppercase">
               Prepared By
             </th>
-            <th class="text-uppercase text-end">
+            <th class="text-uppercase text-end" v-if="!userStore.isDelivery">
               Price
             </th>
           </tr>
@@ -75,7 +75,7 @@ onUnmounted(() => {
           <tr v-for="item in order.items" :key="item.id">
             <td>{{ item.product ? item.product.name : "N/A" }}</td>
             <td v-if="!userStore.isCustomer">{{ item.preparated ? item.preparated.name : '' }}</td>
-            <td class="text-end">{{ item.price }}€</td>
+            <td class="text-end" v-if="!userStore.isDelivery">{{ item.price }}€</td>
           </tr>
         </tbody>
       </VTable>
@@ -91,7 +91,7 @@ onUnmounted(() => {
             <span> {{ order.delivered?.name }}</span>
           </div>
         </div>
-        <div>
+        <div v-if="!userStore.isDelivery">
           <table class="w-100">
             <tr>
               <td class="pe-16">Subtotal:</td>
