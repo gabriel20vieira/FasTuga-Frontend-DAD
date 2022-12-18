@@ -31,9 +31,8 @@ onUnmounted(() => {
 <template>
   <VCard :title="dialogTitle">
     <VDivider style="border-width: 2px" />
-
-    <VCardText>
-      <div class="v-card-text pl-1 pt-0">
+    <VCardText v-bind:style= "[userStore.isDelivery ? {padding:0} : {padding: 20}]" >
+      <div v-if="!userStore.isDelivery" class="v-card-text pl-1 pt-0">
         <h6 class="text-sm font-weight-semibold mb-3">{{ order.customer ? 'Invoice to:' : 'Payment info:' }}</h6>
         <table>
           <tr v-if="order.user">
@@ -56,7 +55,7 @@ onUnmounted(() => {
       </div>
 
       <VDivider />
-
+      
       <VTable fixed-header>
         <thead>
           <tr>
@@ -66,7 +65,7 @@ onUnmounted(() => {
             <th v-if="!userStore.isCustomer" class="text-uppercase">
               Prepared By
             </th>
-            <th class="text-uppercase text-end">
+            <th class="text-uppercase text-end" v-if="!userStore.isDelivery">
               Price
             </th>
           </tr>
@@ -75,14 +74,14 @@ onUnmounted(() => {
           <tr v-for="item in order.items" :key="item.id">
             <td>{{ item.product ? item.product.name : "N/A" }}</td>
             <td v-if="!userStore.isCustomer">{{ item.preparated ? item.preparated.name : '' }}</td>
-            <td class="text-end">{{ item.price }}€</td>
+            <td class="text-end" v-if="!userStore.isDelivery">{{ item.price }}€</td>
           </tr>
         </tbody>
       </VTable>
 
       <VDivider />
 
-      <div class="v-card-text pl-2 pr-3 d-flex justify-space-between flex-column flex-sm-row print-row">
+      <div v-if="!userStore.isDelivery" class="v-card-text pl-2 pr-3 d-flex justify-space-between flex-column flex-sm-row print-row">
         <div class="d-flex mb-1">
           <div v-if="!userStore.isCustomer">
             <h6 class="text-sm font-weight-semibold" v-if="order.delivered">

@@ -40,8 +40,8 @@ const tableColumns = [
   new TableColumn("date", "date"),
   new TableColumn("items", "items.length"),
   new TableColumn("payment", "payment_type"),
-  new TableColumn("total", item => `${item.total_price}€`),
-  new TableColumn("Status", item => getStatus(item.status), null, true, item => getStatusColor(item.status)),
+  new TableColumn("total", item => `${item.total_price}€`, column => !userStore.isDelivery),
+  new TableColumn("Status", item => getStatus(item.status), column => !userStore.isDelivery, true, item => getStatusColor(item.status)),
 ]
 
 const tableActions = [
@@ -51,10 +51,8 @@ const tableActions = [
 </script>
 
 <template>
-
   <Table :items="props.orders" :loading="props.isTableLoading" :tableLength="props.tableLength" @newPage="newPage"
     :columns="tableColumns" :actions="tableActions" />
-
 </template>
 
 <style lang="scss">
