@@ -25,6 +25,7 @@ const authorization = {
   board: store => store.isAnonymous || store.isCustomer,
   'board-chef': store => store.isChef,
   'delivery-board': store => store.isDelivery || store.isChef,
+  'items-history': store => store.isChef,
 }
 
 router.beforeResolve(async to => {

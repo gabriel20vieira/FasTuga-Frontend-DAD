@@ -34,6 +34,7 @@ const toasterInstance = {
 }
 
 const app = createApp(App)
+app.config.warnHandler = () => null
 
 app.provide('serverBaseUrl', serverBaseUrl)
 app.provide('axios', axiosInstance)

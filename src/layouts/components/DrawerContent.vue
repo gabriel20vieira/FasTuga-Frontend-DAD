@@ -56,6 +56,11 @@ const userStore = useUserStore()
       to: 'orders-history',
       icon: { icon: 'mdi-clipboard-list-outline' }
     }" />
+    <VerticalNavLink v-show="userStore.isChef" :item="{
+      title: 'Items history',
+      to: 'items-history',
+      icon: { icon: 'mdi-nutrition' }
+    }" />
     <VerticalNavLink v-show="userStore.isAnonymous || userStore.isCustomer" :item="{
       title: 'Menu',
       to: 'menu',

@@ -69,3 +69,49 @@ export function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
 }
+
+export class TableColumn {
+  constructor(title, path, chip = false, chipColor = null) {
+    this.title = title
+    this.path = path
+    this.chip = chip
+    this.chipColor = chipColor
+  }
+}
+
+export class TableAction {
+  constructor(title, icon, color, callback = null) {
+    this.title = title
+    this.icon = icon
+    this.color = color
+    this.callback = callback
+  }
+}
+
+export const getStatus = status => {
+  switch (status) {
+    case 'P':
+      return 'Preparing'
+    case 'R':
+      return 'Ready'
+    case 'D':
+      return 'Delivered'
+    case 'C':
+      return 'Cancelled'
+    default:
+      return 'Unknown'
+  }
+}
+
+export const getStatusColor = status => {
+  switch (status) {
+    case 'R':
+      return 'primary'
+    case 'D':
+      return 'success'
+    case 'C':
+      return 'error'
+    default:
+      return ''
+  }
+}

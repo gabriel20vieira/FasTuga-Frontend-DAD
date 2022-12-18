@@ -12,6 +12,15 @@ export const useOrderItemStore = defineStore('orderitem', () => {
   const axios = inject('axios')
   const soc = websockets()
 
+  const items = ref([])
+
+  async function load(page = 1) {
+    return await axios.get(`orderitems?page=${page}`).then(res => {
+      items.value = res.data.data
+      return res
+    })
+  }
+
   async function set(item, type) {
     return await axios
       .patch(`orderitems/${item.id}`, {
@@ -24,6 +33,8 @@ export const useOrderItemStore = defineStore('orderitem', () => {
   }
 
   return {
+    load,
     set,
+    items,
   }
 })
