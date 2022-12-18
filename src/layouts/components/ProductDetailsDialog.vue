@@ -11,10 +11,6 @@ const product = ref({
 	image: imageUrl(props.product?.photo_url)
 })
 
-const close = async () => {
-	emit("close");
-};
-
 onUnmounted(() => {
 	emit("close");
 })
@@ -51,12 +47,6 @@ onUnmounted(() => {
 				</VCol>
 			</VRow>
 		</VCardText>
-		<VCardActions class="pr-5">
-			<VSpacer />
-			<VBtn color="on-secondary" variant="outlined" @click="close">
-				Close
-			</VBtn>
-		</VCardActions>
 	</VCard>
 </template>
 

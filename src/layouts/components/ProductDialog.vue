@@ -3,7 +3,7 @@ import defaultPlate from "@/assets/images/defaultPlate.png";
 import ConfirmationDialog from "@/layouts/components/ConfirmationDialog.vue";
 import { productType_LC, useProductStore } from "@/stores/product";
 import { imageUrl, uploadImage } from "@/utils/utils";
-import { priceRules } from "@/utils/validations";
+import { nameRules, priceRules } from "@/utils/validations";
 import { computed } from "@vue/reactivity";
 import { onUnmounted } from "vue";
 
@@ -120,8 +120,8 @@ onUnmounted(() => {
 				<VCol cols="12" xs="12" sm="12" md="7" class="pt-0">
 					<VForm ref="form" @submit.prevent="() => { }">
 						<VCol class="px-0">
-							<VTextField v-model="product.name" label="Name" :rules="[v => !!v || 'Name is required']"
-								:error-messages="errors?.name" />
+							<VTextField v-model="product.name" label="Name" :error-messages="errors?.name"
+								:rules="nameRules" />
 						</VCol>
 						<VCol class="px-0">
 							<VSelect v-model="product.type" :items="productType_LC" label="Type" required

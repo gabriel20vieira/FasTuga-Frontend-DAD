@@ -1,5 +1,6 @@
 <script setup>
 
+import ProductDetailsDialog from "@/layouts/components/ProductDetailsDialog.vue";
 import ProductDialog from "@/layouts/components/ProductDialog.vue";
 import { productType, useProductStore } from "@/stores/product";
 import { imageUrl } from '@/utils/utils';
@@ -18,6 +19,18 @@ const products = computed(() => {
 	productStore.filter(navigationTab.value.toLowerCase())
 	return productStore.productsFiltered
 })
+
+const isDialogVisibleDetails = ref(false)
+const showProduct = ref(null)
+
+const dialogDetailsOpen = (product) => {
+	showProduct.value = product
+	if (product) {
+		showProduct.value.image = product?.photo_url
+	}
+	isDialogVisibleDetails.value = true
+}
+
 
 // Actions
 
@@ -67,7 +80,8 @@ onBeforeMount(async () => {
 							<VCol v-for="product in products" :key="product.id" cols="12" lg="3" sm="4">
 								<VCard class="h-100">
 									<VImg cover :aspect-ratio="1.5" :src="imageUrl(product.photo_url)"
-										:lazy-src="imageUrl(product.photo_url)" />
+										:lazy-src="imageUrl(product.photo_url)" @click="dialogDetailsOpen(product)"
+										style="cursor: pointer;" />
 
 									<VCardItem>
 										<VCardTitle>
@@ -91,6 +105,10 @@ onBeforeMount(async () => {
 			</VCard>
 		</VCol>
 	</VRow>
+
+	<VDialog v-model="isDialogVisibleDetails" max-width="700">
+		<ProductDetailsDialog @close="isDialogVisibleDetails = false" :product="showProduct" />
+	</VDialog>
 
 	<VDialog v-model="isDialogVisible" max-width="700" persistent>
 		<ProductDialog @close="dialogClose" @save="dialogSave" :product="editProduct" />
