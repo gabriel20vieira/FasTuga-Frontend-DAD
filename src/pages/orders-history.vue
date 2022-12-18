@@ -23,12 +23,10 @@ const onError = (error) => {
 }
 
 onMounted(() => {
-  ordersStore.load()
-    .then((res) => onOk(res))
-    .catch((err) => onError(err))
+  nextPage()
 })
 
-const nextPage = (page) => {
+const nextPage = (page = 1) => {
   isTableLoading.value = true
   ordersStore.load(page)
     .then((res) => onOk(res))

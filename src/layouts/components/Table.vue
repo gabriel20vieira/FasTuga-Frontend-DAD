@@ -1,5 +1,8 @@
 <script setup>
 import TablePagination from "@/layouts/components/TablePagination.vue";
+import { useUserStore } from "@/stores/user";
+
+const userStore = useUserStore()
 
 const props = defineProps({
 	columns: {
@@ -25,10 +28,10 @@ const props = defineProps({
 	}
 })
 
-const emit = defineEmits(['page'])
+const emit = defineEmits(['newPage'])
 
-const pageChange = (page = 1) => {
-	emit('page', page)
+const newPage = (page = 1) => {
+	emit('newPage', page)
 }
 
 const processText = (column, item) => {
@@ -45,8 +48,12 @@ const processChip = (column, item) => {
 }
 
 const columnCondition = (column) => {
-	let res = column?.condition ? column.condition() : true
-	return res
+
+	if (!column?.condition) {
+		return true
+	}
+
+	return typeof column?.condition == 'function' ? column?.condition(column) : true
 }
 
 </script>
@@ -57,24 +64,28 @@ const columnCondition = (column) => {
 	<VTable>
 		<thead>
 			<tr>
-				<th class="text-uppercase" v-for="column in props.columns">
-					{{ column?.title ?? ' - ' }}
-				</th>
-				<th class="text-uppercase text-center" v-if="props.actions">
+				<template v-for="column in props.columns">
+					<th class="text-uppercase" v-if="columnCondition(column)">
+						{{ column?.title ?? ' - ' }}
+					</th>
+				</template>
+				<th class="text-uppercase text-center" v-if="props.actions.length > 0">
 					Actions
 				</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr v-for="item in props.items" :key="item">
-				<td v-for="column in props.columns">
-					<VChip v-if="column?.chip ?? false" :color="processChip(column ?? null, item)">
-						{{ processText(column, item) }}
-					</VChip>
-					<span v-else>
-						{{ processText(column, item) }}
-					</span>
-				</td>
+				<template v-for="column in props.columns">
+					<td v-if="columnCondition(column)">
+						<VChip v-if="column?.chip ?? false" :color="processChip(column ?? null, item)">
+							{{ processText(column, item) }}
+						</VChip>
+						<span v-else>
+							{{ processText(column, item) }}
+						</span>
+					</td>
+				</template>
 				<td style="text-align-last: center" v-if="props.actions.length > 0">
 					<VBtn icon variant="text" width="30px" height="30px" v-for="action in props.actions"
 						@click="action?.callback(item) ?? (() => { })">
@@ -88,7 +99,7 @@ const columnCondition = (column) => {
 		</tbody>
 	</VTable>
 	<VDivider />
-	<TablePagination :tableLength="props.tableLength" :isTableLoading="props.loading" @newPage="pageChange" />
+	<TablePagination :tableLength="props.tableLength" :isTableLoading="props.loading" @newPage="newPage" />
 </template>
 
 <style lang="scss">

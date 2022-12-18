@@ -2,11 +2,13 @@
 import ProductDetailsDialog from '@/layouts/components/ProductDetailsDialog.vue';
 import TableVue from '@/layouts/components/Table.vue';
 import { useOrderItemStore } from '@/stores/orderitem';
-import { getStatus, getStatusColor, TableAction, TableColumn } from '@/utils/utils';
+import { useUserStore } from '@/stores/user';
+import { TableAction, TableColumn } from '@/utils/utils';
 import { ref } from 'vue';
 
 const toast = inject('toast')
 const orderItemsStore = useOrderItemStore()
+const userStore = useUserStore()
 
 const isTableLoading = ref(true)
 const tableLength = ref(1)
@@ -43,10 +45,9 @@ const clickViewOrder = (item) => {
 }
 
 const tableColumns = [
-  // new TableColumn("id", "id"),
-  // new TableColumn("order id", "order_id"),
+  new TableColumn("#", "id"),
   new TableColumn("identification", "identification"),
-  new TableColumn("Status", item => getStatus(item.status), true, item => getStatusColor(item.status)),
+  // new TableColumn("Status", item => getStatus(item.status), null, true, item => getStatusColor(item.status)),
   new TableColumn("price", item => `${item.price}€`),
   new TableColumn("Name", "product?.name"),
 ]
@@ -67,7 +68,7 @@ const tableActions = [
       </VCardText>
 
       <TableVue :items="orderItemsStore.items" :columns="tableColumns" :loading="isTableLoading"
-        :tableLength="tableLength" @page="nextPage" :actions="tableActions" />
+        :tableLength="tableLength" @newPage="nextPage" :actions="tableActions" />
 
     </VCard>
   </VCol>

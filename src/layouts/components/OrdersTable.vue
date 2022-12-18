@@ -1,6 +1,7 @@
 <script setup>
+import Table from "@/layouts/components/Table.vue";
 import { useUserStore } from "@/stores/user";
-import TablePagination from "../components/TablePagination.vue";
+import { getStatus, getStatusColor, TableAction, TableColumn } from '@/utils/utils';
 
 const userStore = useUserStore()
 
@@ -24,7 +25,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(["newPage", "viewOrder"]);
-const clickNewTablePage = (page) => {
+
+const newPage = (page) => {
   emit("newPage", page);
 }
 
@@ -32,95 +34,27 @@ const viewClick = (user) => {
   emit("viewOrder", user);
 };
 
-const getStatus = (status) => {
-  switch (status) {
-    case 'P':
-      return 'Preparing'
-    case 'R':
-      return 'Ready'
-    case 'D':
-      return 'Delivered'
-    case 'C':
-      return 'Cancelled'
-    default:
-      return 'Unknown'
-  }
-}
+const tableColumns = [
+  new TableColumn("#", "id", column => userStore.isManager),
+  new TableColumn("ticket", "ticket_number"),
+  new TableColumn("date", "date"),
+  new TableColumn("items", "items.length"),
+  new TableColumn("payment", "payment_type"),
+  new TableColumn("total", item => `${item.total_price}€`),
+  new TableColumn("Status", item => getStatus(item.status), null, true, item => getStatusColor(item.status)),
+]
 
-const getStatusColor = (status) => {
-  switch (status) {
-    case 'R':
-      return 'primary'
-    case 'D':
-      return 'success'
-    case 'C':
-      return 'error'
-    default:
-      return ''
-  }
-}
+const tableActions = [
+  new TableAction("View", "mdi-eye", "tonal", viewClick)
+]
 
 </script>
 
 <template>
-  <VDivider />
-  <VProgressLinear :active="props.isTableLoading" indeterminate />
-  <VTable>
-    <thead>
-      <tr>
-        <th v-if="(props.showId && userStore.isManager)" class="text-uppercase">
-          #
-        </th>
-        <th class="text-uppercase">
-          Ticket
-        </th>
-        <th class="text-uppercase">
-          Date
-        </th>
-        <th class="text-uppercase">
-          Items
-        </th>
-        <th class="text-uppercase">
-          Payment
-        </th>
-        <th class="text-uppercase">
-          Total
-        </th>
-        <th class="text-uppercase">
-          Status
-        </th>
-        <th class="text-uppercase" style="text-align-last: center">
-          Action
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="order in orders" :key="order.id">
-        <td v-if="(props.showId && userStore.isManager)">{{ order.id }}</td>
-        <td>{{ order.ticket_number }}</td>
-        <td>{{ order.date }}</td>
-        <td>{{ order.items.length }}</td>
-        <td>{{ order.payment_type }}</td>
-        <td>{{ order.total_price }}€</td>
-        <td>
-          <VChip :color="getStatusColor(order.status)">
-            {{ getStatus(order.status) }}
-          </VChip>
-        </td>
-        <td style="text-align-last: center">
-          <VBtn icon variant="text" @click="viewClick(order)" width="30px" height="30px">
-            <VIcon icon="mdi-eye" size="18" />
-            <VTooltip activator="parent" location="end">
-              View
-            </VTooltip>
-          </VBtn>
-        </td>
-      </tr>
-    </tbody>
-  </VTable>
-  <VDivider />
-  <TablePagination :tableLength="props.tableLength" :isTableLoading="props.isTableLoading"
-    @newPage="clickNewTablePage" />
+
+  <Table :items="props.orders" :loading="props.isTableLoading" :tableLength="props.tableLength" @newPage="newPage"
+    :columns="tableColumns" :actions="tableActions" />
+
 </template>
 
 <style lang="scss">

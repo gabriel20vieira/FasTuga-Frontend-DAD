@@ -71,9 +71,10 @@ export function capitalizeFirstLetter(string) {
 }
 
 export class TableColumn {
-  constructor(title, path, chip = false, chipColor = null) {
+  constructor(title, path, condition = null, chip = false, chipColor = null) {
     this.title = title
     this.path = path
+    this.condition = condition
     this.chip = chip
     this.chipColor = chipColor
   }
