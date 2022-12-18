@@ -14,9 +14,10 @@ const props = defineProps({
         type: Array,
         required: true
     },
-    showDetailBtn: {
-        type: Boolean,
-        required: false
+    detailsButton: {
+        type: Function,
+        required: false,
+        default: null
     }
 })
 
@@ -37,8 +38,8 @@ const props = defineProps({
                         {{ item.product.name }}
                     </VCardSubtitle>
                 </VCol>
-                <VCol class="py-3" v-if="props.showDetailBtn ?? false">
-                    <VBtn size="small" variant="outlined" color="primary">
+                <VCol class="py-3" v-if="props.detailsButton ?? false">
+                    <VBtn size="small" variant="outlined" color="primary" @click="props.detailsButton(item)">
                         Details
                     </VBtn>
                 </VCol>
