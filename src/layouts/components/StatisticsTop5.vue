@@ -1,5 +1,5 @@
 <script setup>
-import defaultAvatar from "@/assets/images/avatars/avatar-2.png";
+import { profilePhotoUrl } from "@/utils/utils";
 
 const props = defineProps({
     title: {
@@ -32,7 +32,7 @@ const props = defineProps({
                 <VListItem v-for="item in props.statisticsItems">
                     <template #prepend>
                         <div class="rounded-circle overflow-hidden card-avatar-width me-6">
-                            <VImg :height="29" :width="28" :src="defaultAvatar" class="card-avatar" />
+                            <VImg :height="29" :width="28" :src="profilePhotoUrl(item.photo_url)" class="card-avatar" />
                         </div>
                     </template>
 

@@ -1,5 +1,5 @@
-import { CUSTOMER } from '@/utils/utils'
-import { defineStore } from 'pinia'
+import { CUSTOMER } from '@/utils/utils';
+import { defineStore } from 'pinia';
 
 export const useUsersStore = defineStore('users', () => {
   const axios = inject('axios')

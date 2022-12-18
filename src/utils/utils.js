@@ -1,4 +1,6 @@
-import { inject } from 'vue'
+import defaultAvatar from "@/assets/images/avatars/avatar-2.png";
+import defaultPlate from "@/assets/images/defaultPlate.png";
+import { inject } from 'vue';
 
 export async function uploadImage(file) {
   return new Promise(function (resolve) {
@@ -48,11 +50,20 @@ export function buildUrl(base, parameters = {}) {
 
 export function imageUrl(image) {
   if (!image) {
-    return null
+    return defaultPlate
   }
 
   const serverBaseUrl = inject('serverBaseUrl')
   return `${serverBaseUrl}/api/image/${image}`
+}
+
+export function profilePhotoUrl(image) {
+  if (!image) {
+    return defaultAvatar
+  }
+  
+  const serverBaseUrl = inject('serverBaseUrl')
+  return `${serverBaseUrl}/storage/fotos/${image}`
 }
 
 export function newAnalyticsTransactionsItem(title, stats, icon, color) {

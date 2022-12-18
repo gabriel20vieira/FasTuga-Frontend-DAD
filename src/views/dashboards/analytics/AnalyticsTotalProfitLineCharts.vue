@@ -1,7 +1,7 @@
 <script setup>
-import VueApexCharts from 'vue3-apexcharts'
-import { useTheme } from 'vuetify'
-import { hexToRgb } from '@layouts/utils'
+import { hexToRgb } from '@layouts/utils';
+import VueApexCharts from 'vue3-apexcharts';
+import { useTheme } from 'vuetify';
 
 const vuetifyTheme = useTheme()
 const currentTheme = computed(() => {
@@ -56,7 +56,7 @@ const chartOptions = computed(() => {
         size: 5.5,
         seriesIndex: 0,
         strokeColor: currentTheme.value.primary,
-        fillColor: currentTheme.value.surface,
+        fillColor: currentTheme.value.secondary,
         dataPointIndex: series[0].data.length - 1,
       }],
       hover: { size: 7 },

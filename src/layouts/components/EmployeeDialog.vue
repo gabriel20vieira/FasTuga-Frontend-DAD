@@ -1,12 +1,10 @@
 <script setup>
 import defaultAvatar from "@/assets/images/avatars/avatar-2.png";
-import { CHEF, CUSTOMER, DELIVERY, MANAGER, uploadImage, userRole } from "@/utils/utils";
+import { CHEF, CUSTOMER, DELIVERY, MANAGER, profilePhotoUrl, uploadImage, userRole } from "@/utils/utils";
 import { emailRules, nameRules } from '@/utils/validations';
 import { computed } from "@vue/reactivity";
 import { onUnmounted } from "vue";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
-
-const serverBaseUrl = inject("serverBaseUrl")
 
 const form = ref(null)
 const roles = [
@@ -70,7 +68,7 @@ const newData = computed(() => {
 })
 
 const newPhoto = computed(() => {
-  return employeePhoto.value != photoFullUrl(user.value)
+  return employeePhoto.value != profilePhotoUrl(user.value.photo_url)
 })
 
 const operation = computed(() => (!props.user) ? 'create' : 'update')
@@ -81,19 +79,13 @@ onMounted(() => {
   //if a user was passed (edit user) it populates de fields, else (new user) keeps the default + empty values
   if (props.user) {
     user.value = { ...props.user }
-    employeePhoto.value = photoFullUrl(user.value)
+    employeePhoto.value = profilePhotoUrl(user.value.photo_url)
   }
 })
 
 onUnmounted(() => {
   emit("close");
 })
-
-const photoFullUrl = (user) => {
-  return user.photo_url
-    ? serverBaseUrl + "/storage/fotos/" + user.photo_url
-    : defaultAvatar
-}
 </script>
 
 <template>

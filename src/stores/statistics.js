@@ -31,7 +31,7 @@ export const useStatisticsStore = defineStore('statistics', () => {
       newAnalyticsTransactionsItem(
         'Orders',
         statistics.value?.daily.total_of_orders ?? 0,
-        'mdi-trending-up',
+        'mdi-food-outline',
         'success',
       ),
       newAnalyticsTransactionsItem(

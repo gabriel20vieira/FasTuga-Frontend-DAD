@@ -25,7 +25,6 @@ const errors = ref({
 
 
 async function makeOrder() {
-
 	loading.value = true
 
 	errors.value.type = []
@@ -56,10 +55,8 @@ async function makeOrder() {
 		if (err && err.response.data.message) {
 			toast.error(capitalizeFirstLetter(err.response.data.message))
 		}
-
 	})
 }
-
 </script>
 
 <template>

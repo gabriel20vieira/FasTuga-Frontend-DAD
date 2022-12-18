@@ -1,8 +1,7 @@
 <script setup>
-import defaultAvatar from "@/assets/images/avatars/avatar-2.png";
 import { useUserStore } from '@/stores/user';
 import { arrayNbrPages, arrayPaginate } from "@/utils/pagination";
-import { CHEF, CUSTOMER, DELIVERY, MANAGER, userRole } from "@/utils/utils";
+import { CHEF, CUSTOMER, DELIVERY, MANAGER, profilePhotoUrl, userRole } from "@/utils/utils";
 import { ref } from "vue";
 import TablePagination from "../components/TablePagination.vue";
 
@@ -66,13 +65,6 @@ const roleIcon = (role) => {
 		default: return 'mdi-food-fork-drink'
 	}
 }
-
-const serverBaseUrl = inject("serverBaseUrl")
-const photoFullUrl = (user) => {
-	return user.photo_url
-		? serverBaseUrl + "/storage/fotos/" + user.photo_url
-		: defaultAvatar
-}
 </script>
 
 <template>
@@ -102,7 +94,7 @@ const photoFullUrl = (user) => {
 			<tr v-for="(employee, index) in arrayPaginate(employees, currentPage)" :key="employee.id">
 				<td v-if="showId">{{ employee.id }}</td>
 				<td>
-					<div class="left"><img :src="photoFullUrl(employee)" class="rounded-circle img_photo" width="35"
+					<div class="left"><img :src="profilePhotoUrl(employee.photo_url)" class="rounded-circle img_photo" width="35"
 							height="35" style="margin-top: 5px;" /></div>
 					<div class="right">{{ employee.name }}</div>
 				</td>

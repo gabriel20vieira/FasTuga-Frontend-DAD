@@ -9,7 +9,6 @@ const toast = inject('toast')
 const usersStore = useUsersStore()
 
 const isTableLoading = ref(true)
-const tableLength = ref(1)
 const userBeingEdited = ref(null)
 const isDialogVisible = ref(false)
 const isDialogLoading = ref(false)

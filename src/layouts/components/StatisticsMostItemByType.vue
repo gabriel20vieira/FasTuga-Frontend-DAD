@@ -24,7 +24,7 @@ const props = defineProps({
         </VCardItem>
 
         <VRow class="px-5 pt-3 pb-8">
-            <VCol v-for="item in props.statisticsItems" cols="12" lg="3" sm="4" class="py-0">
+            <VCol v-for="item in props.statisticsItems" cols="12" lg="3" sm="6">
                 <VCard style="border-width: 2.5px" class="h-100e my-0 text-center">
                     <VCardTitle class="text-uppercase">
                         {{ item.type }}
