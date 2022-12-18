@@ -18,6 +18,10 @@ const props = defineProps({
         type: String,
         required: false,
         default: null
+    },
+    afterExtra: {
+        type: String,
+        required: false
     }
 })
 </script>
@@ -40,7 +44,7 @@ const props = defineProps({
 
                     <VCardItem>
                         <VCardTitle class="text-primary" v-if="item.product_count || props.extra">
-                            {{ item.product_count ?? item[props.extra] ?? '...' }}
+                            {{ item.product_count ?? item[props.extra] ?? '...' }}{{ afterExtra ?? '' }}
                         </VCardTitle>
                         <VCardText class="mx-0 my-0 px-0 py-0 text-nowrap">
                             {{ item.name }}
