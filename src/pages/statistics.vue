@@ -27,10 +27,9 @@ onBeforeMount(async () => {
 <template>
 	<VRow class="match-height">
 		<VCol cols="12" md="3">
-			<StatisticsCustomerCard title="Customers"
-				:value="statisticsStore.statistics?.all.total_of_new_customers ?? '..'"
-				:lastWeekValue="statisticsStore.statistics?.weekly.total_of_new_customers ?? '..'"
-				:isLoading="isLoading" />
+			<StatisticsCustomerCard title="Customers" :image="true"
+				:value="statisticsStore.statistics?.all.total_of_new_customers ?? '..'" subtitle="From last week"
+				:subvalue="statisticsStore.statistics?.weekly.total_of_new_customers ?? '..'" :isLoading="isLoading" />
 		</VCol>
 		<VCol cols="12" md="9">
 			<StatisticsDayBalanceCard title="Balance of the day" :statistics="balanceDay" :isLoading="isLoading" />

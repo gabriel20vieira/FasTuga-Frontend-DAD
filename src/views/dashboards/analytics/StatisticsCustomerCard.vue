@@ -9,25 +9,29 @@ const triangleBg = computed(() => {
 	return vuetifyTheme.global.name.value === 'light' ? triangleLight : triangleDark
 })
 
-const props = defineProps(["title", "value", "lastWeekValue", "isLoading"]);
+const props = defineProps(["title", "value", "subtitle", "isLoading", "subvalue", "image"]);
 
-const { title, value, lastWeekValue } = toRefs(props);
+const { title, value, subtitle, subvalue, image } = toRefs(props);
 
 </script>
 
 <template>
 	<VCard :title="title" class="position-relative">
 		<VCardText>
-			<div>
-				<VProgressCircular indeterminate v-if="props.isLoading" />
-				<h5 v-else class="text-2xl font-weight-medium text-primary">{{ value }}</h5>
+			<VProgressCircular indeterminate v-if="props.isLoading" />
+			<div v-else>
+				<h5 class="text-2xl font-weight-medium text-primary">{{ value }}</h5>
 			</div>
-			<VChip class="px-2 mt-1 h-auto" style="font-size: small;">From Last Week: {{ lastWeekValue }}</VChip>
+			<VChip v-if="(subtitle || subvalue) && !props.isLoading" class="px-2 mt-1 h-auto" style="font-size: small;">
+				<span>
+					{{ subtitle }}: {{ subvalue }}
+				</span>
+			</VChip>
 		</VCardText>
 
 		<VImg :src="triangleBg" class="triangle-bg" />
 
-		<VImg :src="avatar" class="avatar" />
+		<VImg v-if="image" :src="image == true ? avatar : image" class="avatar" />
 	</VCard>
 </template>
 

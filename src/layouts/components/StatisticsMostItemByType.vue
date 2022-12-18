@@ -13,6 +13,11 @@ const props = defineProps({
     isLoading: {
         type: Boolean,
         default: false
+    },
+    extra: {
+        type: String,
+        required: false,
+        default: null
     }
 })
 </script>
@@ -34,8 +39,8 @@ const props = defineProps({
                         :lazy-src="imageUrl(item.photo_url)" />
 
                     <VCardItem>
-                        <VCardTitle class="text-primary">
-                            {{ item.product_count }}
+                        <VCardTitle class="text-primary" v-if="item.product_count || props.extra">
+                            {{ item.product_count ?? item[props.extra] ?? '...' }}
                         </VCardTitle>
                         <VCardText class="mx-0 my-0 px-0 py-0 text-nowrap">
                             {{ item.name }}
