@@ -67,7 +67,7 @@ const userStore = useUserStore()
       icon: { icon: 'mdi-clipboard-list-outline' }
     }" />
     <VerticalNavLink v-show="userStore.isChef" :item="{
-      title: 'Items history',
+      title: 'Cooking History',
       to: 'items-history',
       icon: { icon: 'mdi-nutrition' }
     }" />
