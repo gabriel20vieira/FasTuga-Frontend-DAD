@@ -15,14 +15,6 @@ const close = async () => {
 	emit("close");
 };
 
-onBeforeMount(() => {
-	loading.value = true
-})
-
-onMounted(() => {
-	loading.value = false
-})
-
 onUnmounted(() => {
 	emit("close");
 })
@@ -30,27 +22,31 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<VCard title="Product details" class="py-2">
+	<VCard title="Product Details" class="product-view">
 		<VCardText>
 			<VRow>
 				<VCol cols="12" xs="12" sm="5">
-					<div class="upload-image-wrapper">
-						<VAvatar rounded color="primary" size="192" variant="tonal" :image="product?.image" />
-					</div>
+					<VAvatar class="product-img" rounded color="primary" variant="tonal" :image="product?.image" />
 				</VCol>
 				<VCol cols="12" xs="12" sm="7" class="pt-0">
-					<VCol class="px-0 py-0 my-1">
-						<VCardText class="text-subtitle-1"><b>Name:</b> {{ product?.name }}</VCardText>
+					<VCol class="px-0 py-2 my-1">
+						<VCardText class="text-body-2 py-0 text-primary">Name</VCardText>
+						<VCardText class="text-subtitle-1 py-0">{{ product?.name }}</VCardText>
 					</VCol>
-					<VCol class="px-0 py-0 my-1">
-						<VCardText class="text-subtitle-1"><b>Type:</b> {{ capitalizeFirstLetter(product?.type) }}
-						</VCardText>
-					</VCol>
-					<VCol class="px-0 py-0 my-1">
-						<VCardText class="text-subtitle-1"><b>Price:</b> {{ product?.price }}€</VCardText>
-					</VCol>
-					<VCol class="px-0 py-0 my-1">
-						<VCardText class="text-subtitle-1"><b>Description:</b> {{ product?.description }}</VCardText>
+					<VRow>
+						<VCol>
+							<VCardText class="text-body-2 py-0 text-primary">Type</VCardText>
+							<VCardText class="text-subtitle-1 py-0">{{ capitalizeFirstLetter(product?.type) }}
+							</VCardText>
+						</VCol>
+						<VCol>
+							<VCardText class="text-body-2 py-0 text-primary">Price</VCardText>
+							<VCardText class="text-subtitle-1 py-0">{{ product?.price }}€</VCardText>
+						</VCol>
+					</VRow>
+					<VCol class="px-0 py-2 my-1">
+						<VCardText class="text-body-2 py-0 text-primary">Description</VCardText>
+						<VCardText class="text-subtitle-1 py-0">{{ product?.description }}</VCardText>
 					</VCol>
 				</VCol>
 			</VRow>
@@ -61,19 +57,12 @@ onUnmounted(() => {
 				Close
 			</VBtn>
 		</VCardActions>
-		<VProgressLinear :active="loading" indeterminate />
 	</VCard>
 </template>
 
 <style lang="scss">
-.upload-image-wrapper {
-	max-width: 192px;
-	max-height: 192px;
-}
-
-.upload-image-icon {
-	position: relative;
-	bottom: 3.5em;
-	left: 8.5em;
+.product-view .product-img {
+	height: auto;
+	width: 256px;
 }
 </style>
