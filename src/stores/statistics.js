@@ -1,3 +1,4 @@
+import { newAnalyticsTransactionsItem } from '@/utils/utils'
 import { defineStore } from 'pinia'
 import { inject, ref } from 'vue'
 
@@ -19,7 +20,82 @@ export const useStatisticsStore = defineStore('statistics', () => {
       })
   }
 
-  load()
+  function getStatisticsBalance() {
+    return [
+      newAnalyticsTransactionsItem(
+        'Customers',
+        statistics.value?.daily.total_of_new_customers ?? 0,
+        'mdi-account-arrow-up',
+        'primary',
+      ),
+      newAnalyticsTransactionsItem(
+        'Orders',
+        statistics.value?.daily.total_of_orders ?? 0,
+        'mdi-trending-up',
+        'success',
+      ),
+      newAnalyticsTransactionsItem(
+        'Orders per 30 min',
+        statistics.value?.daily.mean_of_orders_by_30_minutes ?? 0,
+        'mdi-credit-card-fast',
+        'warning',
+      ),
+      newAnalyticsTransactionsItem(
+        'Paid per 30 min',
+        statistics.value?.daily.mean_of_paid_by_30_minutes ?? 0,
+        'mdi-currency-eur',
+        'info',
+      ),
+    ]
+  }
 
-  return { statistics, load }
+  function getOrderWithHighestPaidValue() {
+    return [
+      {
+        time: 'Lifetime',
+        value: statistics.value?.all.order_with_highest_paid_value ?? 0,
+      },
+      {
+        time: 'Monthly',
+        value: statistics.value?.monthly.order_with_highest_paid_value ?? 0,
+      },
+      {
+        time: 'Weekly',
+        value: statistics.value?.weekly.order_with_highest_paid_value ?? 0,
+      },
+      {
+        time: 'Daily',
+        value: statistics.value?.daily.order_with_highest_paid_value ?? 0,
+      },
+    ]
+  }
+
+  function getAveragePaidValuePerOrder() {
+    return [
+      {
+        time: 'Lifetime',
+        value: statistics.value?.all.average_paid_value_per_order ?? 0,
+      },
+      {
+        time: 'Monthly',
+        value: statistics.value?.monthly.average_paid_value_per_order ?? 0,
+      },
+      {
+        time: 'Weekly',
+        value: statistics.value?.weekly.average_paid_value_per_order ?? 0,
+      },
+      {
+        time: 'Daily',
+        value: statistics.value?.daily.average_paid_value_per_order ?? 0,
+      },
+    ]
+  }
+
+  return {
+    statistics,
+    load,
+    getStatisticsBalance,
+    getOrderWithHighestPaidValue,
+    getAveragePaidValuePerOrder,
+  }
 })

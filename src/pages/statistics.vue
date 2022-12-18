@@ -1,10 +1,9 @@
 <script setup>
 import { useStatisticsStore } from '@/stores/statistics';
-import { imageUrl, newAnalyticsTransactionsItem } from '@/utils/utils';
+import { imageUrl } from '@/utils/utils';
 import AnalyticsAward from '@/views/dashboards/analytics/AnalyticsAward.vue';
 import AnalyticsTransactions from '@/views/dashboards/analytics/AnalyticsTransactions.vue';
 import Chart from 'chart.js/auto';
-import { onMounted } from 'vue';
 
 Chart.defaults.font.family = 'inter, sans-serif, -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
 Chart.defaults.font.size = 16;
@@ -15,72 +14,13 @@ const statisticsStore = useStatisticsStore()
 var statistics = ref([])
 var order_with_highest_paid_value = ref([])
 var average_paid_value_per_order = ref([])
-onMounted(
-	async () => {
-		await statisticsStore.load().then(() => {
-			statistics.value = [
-				newAnalyticsTransactionsItem(
-					"Customers",
-					statisticsStore.statistics?.daily.total_of_new_customers ?? 0,
-					"mdi-account-arrow-up",
-					"primary"
-				),
-				newAnalyticsTransactionsItem(
-					"Orders",
-					statisticsStore.statistics?.daily.total_of_orders ?? 0,
-					"mdi-trending-up",
-					"success"
-				),
-				newAnalyticsTransactionsItem(
-					"Orders per 30 min",
-					statisticsStore.statistics?.daily.mean_of_orders_by_30_minutes ?? 0,
-					"mdi-credit-card-fast",
-					"warning"
-				),
-				newAnalyticsTransactionsItem(
-					"Paid per 30 min",
-					statisticsStore.statistics?.daily.mean_of_paid_by_30_minutes ?? 0,
-					"mdi-currency-eur",
-					"info"
-				),
-			],
-				order_with_highest_paid_value.value = [
-					{
-						"time": "Lifetime",
-						"value": (statisticsStore.statistics?.all.order_with_highest_paid_value ?? 0),
-					},
-					{
-						"time": "Monthly",
-						"value": (statisticsStore.statistics?.monthly.order_with_highest_paid_value ?? 0),
-					},
-					{
-						"time": "Weekly",
-						"value": (statisticsStore.statistics?.weekly.order_with_highest_paid_value ?? 0),
-					},
-					{
-						"time": "Daily",
-						"value": (statisticsStore.statistics?.daily.order_with_highest_paid_value ?? 0),
-					},
-				], average_paid_value_per_order.value = [
-					{
-						"time": "Lifetime",
-						"value": (statisticsStore.statistics?.all.average_paid_value_per_order ?? 0),
-					},
-					{
-						"time": "Monthly",
-						"value": (statisticsStore.statistics?.monthly.average_paid_value_per_order ?? 0),
-					},
-					{
-						"time": "Weekly",
-						"value": (statisticsStore.statistics?.weekly.average_paid_value_per_order ?? 0),
-					},
-					{
-						"time": "Daily",
-						"value": (statisticsStore.statistics?.daily.average_paid_value_per_order ?? 0),
-					},
-				]
 
-		})
+onBeforeMount(
+	async () => {
+		await statisticsStore.load()
+		statistics.value = statisticsStore.getStatisticsBalance()
+		order_with_highest_paid_value.value = statisticsStore.getOrderWithHighestPaidValue()
+		average_paid_value_per_order.value = statisticsStore.getAveragePaidValuePerOrder()
 
 		const dataPieChart = {
 			labels: [
@@ -170,9 +110,6 @@ onMounted(
 				}
 			}
 		});
-
-
-
 
 	})
 
