@@ -1,12 +1,14 @@
 <script setup>
-import AccountSettingsAccount from '@/views/pages/account-settings/AccountSettingsAccount.vue';
-import AccountSettingsSecurity from '@/views/pages/account-settings/AccountSettingsSecurity.vue';
-
+import AccountSettingsAccount from '@/layouts/components/AccountSettingsAccount.vue';
+import AccountSettingsSecurity from '@/layouts/components/AccountSettingsSecurity.vue';
+import AccountSettingsStatistics from '@/layouts/components/AccountSettingsStatistics.vue';
+import { useUserStore } from '@/stores/user';
 import { useRoute } from 'vue-router';
 
-
+const userStore = useUserStore()
 const route = useRoute()
 const activeTab = ref(route.params.tab)
+
 
 const tabs = [
 	{
@@ -20,6 +22,14 @@ const tabs = [
 		tab: 'security',
 	}
 ]
+
+if (!userStore.isManager) {
+	tabs.unshift({
+		title: 'Statistics',
+		icon: 'mdi-chart-timeline-variant',
+		tab: 'statistics'
+	})
+}
 
 
 </script>
@@ -35,6 +45,10 @@ const tabs = [
 		<VDivider />
 
 		<VWindow v-model="activeTab" class="mt-5 disable-tab-transition" :touch="false">
+
+			<VWindowItem value="statistics" v-if="!userStore.isManager">
+				<AccountSettingsStatistics />
+			</VWindowItem>
 
 			<VWindowItem value="account">
 				<AccountSettingsAccount />

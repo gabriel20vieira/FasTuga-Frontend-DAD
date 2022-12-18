@@ -1,5 +1,6 @@
 <script setup>
-import { paymentTypes, userTypes, useUserStore } from '@/stores/user';
+import { paymentTypes, UserType, useUserStore } from '@/stores/user';
+import { userRole } from '@/utils/utils';
 import { emailRules, nameRules, nifRules, paymentReferenceRules, phoneRules } from '@/utils/validations';
 import { computed } from '@vue/reactivity';
 
@@ -11,6 +12,12 @@ var customerData = setCustomerData()
 const refInputEl = ref()
 const accountDataLocal = ref(structuredClone(accountData))
 const customerDataLocal = ref(structuredClone(customerData))
+
+const userRoles = [
+	{ type: UserType.CHEF, title: userRole(UserType.CHEF) },
+	{ type: UserType.DELIVERY, title: userRole(UserType.DELIVERY) },
+	{ type: UserType.MANAGER, title: userRole(UserType.MANAGER) }
+]
 
 const resetForm = () => {
 	accountDataLocal.value = structuredClone(accountData)
@@ -132,44 +139,52 @@ onMounted(() => {
 					<!-- 👉 Form -->
 					<VForm class="mt-6">
 
-						<VCol md="6" cols="12">
-							<VTextField v-model="accountDataLocal.name" label="Name" :rules="nameRules" />
-						</VCol>
+						<VRow>
 
-						<VCol cols="12" md="6">
-							<VTextField v-model="accountDataLocal.email" label="E-mail" type="email"
-								:rules="emailRules" />
-						</VCol>
 
-						<VCol cols="12" md="6">
-							<VSelect v-model="accountDataLocal.type" label="Type" :items="userTypes" :disabled="true" />
-						</VCol>
+							<VCol md="6" cols="12">
+								<VTextField v-model="accountDataLocal.name" label="Name" :rules="nameRules" />
+							</VCol>
 
-						<VCol cols="12" md="6" v-if="userStore.isCustomer">
-							<VTextField v-model="customerDataLocal.phone" label="Phone" :rules="phoneRules" />
-						</VCol>
+							<VCol cols="12" md="6">
+								<VTextField v-model="accountDataLocal.email" label="E-mail" type="email"
+									:rules="emailRules" />
+							</VCol>
 
-						<VCol cols="12" md="6" v-if="userStore.isCustomer">
-							<VTextField v-model="customerDataLocal.nif" label="NIF" :rules="nifRules" />
-						</VCol>
+							<VCol cols="12" md="6">
+								<VSelect v-model="accountDataLocal.type" label="Type" :items="userRoles"
+									item-value="type" item-text="title" :disabled="true" />
+							</VCol>
 
-						<VCol cols="12" md="6" v-if="userStore.isCustomer">
-							<VSelect v-model="customerDataLocal.default_payment_type" label="Payment type"
-								:items="paymentTypes" />
-						</VCol>
+							<VCol cols="12" md="6" v-if="userStore.isCustomer">
+								<VTextField v-model="customerDataLocal.phone" label="Phone" :rules="phoneRules" />
+							</VCol>
 
-						<VCol cols="12" md="6" v-if="userStore.isCustomer">
-							<VTextField v-model="customerDataLocal.default_payment_reference" label="Payment reference"
-								:rules="paymentReferenceRules(customerDataLocal.default_payment_reference, customerDataLocal.default_payment_type)" />
-						</VCol>
+							<VCol cols="12" md="6" v-if="userStore.isCustomer">
+								<VTextField v-model="customerDataLocal.nif" label="NIF" :rules="nifRules" />
+							</VCol>
 
-						<VCol cols="12" class="d-flex flex-wrap gap-4">
-							<VBtn @click="saveChanges">Save changes</VBtn>
-							<VBtn color="error" variant="tonal" type="reset" @click.prevent="resetForm"
-								:disabled="!hasChanged">
-								Reset
-							</VBtn>
-						</VCol>
+							<VCol cols="12" md="6" v-if="userStore.isCustomer">
+								<VSelect v-model="customerDataLocal.default_payment_type" label="Payment type"
+									:items="paymentTypes" />
+							</VCol>
+
+							<VCol cols="12" md="6" v-if="userStore.isCustomer">
+								<VTextField v-model="customerDataLocal.default_payment_reference"
+									label="Payment reference"
+									:rules="paymentReferenceRules(customerDataLocal.default_payment_reference, customerDataLocal.default_payment_type)" />
+							</VCol>
+						</VRow>
+
+						<VRow>
+							<VCol cols="12" class="d-flex flex-wrap gap-4">
+								<VBtn @click="saveChanges">Save changes</VBtn>
+								<VBtn color="error" variant="tonal" type="reset" @click.prevent="resetForm"
+									:disabled="!hasChanged">
+									Reset
+								</VBtn>
+							</VCol>
+						</VRow>
 					</VForm>
 				</VCardText>
 			</VCard>
