@@ -57,7 +57,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-    <VCol cols="12">
+    <VCol sm="12" md="12" lg="10" offset-lg="1">
         <VCard>
             <VProgressLinear :active="isLoading" indeterminate />
             <VRow no-gutters class="align-cards justify-start">

@@ -42,7 +42,7 @@ const clickViewOrder = (user) => {
 </script>
 
 <template>
-  <VCol cols="12">
+  <VCol sm="12" md="12" lg="10" offset-lg="1">
     <VCard cols="12">
       <VCardText class="pt-4 pb-2">
         <VCardTitle class="pa-0 table-header">
