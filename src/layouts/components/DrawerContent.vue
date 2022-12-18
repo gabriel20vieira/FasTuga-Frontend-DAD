@@ -27,7 +27,7 @@ const userStore = useUserStore()
       icon: { icon: 'mdi-home-outline' }
     }" />
     <VerticalNavLink v-show="userStore.isAnonymous || userStore.isCustomer" :item="{
-      title: 'Board',
+      title: 'Public Board',
       to: 'board',
       icon: { icon: 'mdi-clipboard-list-outline' }
     }" />
@@ -41,6 +41,16 @@ const userStore = useUserStore()
       to: 'delivery-board',
       icon: { icon: 'mdi-clipboard-list-outline' }
     }" />
+    <VerticalNavLink v-show="userStore.isAnonymous || userStore.isCustomer" :item="{
+      title: 'Menu',
+      to: 'menu',
+      icon: { icon: 'mdi-food-outline' }
+    }" />
+    <VerticalNavLink v-show="userStore.isManager" :item="{
+      title: 'Menu',
+      to: 'manage-menu',
+      icon: { icon: 'mdi-food-outline' }
+    }" />
     <VerticalNavLink v-show="userStore.isManager" :item="{
       title: 'Statistics',
       to: 'statistics',
@@ -52,7 +62,7 @@ const userStore = useUserStore()
       icon: { icon: 'mdi-account-group-outline' }
     }" />
     <VerticalNavLink v-show="userStore.isManager || userStore.isCustomer" :item="{
-      title: 'Orders',
+      title: 'My Orders',
       to: 'orders-history',
       icon: { icon: 'mdi-clipboard-list-outline' }
     }" />
@@ -60,16 +70,6 @@ const userStore = useUserStore()
       title: 'Items history',
       to: 'items-history',
       icon: { icon: 'mdi-nutrition' }
-    }" />
-    <VerticalNavLink v-show="userStore.isAnonymous || userStore.isCustomer" :item="{
-      title: 'Menu',
-      to: 'menu',
-      icon: { icon: 'mdi-food-outline' }
-    }" />
-    <VerticalNavLink v-show="userStore.isManager" :item="{
-      title: 'Menu',
-      to: 'manage-menu',
-      icon: { icon: 'mdi-food-outline' }
     }" />
 
     <!-- 👉 Pages -->
