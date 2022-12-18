@@ -33,7 +33,7 @@ const props = defineProps({
                 <VCardTitle>{{ item.identification }}</VCardTitle>
                 <VDivider />
                 <VCol class="py-3">
-                    <VCardSubtitle class="text-h6">
+                    <VCardSubtitle class="text-subtitle-1" style="white-space: initial;">
                         {{ item.product.name }}
                     </VCardSubtitle>
                 </VCol>
