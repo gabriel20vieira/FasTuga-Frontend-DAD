@@ -3,10 +3,11 @@ import defaultPlate from "@/assets/images/defaultPlate.png";
 import ConfirmationDialog from "@/layouts/components/ConfirmationDialog.vue";
 import { productType_LC, useProductStore } from "@/stores/product";
 import { imageUrl, uploadImage } from "@/utils/utils";
-import { nameRules, priceRules } from "@/utils/validations";
+import { priceRules } from "@/utils/validations";
 import { computed } from "@vue/reactivity";
 import { onUnmounted } from "vue";
 
+const form = ref(null)
 const productStore = useProductStore()
 const toast = inject('toast')
 
@@ -16,7 +17,7 @@ const defaultImage = ref(defaultPlate)
 
 const emit = defineEmits(["close", "save"]);
 const props = defineProps(['product'])
-const loading = ref(true)
+const loading = ref(false)
 const errors = ref(null)
 const product = ref({
 	...props.product,
@@ -64,12 +65,15 @@ const destroy = async () => {
 }
 
 const save = async () => {
-	loading.value = true
 	if (!hasChanges.value) {
-		loading.value = false
 		return emit("close");
 	}
 
+	const validation = await form.value.validate();
+	if (!validation.valid)
+		return;
+
+	loading.value = true
 	productStore.save(product.value)
 		.then((res) => {
 			productStore.load()
@@ -96,14 +100,6 @@ const clickUploadImage = async (file) => {
 	product.value.image = await uploadImage(file)
 }
 
-onBeforeMount(() => {
-	loading.value = true
-})
-
-onMounted(() => {
-	loading.value = false
-})
-
 onUnmounted(() => {
 	emit("close");
 })
@@ -115,25 +111,27 @@ onUnmounted(() => {
 		<VCardText>
 			<VRow>
 				<VCol style="position:relative">
-					<VAvatar rounded color="primary" style="height: 192px; width: 256px;" variant="tonal"
+					<VAvatar rounded color="primary" class="product-img" variant="tonal"
 						:image="product?.image ? product.image : defaultImage" />
 					<VBtn color="secondary" icon="mdi-upload" class="upload-btn" @click="refInputEl?.click()" />
 					<input ref="refInputEl" type="file" name="file" accept=".jpeg,.png,.jpg" hidden
 						@input="clickUploadImage">
 				</VCol>
 				<VCol cols="12" xs="12" sm="12" md="7" class="pt-0">
-					<VCol class="px-0">
-						<VTextField v-model="product.name" label="Name" required :error-messages="errors?.name"
-							:rules="nameRules" />
-					</VCol>
-					<VCol class="px-0">
-						<VSelect v-model="product.type" :items="productType_LC" label="Type" required
-							:error-messages="errors?.type" />
-					</VCol>
-					<VCol class="px-0">
-						<VTextField type="number" min="0" v-model="product.price" label="Price" required
-							:error-messages="errors?.price" :rules="priceRules" />
-					</VCol>
+					<VForm ref="form" @submit.prevent="() => { }">
+						<VCol class="px-0">
+							<VTextField v-model="product.name" label="Name" :rules="[v => !!v || 'Name is required']"
+								:error-messages="errors?.name" />
+						</VCol>
+						<VCol class="px-0">
+							<VSelect v-model="product.type" :items="productType_LC" label="Type" required
+								:error-messages="errors?.type" />
+						</VCol>
+						<VCol class="px-0">
+							<VTextField type="number" min="0" v-model="product.price" label="Price"
+								:error-messages="errors?.price" :rules="priceRules" />
+						</VCol>
+					</VForm>
 				</VCol>
 			</VRow>
 			<VCol class="px-0">
@@ -164,6 +162,11 @@ onUnmounted(() => {
 .product-view .upload-btn {
 	position: absolute;
 	top: 163px;
-	left: 230px ;
+	left: 230px;
+}
+
+.product-view .product-img {
+	height: 192px;
+	width: 256px;
 }
 </style>
