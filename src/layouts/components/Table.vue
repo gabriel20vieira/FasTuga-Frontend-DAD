@@ -89,15 +89,18 @@ const btnCondition = (action, item) => {
 					</td>
 				</template>
 				<td style="text-align-last: center" v-if="props.actions.length > 0">
-					<template v-for="action in props.actions">
-						<VBtn icon variant="text" width="30px" height="30px" @click="btnClick(action, item)"
-							v-if="btnCondition(action, item)">
-							<VIcon :icon="action.icon" size="18" />
-							<VTooltip activator="parent" location="end">
-								{{ action.title }}
-							</VTooltip>
-						</VBtn>
-					</template>
+					<VRow class="match-height">
+						<template v-for="action in props.actions">
+							<VCol cols="6" v-if="btnCondition(action, item)">
+								<VBtn icon variant="text" width="30px" height="30px" @click="btnClick(action, item)">
+									<VIcon :icon="action.icon" size="18" />
+									<VTooltip activator="parent" location="end">
+										{{ action.title }}
+									</VTooltip>
+								</VBtn>
+							</VCol>
+						</template>
+					</VRow>
 				</td>
 			</tr>
 		</tbody>
