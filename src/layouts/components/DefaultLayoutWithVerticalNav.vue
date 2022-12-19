@@ -5,7 +5,6 @@ import { getComputedNavLinkToProp } from '@layouts/utils';
 import DrawerContent from './DrawerContent.vue';
 
 // Components
-import Footer from '@/layouts/components/Footer.vue';
 import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue';
 import UserProfile from '@/layouts/components/UserProfile.vue';
 
@@ -40,11 +39,6 @@ const userStore = useUserStore()
     <div class="layout-page-content">
       <RouterView />
     </div>
-
-    <!-- 👉 Footer -->
-    <template #footer>
-      <Footer />
-    </template>
   </VerticalNavLayout>
 </template>
 
