@@ -1,7 +1,7 @@
 <script setup>
 import OrderDialog from '@/layouts/components/OrderDialog.vue';
 import OrdersTable from '@/layouts/components/OrdersTable.vue';
-import { useOrdersStore } from '@/stores/orders';
+import { OrderStatus, useOrdersStore } from '@/stores/orders';
 import { onMounted, ref } from 'vue';
 import ConfirmationDialog from '../layouts/components/ConfirmationDialog.vue';
 
@@ -33,7 +33,7 @@ const clickViewOrder = (user) => {
 
 const clickCancelOrder = async (orderID) => {
   if (await confirmDialog.value.open({ message: "Are you sure you want to cancel this order? The customer will recieve a refund." })) {
-    ordersStore.updateOrderStatus(orderID, ordersStore.OrderStatus.CANCELLED).then(() => {
+    ordersStore.updateOrderStatus(orderID, OrderStatus.CANCELLED).then(() => {
       nextPage()
       toast.success("Order canceled successfully!")
       confirmDialog.value.close()

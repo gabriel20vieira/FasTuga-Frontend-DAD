@@ -1,6 +1,6 @@
 <script setup>
-import { paymentTypes, UserType, useUserStore } from '@/stores/user';
-import { userRole } from '@/utils/utils';
+import { paymentTypes, useUserStore } from '@/stores/user';
+import { CHEF, DELIVERY, MANAGER, userRole } from '@/utils/utils';
 import { emailRules, nameRules, nifRules, paymentReferenceRules, phoneRules } from '@/utils/validations';
 import { computed } from '@vue/reactivity';
 
@@ -14,9 +14,9 @@ const accountDataLocal = ref(structuredClone(accountData))
 const customerDataLocal = ref(structuredClone(customerData))
 
 const userRoles = [
-	{ type: UserType.CHEF, title: userRole(UserType.CHEF) },
-	{ type: UserType.DELIVERY, title: userRole(UserType.DELIVERY) },
-	{ type: UserType.MANAGER, title: userRole(UserType.MANAGER) }
+	{ type: CHEF, title: userRole(CHEF) },
+	{ type: DELIVERY, title: userRole(DELIVERY) },
+	{ type: MANAGER, title: userRole(MANAGER) }
 ]
 
 const resetForm = () => {

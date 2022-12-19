@@ -1,5 +1,7 @@
 <script setup>
-import { useOrdersStore } from '@/stores/orders';
+import { OrderStatus, useOrdersStore } from '@/stores/orders';
+
+import { getStatus } from '@/utils/utils';
 const ordersStore = useOrdersStore()
 
 const toast = inject('toast')
@@ -29,17 +31,17 @@ const props = defineProps({
 })
 
 const isOrderReady = (order) => {
-    return !order.items.find(item => item.status != ordersStore.OrderStatus.READY)
+    return !order.items.find(item => item.status != OrderStatus.READY)
 }
 
 const emit = defineEmits(["refreshBoard"]);
 const updateOrderStatus = (order) => {
-    const newStatus = props.boardTitle == 'Preparing' ? ordersStore.OrderStatus.READY : ordersStore.OrderStatus.DELIVERED
+    const newStatus = props.boardTitle == 'Preparing' ? OrderStatus.READY : OrderStatus.DELIVERED
 
     ordersStore.updateOrderStatus(order.id, newStatus)
         .then((res) => {
             if (res.request.status == 200)
-                toast.success("Order set as " + ordersStore.getStatusString(newStatus))
+                toast.success("Order set as " + getStatus(newStatus))
         }
         ).catch(() => {
             toast.error("Unable to change order status")
@@ -62,8 +64,8 @@ const updateOrderStatus = (order) => {
                         {{ item.product.name }}
 
                         <VChip v-if="props.showDishStatus" class="mr-1 px-1 h-auto" style="font-size: x-small;"
-                            :color="item.status == ordersStore.OrderStatus.READY ? 'success' : 'warning'">
-                            {{ ordersStore.getStatusString(item.status) }}
+                            :color="item.status == OrderStatus.READY ? 'success' : 'warning'">
+                            {{ getStatus(item.status) }}
                         </VChip>
                     </VCardSubtitle>
                 </VCol>

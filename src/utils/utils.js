@@ -1,5 +1,7 @@
-import defaultAvatar from "@/assets/images/avatars/avatar-2.png";
-import defaultPlate from "@/assets/images/defaultPlate.png";
+import defaultAvatar from '@/assets/images/avatars/avatar-2.png';
+import defaultPlate from '@/assets/images/defaultPlate.png';
+import { OrderItemStatus } from '@/stores/orderitem';
+import { OrderStatus } from '@/stores/orders';
 import { inject } from 'vue';
 
 export async function uploadImage(file) {
@@ -61,7 +63,7 @@ export function profilePhotoUrl(image) {
   if (!image) {
     return defaultAvatar
   }
-  
+
   const serverBaseUrl = inject('serverBaseUrl')
   return `${serverBaseUrl}/storage/fotos/${image}`
 }
@@ -102,14 +104,16 @@ export class TableAction {
 
 export const getStatus = status => {
   switch (status) {
-    case 'P':
+    case OrderStatus.PREPARING:
       return 'Preparing'
-    case 'R':
+    case OrderStatus.READY:
       return 'Ready'
-    case 'D':
+    case OrderStatus.DELIVERED:
       return 'Delivered'
-    case 'C':
+    case OrderStatus.CANCELLED:
       return 'Cancelled'
+    case OrderItemStatus.WAITING:
+      return 'Waiting'
     default:
       return 'Unknown'
   }
@@ -117,11 +121,11 @@ export const getStatus = status => {
 
 export const getStatusColor = status => {
   switch (status) {
-    case 'R':
+    case OrderStatus.READY:
       return 'primary'
-    case 'D':
+    case OrderStatus.DELIVERED:
       return 'success'
-    case 'C':
+    case OrderStatus.CANCELLED:
       return 'error'
     default:
       return ''

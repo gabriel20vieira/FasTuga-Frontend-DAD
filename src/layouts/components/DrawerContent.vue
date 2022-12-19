@@ -64,7 +64,7 @@ const userStore = useUserStore()
     <VerticalNavLink v-show="userStore.isManager || userStore.isCustomer || userStore.isDelivery" :item="{
       title: userStore.isCustomer ? 'My Orders' : 'Order History',
       to: 'orders-history',
-      icon: { icon: 'mdi-clipboard-list-outline' }
+      icon: { icon: 'mdi-nutrition' }
     }" />
     <VerticalNavLink v-show="userStore.isChef" :item="{
       title: 'Cooking History',

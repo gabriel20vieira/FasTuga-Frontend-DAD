@@ -1,25 +1,19 @@
 import defaultAvatar from '@/assets/images/avatars/avatar-8.png'
+import { CHEF, CUSTOMER, DELIVERY, MANAGER } from '@/utils/utils'
 import websockets from '@/utils/websockets'
 import { defineStore, skipHydrate } from 'pinia'
 import { computed, inject } from 'vue'
 import { OrderStatus } from './orders'
 
-export const UserType = {
-  CHEF: 'EC',
-  DELIVERY: 'ED',
-  MANAGER: 'EM',
-  CUSTOMER: 'C',
-}
-
-export const PaymentTypes = {
+const AvailablePaymentTypes = {
   VISA: 'VISA',
   PAYPAL: 'PAYPAL',
   MBWAY: 'MBWAY',
 }
 
-export const userTypes = [UserType.CHEF, UserType.DELIVERY, UserType.MANAGER, UserType.CUSTOMER]
+export const userTypes = [CHEF, DELIVERY, MANAGER, CUSTOMER]
 
-export const paymentTypes = [PaymentTypes.MBWAY, PaymentTypes.PAYPAL, PaymentTypes.VISA]
+export const paymentTypes = [AvailablePaymentTypes.MBWAY, AvailablePaymentTypes.PAYPAL, AvailablePaymentTypes.VISA]
 
 export const useUserStore = defineStore('user', () => {
   const axios = inject('axios')
@@ -42,19 +36,19 @@ export const useUserStore = defineStore('user', () => {
   })
 
   const isManager = computed(() => {
-    return isType(UserType.MANAGER)
+    return isType(MANAGER)
   })
 
   const isChef = computed(() => {
-    return isType(UserType.CHEF)
+    return isType(CHEF)
   })
 
   const isCustomer = computed(() => {
-    return isType(UserType.CUSTOMER)
+    return isType(CUSTOMER)
   })
 
   const isDelivery = computed(() => {
-    return isType(UserType.DELIVERY)
+    return isType(DELIVERY)
   })
 
   const isAnonymous = computed(() => {

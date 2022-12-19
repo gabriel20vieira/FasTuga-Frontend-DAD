@@ -50,10 +50,6 @@ const columnCondition = (column) => {
 
 	return typeof column?.condition == 'function' ? column?.condition(column) : true
 }
-
-onMounted(() => {
-	console.log('TESTE:', props.actions);
-})
 </script>
 
 <template>

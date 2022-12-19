@@ -1,30 +1,12 @@
 import websockets from '@/utils/websockets'
 import { defineStore } from 'pinia'
 import { inject, ref } from 'vue'
-import { OrderItemStatus } from './orderitem'
 
 export const OrderStatus = {
   READY: 'R',
   PREPARING: 'P',
   CANCELLED: 'C',
   DELIVERED: 'D',
-}
-
-export const getStatusString = status => {
-  switch (status) {
-    case OrderStatus.PREPARING:
-      return 'Preparing'
-    case OrderStatus.READY:
-      return 'Ready'
-    case OrderStatus.DELIVERED:
-      return 'Delivered'
-    case OrderStatus.CANCELLED:
-      return 'Cancelled'
-    case OrderItemStatus.WAITING:
-      return 'Waiting'
-    default:
-      return 'Unknown'
-  }
 }
 
 export const useOrdersStore = defineStore('orders', () => {
@@ -66,12 +48,10 @@ export const useOrdersStore = defineStore('orders', () => {
   }
 
   return {
-    OrderStatus,
     load,
     orders,
     fetchBoard,
     ordersBoard,
-    getStatusString,
     updateOrderStatus,
   }
 })
