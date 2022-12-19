@@ -36,15 +36,14 @@ const emit = defineEmits(["refreshBoard"]);
 const updateOrderStatus = (order) => {
     const newStatus = props.boardTitle == 'Preparing' ? ordersStore.OrderStatus.READY : ordersStore.OrderStatus.DELIVERED
 
-    ordersStore.updateOrderStatus(order, newStatus).then((res) => {
-        if (res.request.status == 200)
-            toast.success("Order set as " + ordersStore.getStatusString(newStatus))
-    }
-    ).catch(() => {
-        toast.error("Unable to change order status")
-    })
-
-    emit("refreshBoard")
+    ordersStore.updateOrderStatus(order.id, newStatus)
+        .then((res) => {
+            if (res.request.status == 200)
+                toast.success("Order set as " + ordersStore.getStatusString(newStatus))
+        }
+        ).catch(() => {
+            toast.error("Unable to change order status")
+        }).finally(() => emit("refreshBoard"))
 }
 </script>
 

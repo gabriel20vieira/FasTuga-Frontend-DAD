@@ -62,7 +62,7 @@ const userStore = useUserStore()
       icon: { icon: 'mdi-account-group-outline' }
     }" />
     <VerticalNavLink v-show="userStore.isManager || userStore.isCustomer || userStore.isDelivery" :item="{
-      title: 'My Orders',
+      title: userStore.isCustomer ? 'My Orders' : 'Order History',
       to: 'orders-history',
       icon: { icon: 'mdi-clipboard-list-outline' }
     }" />

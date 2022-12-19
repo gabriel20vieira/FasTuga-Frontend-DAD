@@ -24,14 +24,18 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["newPage", "viewOrder"]);
+const emit = defineEmits(["newPage", "viewOrder", "cancelOrder"]);
 
 const newPage = (page) => {
   emit("newPage", page);
 }
 
-const viewClick = (user) => {
-  emit("viewOrder", user);
+const viewClick = (order) => {
+  emit("viewOrder", order);
+};
+
+const cancelClick = (order) => {
+  emit("cancelOrder", order.id);
 };
 
 const tableColumns = [
@@ -45,8 +49,9 @@ const tableColumns = [
 ]
 
 const tableActions = [
-  new TableAction("View", "mdi-eye", "tonal", viewClick)
+  new TableAction("View", "mdi-eye", "tonal", viewClick),
 ]
+userStore.isManager && tableActions.push(new TableAction("Cancel", "mdi-close", "tonal", cancelClick))
 
 </script>
 

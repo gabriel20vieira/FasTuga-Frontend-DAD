@@ -1,8 +1,5 @@
 <script setup>
 import TablePagination from "@/layouts/components/TablePagination.vue";
-import { useUserStore } from "@/stores/user";
-
-const userStore = useUserStore()
 
 const props = defineProps({
 	columns: {
@@ -35,7 +32,6 @@ const newPage = (page = 1) => {
 }
 
 const processText = (column, item) => {
-
 	if (typeof column?.path == 'function') {
 		return column?.path(item)
 	}
@@ -48,7 +44,6 @@ const processChip = (column, item) => {
 }
 
 const columnCondition = (column) => {
-
 	if (!column?.condition) {
 		return true
 	}
@@ -56,6 +51,9 @@ const columnCondition = (column) => {
 	return typeof column?.condition == 'function' ? column?.condition(column) : true
 }
 
+onMounted(() => {
+	console.log('TESTE:', props.actions);
+})
 </script>
 
 <template>
@@ -89,9 +87,9 @@ const columnCondition = (column) => {
 				<td style="text-align-last: center" v-if="props.actions.length > 0">
 					<VBtn icon variant="text" width="30px" height="30px" v-for="action in props.actions"
 						@click="action?.callback(item) ?? (() => { })">
-						<VIcon :icon="action.icon" size="18" />
+						<VIcon :icon="action?.icon" size="18" />
 						<VTooltip activator="parent" location="end">
-							{{ action.title }}
+							{{ action?.title }}
 						</VTooltip>
 					</VBtn>
 				</td>

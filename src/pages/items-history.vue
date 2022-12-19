@@ -1,42 +1,28 @@
 <script setup>
 import ProductDetailsDialog from '@/layouts/components/ProductDetailsDialog.vue';
-import TableVue from '@/layouts/components/Table.vue';
+import Table from '@/layouts/components/Table.vue';
 import { useOrderItemStore } from '@/stores/orderitem';
-import { useUserStore } from '@/stores/user';
 import { TableAction, TableColumn } from '@/utils/utils';
 import { ref } from 'vue';
 
 const toast = inject('toast')
 const orderItemsStore = useOrderItemStore()
-const userStore = useUserStore()
 
 const isTableLoading = ref(true)
 const tableLength = ref(1)
 const itemBeingViewed = ref({})
 const isDialogVisible = ref(false)
 
-
-const onOk = (response) => {
-  isTableLoading.value = false
-  tableLength.value = response?.data.meta.last_page || 1;
-}
-
-const onError = (error) => {
-  isTableLoading.value = false
-  toast.error(error.message)
-}
-
-onBeforeMount(async () => {
+onBeforeMount(() => {
   nextPage()
 })
 
 const nextPage = (page = 1) => {
   isTableLoading.value = true
   orderItemsStore.load(page)
-    .then((res) => onOk(res))
-    .catch((err) => onError(err)).finally(() => {
-      isTableLoading.value = false
-    })
+    .then((res) => tableLength.value = res?.data.meta.last_page || 1)
+    .catch((err) => toast.error(err.message))
+    .finally(() => isTableLoading.value = false)
 }
 
 const clickViewOrder = (item) => {
@@ -55,7 +41,6 @@ const tableColumns = [
 const tableActions = [
   new TableAction("View", "mdi-eye", "tonal", clickViewOrder)
 ]
-
 </script>
 
 <template>
@@ -67,7 +52,7 @@ const tableActions = [
         </VCardTitle>
       </VCardText>
 
-      <TableVue :items="orderItemsStore.items" :columns="tableColumns" :loading="isTableLoading"
+      <Table :items="orderItemsStore.items" :columns="tableColumns" :loading="isTableLoading"
         :tableLength="tableLength" @newPage="nextPage" :actions="tableActions" />
 
     </VCard>
