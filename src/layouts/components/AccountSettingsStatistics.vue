@@ -24,12 +24,12 @@ onUnmounted(() => {
 <template>
 	<template v-if="userStore.isChef">
 		<VRow class="match-height py-2">
-			<VCol cols="12" md="2">
-				<StatisticsCustomerCard title="Items Cooked" :image="true"
+			<VCol cols="12" md="4">
+				<StatisticsCustomerCard title="Dishes Cooked" :image="true"
 					:value="statisticsStore.statistics?.items_cooked ?? '..'" :isLoading="isLoading" />
 			</VCol>
 
-			<VCol cols="12" md="10">
+			<VCol cols="12" md="12">
 				<StatisticsMostItemByType :title="'Most Cooked'"
 					:statisticsItems="statisticsStore.statistics?.most_cooked ?? []" extra="times_cooked"
 					:isLoading="isLoading" />
