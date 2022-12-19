@@ -55,25 +55,25 @@ export const useStatisticsStore = defineStore('statistics', () => {
         time: 'Ever',
         value: `${statistics.value?.all.order_with_highest_paid_value ?? 0}€`,
         icon: 'mdi-all-inclusive',
-        color: 'primary'
+        color: 'primary',
       },
       {
         time: 'Month',
         value: `${statistics.value?.monthly.order_with_highest_paid_value ?? 0}€`,
         icon: 'mdi-calendar-month-outline',
-        color: 'success'
+        color: 'success',
       },
       {
         time: 'Week',
         value: `${statistics.value?.weekly.order_with_highest_paid_value ?? 0}€`,
         icon: 'mdi-calendar-week-outline',
-        color: 'warning'
+        color: 'warning',
       },
       {
         time: 'Today',
         value: `${statistics.value?.daily.order_with_highest_paid_value ?? 0}€`,
         icon: 'mdi-calendar-today-outline',
-        color: 'info'
+        color: 'info',
       },
     ]
   }
@@ -84,25 +84,25 @@ export const useStatisticsStore = defineStore('statistics', () => {
         time: 'Ever',
         value: `${statistics.value?.all.average_paid_value_per_order ?? 0}€`,
         icon: 'mdi-all-inclusive',
-        color: 'primary'
+        color: 'primary',
       },
       {
         time: 'Month',
         value: `${statistics.value?.monthly.average_paid_value_per_order ?? 0}€`,
         icon: 'mdi-calendar-month-outline',
-        color: 'success'
+        color: 'success',
       },
       {
         time: 'Week',
         value: `${statistics.value?.weekly.average_paid_value_per_order ?? 0}€`,
         icon: 'mdi-calendar-week-outline',
-        color: 'warning'
+        color: 'warning',
       },
       {
         time: 'Today',
         value: `${statistics.value?.daily.average_paid_value_per_order ?? 0}€`,
         icon: 'mdi-calendar-today-outline',
-        color: 'info'
+        color: 'info',
       },
     ]
   }
@@ -141,8 +141,13 @@ export const useStatisticsStore = defineStore('statistics', () => {
       },
     ]
   }
+  
+  function clear() {
+    statistics.value = null
+  }
 
   return {
+    clear,
     statistics,
     load,
     getStatisticsBalance,

@@ -47,9 +47,17 @@ const columnCondition = (column) => {
 	if (!column?.condition) {
 		return true
 	}
-
 	return typeof column?.condition == 'function' ? column?.condition(column) : true
 }
+
+const btnClick = (action, item) => {
+	return typeof action?.callback == 'function' ? action?.callback(item) : (() => { })
+}
+
+const btnCondition = (action, item) => {
+	return typeof action?.condition == 'function' ? action?.condition(item) : true
+}
+
 </script>
 
 <template>
@@ -81,13 +89,18 @@ const columnCondition = (column) => {
 					</td>
 				</template>
 				<td style="text-align-last: center" v-if="props.actions.length > 0">
-					<VBtn icon variant="text" width="30px" height="30px" v-for="action in props.actions"
-						@click="action?.callback(item) ?? (() => { })">
-						<VIcon :icon="action?.icon" size="18" />
-						<VTooltip activator="parent" location="end">
-							{{ action?.title }}
-						</VTooltip>
-					</VBtn>
+					<VRow class="match-height">
+						<template v-for="action in props.actions">
+							<VCol cols="6" v-if="btnCondition(action, item)">
+								<VBtn icon variant="text" width="30px" height="30px" @click="btnClick(action, item)">
+									<VIcon :icon="action.icon" size="18" />
+									<VTooltip activator="parent" location="end">
+										{{ action.title }}
+									</VTooltip>
+								</VBtn>
+							</VCol>
+						</template>
+					</VRow>
 				</td>
 			</tr>
 		</tbody>

@@ -33,12 +33,15 @@ const clickViewOrder = (user) => {
 
 const clickCancelOrder = async (orderID) => {
   if (await confirmDialog.value.open({ message: "Are you sure you want to cancel this order? The customer will recieve a refund." })) {
-    ordersStore.updateOrderStatus(orderID, OrderStatus.CANCELLED).then(() => {
+    confirmDialog.value.close()
+    isTableLoading.value = true
+    await ordersStore.updateOrderStatus(orderID, OrderStatus.CANCELLED).then(() => {
       nextPage()
       toast.success("Order canceled successfully!")
-      confirmDialog.value.close()
+      isTableLoading.value = false
     }).catch((error) => {
       toast.error(error.response.data.message ? error.response.data.message : error.message)
+      isTableLoading.value = false
     })
   }
 }

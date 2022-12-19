@@ -1,5 +1,6 @@
 <script setup>
 import Table from "@/layouts/components/Table.vue";
+import { OrderStatus } from "@/stores/orders";
 import { useUserStore } from "@/stores/user";
 import { getStatus, getStatusColor, TableAction, TableColumn } from '@/utils/utils';
 
@@ -39,19 +40,41 @@ const cancelClick = (order) => {
 };
 
 const tableColumns = [
-  new TableColumn("#", "id", column => userStore.isManager),
-  new TableColumn("ticket", "ticket_number"),
-  new TableColumn("date", "date"),
-  new TableColumn("items", "items.length"),
-  new TableColumn("payment", "payment_type"),
-  new TableColumn("total", item => `${item.total_price}€`, column => !userStore.isDelivery),
-  new TableColumn("Status", item => getStatus(item.status), column => !userStore.isDelivery, true, item => getStatusColor(item.status)),
+  new TableColumn({ title: "#", path: "id", condition: column => userStore.isManager }),
+  new TableColumn({ title: "ticket", path: "ticket_number" }),
+  new TableColumn({ title: "date", path: "date" }),
+  new TableColumn({ title: "items", path: "items.length" }),
+  new TableColumn({ title: "payment", path: "payment_type" }),
+  new TableColumn({
+    title: "total",
+    path: item => `${item.total_price}€`,
+    condition: column => !userStore.isDelivery
+  }),
+  new TableColumn({
+    title: "Status",
+    path: item => getStatus(item.status),
+    condition: column => !userStore.isDelivery,
+    chip: true,
+    chipColor: item => getStatusColor(item.status)
+  }),
 ]
 
 const tableActions = [
-  new TableAction("View", "mdi-eye", "tonal", viewClick),
+  new TableAction({
+    title: "View",
+    icon: "mdi-eye",
+    color: "tonal",
+    callback: viewClick,
+  }),
+  new TableAction({
+    title: "Cancel",
+    icon: "mdi-close",
+    color: "tonal",
+    callback: cancelClick,
+    condition: (item) => userStore.isManager && item?.status != OrderStatus.CANCELLED
+  })
 ]
-userStore.isManager && tableActions.push(new TableAction("Cancel", "mdi-close", "tonal", cancelClick))
+
 
 </script>
 

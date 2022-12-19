@@ -14,6 +14,11 @@ onBeforeMount(() => {
 		isLoading.value = false
 	})
 })
+
+onUnmounted(() => {
+	statisticsStore.clear()
+})
+
 </script>
 
 <template>

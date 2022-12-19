@@ -25,10 +25,10 @@ const data = computed(() => {
 
     return {
         series: [
-            statisticsStore.statistics?.all.total_of_orders_by_type[0].delivered,
-            statisticsStore.statistics?.all.total_of_orders_by_type[1].delivered,
-            statisticsStore.statistics?.all.total_of_orders_by_type[2].delivered,
-            statisticsStore.statistics?.all.total_of_orders_by_type[3].delivered
+            statisticsStore.statistics?.all?.total_of_orders_by_type[0].delivered,
+            statisticsStore.statistics?.all?.total_of_orders_by_type[1].delivered,
+            statisticsStore.statistics?.all?.total_of_orders_by_type[2].delivered,
+            statisticsStore.statistics?.all?.total_of_orders_by_type[3].delivered
         ],
         chartOptions: {
             labels: ['Hot Dish', 'Cold Dish', 'Drink', 'Dessert'],

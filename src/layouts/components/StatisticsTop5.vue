@@ -35,8 +35,8 @@ const props = defineProps({
             <VList class="card-list">
                 <VListItem v-for="item in props.statisticsItems">
                     <template #prepend>
-                        <div v-if="props.hasPhotos" class="rounded-circle overflow-hidden card-avatar-width me-6">
-                            <VImg :height="29" :width="28" :src="profilePhotoUrl(item.photo_url)" class="card-avatar" />
+                        <div v-if="props.hasPhotos" class="rounded-circle overflow-hidden me-6">
+                            <VImg :width="30" :src="profilePhotoUrl(item.photo_url)" class="card-avatar" />
                         </div>
                         <div v-else class="me-3">
                             <VAvatar :color="item.color" variant="tonal" rounded size="40" class="elevation-1">
@@ -63,3 +63,11 @@ const props = defineProps({
         <VProgressLinear indeterminate v-if="props.isLoading" />
     </VCard>
 </template>
+
+<style lang="css">
+.card-avatar {
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    scale: 1.8;
+}
+</style>

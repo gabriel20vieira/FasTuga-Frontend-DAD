@@ -1,8 +1,8 @@
-import defaultAvatar from '@/assets/images/avatars/avatar-2.png';
-import defaultPlate from '@/assets/images/defaultPlate.png';
-import { OrderItemStatus } from '@/stores/orderitem';
-import { OrderStatus } from '@/stores/orders';
-import { inject } from 'vue';
+import defaultAvatar from '@/assets/images/avatars/avatar-2.png'
+import defaultPlate from '@/assets/images/defaultPlate.png'
+import { OrderItemStatus } from '@/stores/orderitem'
+import { OrderStatus } from '@/stores/orders'
+import { inject } from 'vue'
 
 export async function uploadImage(file) {
   return new Promise(function (resolve) {
@@ -84,7 +84,7 @@ export function capitalizeFirstLetter(string) {
 }
 
 export class TableColumn {
-  constructor(title, path, condition = null, chip = false, chipColor = null) {
+  constructor({ title, path, condition = null, chip = false, chipColor = null }) {
     this.title = title
     this.path = path
     this.condition = condition
@@ -94,11 +94,12 @@ export class TableColumn {
 }
 
 export class TableAction {
-  constructor(title, icon, color, callback = null) {
+  constructor({ title, icon, color, callback = null, condition = null }) {
     this.title = title
     this.icon = icon
     this.color = color
     this.callback = callback
+    this.condition = condition
   }
 }
 

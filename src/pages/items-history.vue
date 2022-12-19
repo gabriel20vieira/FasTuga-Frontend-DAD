@@ -31,15 +31,19 @@ const clickViewOrder = (item) => {
 }
 
 const tableColumns = [
-  new TableColumn("#", "id"),
-  new TableColumn("identification", "identification"),
-  // new TableColumn("Status", item => getStatus(item.status), null, true, item => getStatusColor(item.status)),
-  new TableColumn("price", item => `${item.price}€`),
-  new TableColumn("Name", "product?.name"),
+  new TableColumn({ title: "#", path: "id" }),
+  new TableColumn({ title: "identification", path: "identification" }),
+  new TableColumn({ title: "price", path: item => `${item.price}€` }),
+  new TableColumn({ title: "Name", path: "product?.name" }),
 ]
 
 const tableActions = [
-  new TableAction("View", "mdi-eye", "tonal", clickViewOrder)
+  new TableAction({
+    title: "View",
+    icon: "mdi-eye",
+    color: "tonal",
+    callback: clickViewOrder
+  })
 ]
 </script>
 
