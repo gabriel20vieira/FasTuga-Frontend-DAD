@@ -29,8 +29,8 @@ const props = defineProps({
                             </VAvatar>
                         </div>
                         <div class="d-flex flex-column">
-                            <span class="text-caption">
-                                Mean of paid
+                            <span class="text-caption" style="line-height: normal;">
+                                Avg. Paid
                             </span>
                             <span class="text-h6 font-weight-medium">{{
                                     statistics?.mean_of_paid_per_order ?? '...'
@@ -46,8 +46,8 @@ const props = defineProps({
                             </VAvatar>
                         </div>
                         <div class="d-flex flex-column">
-                            <span class="text-caption">
-                                Most points on order
+                            <span class="text-caption" style="line-height: normal;">
+                                Max Points on Order
                             </span>
                             <span class="text-h6 font-weight-medium">{{
                                     statistics?.most_points_on_order ?? '...'
@@ -63,8 +63,8 @@ const props = defineProps({
                             </VAvatar>
                         </div>
                         <div class="d-flex flex-column">
-                            <span class="text-caption">
-                                Biggest discount
+                            <span class="text-caption" style="line-height: normal;">
+                                Biggest Discount
                             </span>
                             <span class="text-h6 font-weight-medium">{{
                                     statistics?.biggest_discount ?? '...'

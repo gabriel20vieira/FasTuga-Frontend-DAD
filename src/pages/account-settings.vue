@@ -30,8 +30,6 @@ if (!userStore.isManager) {
 		tab: 'statistics'
 	})
 }
-
-
 </script>
 
 <template>
@@ -45,11 +43,6 @@ if (!userStore.isManager) {
 		<VDivider />
 
 		<VWindow v-model="activeTab" class="mt-5 disable-tab-transition" :touch="false">
-
-			<VWindowItem value="statistics" v-if="!userStore.isManager">
-				<AccountSettingsStatistics />
-			</VWindowItem>
-
 			<VWindowItem value="account">
 				<AccountSettingsAccount />
 			</VWindowItem>
@@ -58,7 +51,9 @@ if (!userStore.isManager) {
 				<AccountSettingsSecurity />
 			</VWindowItem>
 
-
+			<VWindowItem value="statistics" v-if="!userStore.isManager">
+				<AccountSettingsStatistics />
+			</VWindowItem>
 		</VWindow>
 	</div>
 </template>

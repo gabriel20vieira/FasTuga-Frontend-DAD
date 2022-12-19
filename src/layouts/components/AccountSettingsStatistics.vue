@@ -19,15 +19,13 @@ onBeforeMount(() => {
 <template>
 	<template v-if="userStore.isChef">
 		<VRow class="match-height py-2">
-			<VCol cols="12" md="6">
-				<StatisticsCustomerCard title="Items cooked" :image="true"
+			<VCol cols="12" md="2">
+				<StatisticsCustomerCard title="Items Cooked" :image="true"
 					:value="statisticsStore.statistics?.items_cooked ?? '..'" :isLoading="isLoading" />
 			</VCol>
-		</VRow>
 
-		<VRow class="match-height py-2">
-			<VCol cols="12" md="12">
-				<StatisticsMostItemByType :title="'Most cooked'"
+			<VCol cols="12" md="10">
+				<StatisticsMostItemByType :title="'Most Cooked'"
 					:statisticsItems="statisticsStore.statistics?.most_cooked ?? []" extra="times_cooked"
 					:isLoading="isLoading" />
 			</VCol>
@@ -36,24 +34,22 @@ onBeforeMount(() => {
 
 	<template v-if="userStore.isCustomer">
 		<VRow class="match-height py-2">
-			<VCol cols="12" md="4">
-				<StatisticsCustomerCard title="Points accumulated" :value="userStore.customer?.points ?? '..'"
+			<VCol cols="12" sm="6" md="6" lg="2">
+				<StatisticsCustomerCard title="My Points" :value="userStore.customer?.points ?? '..'"
 					:image="true" :isLoading="isLoading" />
 			</VCol>
-			<VCol cols="12" md="4">
-				<StatisticsCustomerCard title="Total of orders"
+			<VCol cols="12" sm="6" md="6" lg="2">
+				<StatisticsCustomerCard title="Orders"
 					:value="statisticsStore.statistics?.total_of_orders ?? '..'" :isLoading="isLoading" />
 			</VCol>
-		</VRow>
-		<VRow class="match-height py-2">
-			<VCol>
+			<VCol cols="12" md="12" lg="8">
 				<StatisticsCustomerSavings title="Savings" :isLoading="isLoading"
 					:statistics="statisticsStore.statistics" />
 			</VCol>
 		</VRow>
 		<VRow class="match-height py-2">
 			<VCol cols="12" md="12">
-				<StatisticsMostItemByType :title="'Most cooked'"
+				<StatisticsMostItemByType :title="'Most Requested'"
 					:statisticsItems="statisticsStore.statistics?.most_chosen_product_per_type ?? []" extra="price"
 					afterExtra="€" :isLoading="isLoading" />
 			</VCol>
@@ -62,13 +58,13 @@ onBeforeMount(() => {
 
 	<template v-if="userStore.isDelivery">
 		<VRow class="match-height py-2">
-			<VCol cols="12" md="4">
-				<StatisticsCustomerCard title="Orders delivered"
+			<VCol cols="12" md="3">
+				<StatisticsCustomerCard title="Orders Delivered"
 					:value="statisticsStore.statistics?.orders_delivered ?? '..'" :image="true"
 					:isLoading="isLoading" />
 			</VCol>
-			<VCol cols="12" md="4">
-				<StatisticsCustomerCard title="Delivered last hour"
+			<VCol cols="12" md="3">
+				<StatisticsCustomerCard title="Deliveres Last Hour"
 					:value="statisticsStore.statistics?.orders_last_hour ?? '..'" :isLoading="isLoading" />
 			</VCol>
 		</VRow>

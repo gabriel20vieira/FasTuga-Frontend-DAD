@@ -12,7 +12,6 @@ const triangleBg = computed(() => {
 const props = defineProps(["title", "value", "subtitle", "isLoading", "subvalue", "image"]);
 
 const { title, value, subtitle, subvalue, image } = toRefs(props);
-
 </script>
 
 <template>
@@ -29,16 +28,16 @@ const { title, value, subtitle, subvalue, image } = toRefs(props);
 			</VChip>
 		</VCardText>
 
-		<VImg :src="triangleBg" class="triangle-bg" />
+		<VImg :src="image && triangleBg" class="triangle-bg" />
 
-		<VImg v-if="image" :src="image == true ? avatar : image" class="avatar" />
+		<VImg v-if="image" :src="image && avatar" class="avatar" />
 	</VCard>
 </template>
 
 <style lang="scss">
 .triangle-bg {
 	position: absolute;
-	inline-size: 7.5rem;
+	inline-size: 5.5rem;
 	inset-block-end: 0;
 	inset-inline-end: 0;
 }
