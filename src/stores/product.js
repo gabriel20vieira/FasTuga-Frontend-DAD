@@ -49,7 +49,7 @@ export const useProductStore = defineStore('product', () => {
     if (product) {
       if (product?.id) {
         return await axios.patch(`products/${product.id}`, product).finally(() => {
-          soc.send('products-update', product)
+          soc.send('products-update')
           load()
         })
       } else {

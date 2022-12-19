@@ -27,7 +27,7 @@ export const useOrderItemStore = defineStore('orderitem', () => {
         status: type,
       })
       .then(item => {
-        soc.send('items-update', item)
+        soc.send('items-update')
         return item
       })
   }

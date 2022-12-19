@@ -5,6 +5,7 @@ import { emailRules, nameRules, nifRules, paymentReferenceRules, phoneRules } fr
 import { computed } from '@vue/reactivity';
 
 const userStore = useUserStore();
+const toast = inject('toast')
 
 var accountData = setAccountData()
 var customerData = setCustomerData()
@@ -73,22 +74,27 @@ const hasChanged = computed(() => {
 })
 
 const saveChanges = async () => {
-	await userStore.updateUser(userStore.userId, accountDataLocal.value, async (data) => {
-		if (data) {
+	await userStore.updateUser(userStore.userId, accountDataLocal.value)
+		.then((res) => {
+			toast.success(res.data.message)
+
 			accountData = setAccountData()
-		}
-		if (!userStore.isCustomer) {
-			accountDataLocal.value = structuredClone(accountData)
-		}
-	})
+			if (!userStore.isCustomer) {
+				accountDataLocal.value = structuredClone(accountData)
+			}
+		}).catch((err) => {
+			toast.error(err?.response?.data?.message)
+		})
 
 	if (userStore.isCustomer) {
-		await userStore.updateCustomer(userStore.customerId, customerDataLocal.value, (data) => {
-			if (data) {
+		await userStore.updateCustomer(userStore.customerId, customerDataLocal.value)
+			.then((res) => {
+				toast.success(res.data.message)
 				customerData = setCustomerData()
 				customerDataLocal.value = structuredClone(customerData)
-			}
-		})
+			}).catch((err) => {
+				toast.error(err.response.data.message)
+			})
 	}
 }
 

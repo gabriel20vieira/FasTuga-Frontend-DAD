@@ -98,40 +98,20 @@ export const useUserStore = defineStore('user', () => {
     return null
   }
 
-  async function updateUser(id, userData, callback = null) {
-    axios
-      .patch(`/users/${id}`, userData)
-      .then(res => {
-        toast.success(res.data.message)
-        user.value = res.data.data
-        if (callback) {
-          callback(true)
-        }
-      })
-      .catch(err => {
-        toast.error(err.response.data.message)
-        if (callback) {
-          callback(false)
-        }
-      })
+  async function updateUser(id, userData) {
+    return await axios.patch(`/users/${id}`, userData).then(res => {
+      user.value = res.data.data
+      soc.send('users-update', user.value)
+      return res
+    })
   }
 
-  async function updateCustomer(id, userData, callback = null) {
-    axios
-      .patch(`/customers/${id}`, userData)
-      .then(res => {
-        toast.success(res.data.message)
-        customer.value = res.data.data.customer
-        if (callback) {
-          callback(true)
-        }
-      })
-      .catch(err => {
-        toast.error(err.response.data.message)
-        if (callback) {
-          callback(false)
-        }
-      })
+  async function updateCustomer(id, customerData) {
+    return await axios.patch(`/customers/${id}`, customerData).then(res => {
+      customer.value = res.data.data.customer ?? { id: -1 }
+      soc.send('customers-update', customer.value)
+      return res
+    })
   }
 
   async function loadUser() {
@@ -150,7 +130,36 @@ export const useUserStore = defineStore('user', () => {
     sessionStorage.removeItem('token')
     user.value = { id: -1 }
     customer.value = { id: -1 }
+  }
+
+  function clearCurrentOrders() {
     currentOrders.value = []
+  }
+
+  async function removeOutdatedTickets() {
+    if (isCustomer || isAnonymous) {
+      currentOrders.value.forEach(order => {
+        let now = new Date()
+        if (order.date != `${now.getFullYear()}-${now.getMonth()}-${now.getDay()}`) {
+          let idx = currentOrders.value.indexOf(found)
+          currentOrders.value.splice(idx, 1)
+        }
+      })
+    }
+  }
+
+  function setupCurrentOrderTimer() {
+    var hours = 0.2
+    var now = new Date().getTime()
+    var setupTime = localStorage.getItem('setupTime')
+    if (setupTime == null) {
+      localStorage.setItem('setupTime', now)
+    } else {
+      if (now - setupTime > hours * 60 * 60 * 1000) {
+        removeOutdatedTickets()
+        localStorage.setItem('setupTime', now)
+      }
+    }
   }
 
   async function login(credentials) {
@@ -171,7 +180,7 @@ export const useUserStore = defineStore('user', () => {
 
   async function logout() {
     try {
-      await axios.post('logout').finally(() => {
+      await axios.post('logout').then(() => {
         soc.logout()
         clearUser()
       })
@@ -215,6 +224,9 @@ export const useUserStore = defineStore('user', () => {
     customer: skipHydrate(customer),
     currentOrders: skipHydrate(currentOrders),
     checkUserCurrentOrders,
+    clearCurrentOrders,
+    setupCurrentOrderTimer,
+    removeOutdatedTickets,
     userId,
     userPhoto,
     customerId,
@@ -233,5 +245,6 @@ export const useUserStore = defineStore('user', () => {
     isAnonymous,
     isLogged,
     isEmployee,
+    clearUser,
   }
 })
