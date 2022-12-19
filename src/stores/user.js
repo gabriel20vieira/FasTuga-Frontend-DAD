@@ -20,10 +20,6 @@ export const useUserStore = defineStore('user', () => {
   const serverBaseUrl = inject('serverBaseUrl')
   const toast = inject('toast')
   const soc = websockets()
-
-  // const user = ref(null)
-  // const customer = ref(null)
-  // const currentOrders = ref([])
   const user = useLocalStorage('user', { id: -1 })
   const customer = useLocalStorage('customer', { id: -1 })
   const currentOrders = useLocalStorage('current-orders', [])
@@ -153,6 +149,8 @@ export const useUserStore = defineStore('user', () => {
     delete axios.defaults.headers.common.Authorization
     sessionStorage.removeItem('token')
     user.value = { id: -1 }
+    customer.value = { id: -1 }
+    currentOrders.value = []
   }
 
   async function login(credentials) {
