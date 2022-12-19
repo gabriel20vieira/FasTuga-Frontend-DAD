@@ -24,7 +24,7 @@ const tabs = [
 ]
 
 if (!userStore.isManager) {
-	tabs.unshift({
+	tabs.push({
 		title: 'Statistics',
 		icon: 'mdi-chart-timeline-variant',
 		tab: 'statistics'

@@ -40,12 +40,12 @@ onUnmounted(() => {
 	<template v-if="userStore.isCustomer">
 		<VRow class="match-height py-2">
 			<VCol cols="12" sm="6" md="6" lg="2">
-				<StatisticsCustomerCard title="My Points" :value="userStore.customer?.points ?? '..'"
-					:image="true" :isLoading="isLoading" />
+				<StatisticsCustomerCard title="My Points" :value="userStore.customer?.points ?? '..'" :image="true"
+					:isLoading="isLoading" />
 			</VCol>
 			<VCol cols="12" sm="6" md="6" lg="2">
-				<StatisticsCustomerCard title="Orders"
-					:value="statisticsStore.statistics?.total_of_orders ?? '..'" :isLoading="isLoading" />
+				<StatisticsCustomerCard title="Orders" :value="statisticsStore.statistics?.total_of_orders ?? '..'"
+					:isLoading="isLoading" />
 			</VCol>
 			<VCol cols="12" md="12" lg="8">
 				<StatisticsCustomerSavings title="Savings" :isLoading="isLoading"
@@ -69,7 +69,7 @@ onUnmounted(() => {
 					:isLoading="isLoading" />
 			</VCol>
 			<VCol cols="12" md="3">
-				<StatisticsCustomerCard title="Deliveres Last Hour"
+				<StatisticsCustomerCard title="Deliveries Last Hour"
 					:value="statisticsStore.statistics?.orders_last_hour ?? '..'" :isLoading="isLoading" />
 			</VCol>
 		</VRow>
