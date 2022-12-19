@@ -43,25 +43,23 @@ const close = async () => {
 };
 
 const destroy = async () => {
-	if (product.value?.id) {
-		loading.value = true
-		if (await confirmDialog.value.open({ message: "Do you really want to delete this product?" })) {
-			confirmDialog.value.close()
-			productStore.destroy(product.value)
-				.then((res) => {
-					productStore.load()
-					loading.value = false
-					toast.success(res.data.message)
-					emit("close");
-				}).catch((err) => {
-					loading.value = false
-					toast.error("Unable to delete product.")
-				})
-		} else {
-			confirmDialog.value.close()
-			loading.value = false
-		}
+	if (!product.value?.id) {
+		return
 	}
+	
+	if (await confirmDialog.value.open({ message: "Do you really want to delete this product?" })) {
+		loading.value = true
+		confirmDialog.value.close()
+		productStore.destroy(product.value)
+			.then((res) => {
+				productStore.load()
+				toast.success(res.data.message)
+				emit("close");
+			}).catch((err) => {
+				loading.value = false
+				toast.error("Unable to delete product.")
+			}).finally(() => loading.value = false)
+	} 
 }
 
 const save = async () => {
@@ -103,7 +101,6 @@ const clickUploadImage = async (file) => {
 onUnmounted(() => {
 	emit("close");
 })
-
 </script>
 
 <template>
