@@ -2,7 +2,6 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import DefineOptions from 'unplugin-vue-define-options/vite'
 import { fileURLToPath } from 'url'
 import { defineConfig } from 'vite'
 import Pages from 'vite-plugin-pages'
@@ -32,10 +31,9 @@ export default defineConfig({
         enabled: true,
         filepath: './.eslintrc-auto-import.json',
       },
-      imports: ['vue', 'vue-router', '@vueuse/core', 'vue-i18n', 'pinia'],
+      imports: ['vue', 'vue-router', '@vueuse/core', 'pinia'],
       vueTemplate: true,
     }),
-    DefineOptions(),
   ],
   define: {
     'process.env': {},

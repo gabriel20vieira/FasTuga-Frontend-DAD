@@ -19,7 +19,6 @@ const authorization = {
   'manage-menu': store => store.isManager,
   statistics: store => store.isManager,
   users: store => store.isManager,
-  dashboard: store => store.isManager,
   'account-settings': store => store.isLogged,
   'orders-history': store => store.isLogged,
   board: store => store.isAnonymous || store.isCustomer,
