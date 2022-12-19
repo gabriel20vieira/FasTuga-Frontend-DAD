@@ -1,9 +1,10 @@
 import defaultAvatar from '@/assets/images/avatars/avatar-8.png'
+import { OrderStatus } from '@/stores/orders'
 import { CHEF, CUSTOMER, DELIVERY, MANAGER } from '@/utils/utils'
 import websockets from '@/utils/websockets'
+import Cookies from 'js-cookie'
 import { defineStore, skipHydrate } from 'pinia'
 import { computed, inject } from 'vue'
-import { OrderStatus } from './orders'
 
 const AvailablePaymentTypes = {
   VISA: 'VISA',
@@ -127,7 +128,7 @@ export const useUserStore = defineStore('user', () => {
 
   function clearUser() {
     delete axios.defaults.headers.common.Authorization
-    sessionStorage.removeItem('token')
+    Cookies.remove('token')
     user.value = { id: -1 }
     customer.value = { id: -1 }
   }
@@ -141,8 +142,10 @@ export const useUserStore = defineStore('user', () => {
       currentOrders.value.forEach(order => {
         let now = new Date()
         if (order.date != `${now.getFullYear()}-${now.getMonth()}-${now.getDay()}`) {
-          let idx = currentOrders.value.indexOf(found)
-          currentOrders.value.splice(idx, 1)
+          let idx = currentOrders.value.findIndex(o => o.id == order.id)
+          if (idx >= 0) {
+            currentOrders.value.splice(idx, 1)
+          }
         }
       })
     }
@@ -151,24 +154,26 @@ export const useUserStore = defineStore('user', () => {
   function setupCurrentOrderTimer() {
     var hours = 0.2
     var now = new Date().getTime()
-    var setupTime = localStorage.getItem('setupTime')
+    var setupTime = Cookies.get('setupTime')
     if (setupTime == null) {
-      localStorage.setItem('setupTime', now)
+      Cookies.set('setupTime', now)
     } else {
       if (now - setupTime > hours * 60 * 60 * 1000) {
         removeOutdatedTickets()
-        localStorage.setItem('setupTime', now)
+        Cookies.set('setupTime', now)
       }
     }
   }
 
   async function login(credentials) {
     try {
-      const response = await axios.post('login', credentials)
+      const response = await axios.post('login', credentials).catch(err => console.log(err))
       axios.defaults.headers.common.Authorization = 'Bearer ' + response.data.token
 
       //Remember me
-      if (credentials.remember) sessionStorage.setItem('token', response.data.token)
+      if (credentials.remember) {
+        Cookies.set('token', response.data.token)
+      }
       await loadUser()
       soc.login()
       return true
@@ -191,15 +196,14 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function restoreToken() {
-    let storedToken = sessionStorage.getItem('token')
+    let storedToken = Cookies.get('token')
     if (storedToken) {
       axios.defaults.headers.common.Authorization = 'Bearer ' + storedToken
-      if (!user.value) {
-        await loadUser()
-        soc.login()
-      }
+      await loadUser()
+      soc.login()
       return true
     }
+
     clearUser()
     return false
   }

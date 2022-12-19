@@ -113,35 +113,35 @@ export const useStatisticsStore = defineStore('statistics', () => {
         name: 'VISA',
         count: statistics.value?.monthly.transactions_by_type[0].quantity ?? 0,
         icon: 'mdi-credit-card',
-        color: 'warning'
+        color: 'warning',
       },
       {
         name: 'PAYPAL',
         count: statistics.value?.monthly.transactions_by_type[1].quantity ?? 0,
         icon: 'mdi-email',
-        color: 'info'
+        color: 'info',
       },
       {
         name: 'MB WAY',
         count: statistics.value?.monthly.transactions_by_type[2].quantity ?? 0,
         icon: 'mdi-cellphone',
-        color: 'error'
+        color: 'error',
       },
       {
-        name: 'Refounds',
+        name: 'Refunds',
         count: statistics.value?.monthly.number_of_refunds__canceled_orders ?? 0,
         icon: 'mdi-close-circle-multiple-outline',
-        color: 'primary'
+        color: 'primary',
       },
       {
-        name: 'Value Refounded',
+        name: 'Value refunded',
         count: `${statistics.value?.monthly.total_refunded__lost_canceled_order ?? 0}€`,
         icon: 'mdi-cash-refund',
-        color: 'info'
+        color: 'info',
       },
     ]
   }
-  
+
   function clear() {
     statistics.value = null
   }
@@ -153,6 +153,6 @@ export const useStatisticsStore = defineStore('statistics', () => {
     getStatisticsBalance,
     getOrderWithHighestPaidValue,
     getAveragePaidValuePerOrder,
-    getTransactionValue
+    getTransactionValue,
   }
 })
