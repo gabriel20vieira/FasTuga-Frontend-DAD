@@ -21,6 +21,11 @@ onBeforeMount(async () => {
 	average_paid_value_per_order.value = statisticsStore.getAveragePaidValuePerOrder()
 	isLoading.value = false
 })
+
+onUnmounted(() => {
+	statisticsStore.clear()
+})
+
 </script>
 
 
@@ -28,8 +33,8 @@ onBeforeMount(async () => {
 	<VRow class="match-height">
 		<VCol cols="12" md="3">
 			<StatisticsCustomerCard title="Customers" :image="true"
-				:value="statisticsStore.statistics?.all.total_of_new_customers ?? '..'" subtitle="From last week"
-				:subvalue="statisticsStore.statistics?.weekly.total_of_new_customers ?? '..'" :isLoading="isLoading" />
+				:value="statisticsStore.statistics?.all?.total_of_new_customers ?? '..'" subtitle="From last week"
+				:subvalue="statisticsStore.statistics?.weekly?.total_of_new_customers ?? '..'" :isLoading="isLoading" />
 		</VCol>
 		<VCol cols="12" md="9">
 			<StatisticsDayBalanceCard title="Balance of the day" :statistics="balanceDay" :isLoading="isLoading" />
@@ -48,13 +53,13 @@ onBeforeMount(async () => {
 	<VRow>
 		<VCol cols="12" md="4">
 			<StatisticsTop5 :title="'Top 5 Deliverers'"
-				:statisticsItems="statisticsStore.statistics?.all.employee_with_most_deliveries ?? []"
+				:statisticsItems="statisticsStore.statistics?.all?.employee_with_most_deliveries ?? []"
 				:isLoading="isLoading" :statisticType="'Deliveries'" />
 		</VCol>
 
 		<VCol cols="12" md="4">
 			<StatisticsTop5 :title="'Top 5 Chefs'"
-				:statisticsItems="statisticsStore.statistics?.all.chef_with_most_orders ?? []" :isLoading="isLoading"
+				:statisticsItems="statisticsStore.statistics?.all?.chef_with_most_orders ?? []" :isLoading="isLoading"
 				:statisticType="'Preparations'" />
 		</VCol>
 
@@ -74,7 +79,7 @@ onBeforeMount(async () => {
 	</VRow>
 	<VCol cols="12" class="px-0 pt-6">
 		<StatisticsMostSoldByType :title="'Best Selling Products by Type'"
-			:statisticsItems="statisticsStore.statistics?.all.best_selling_products_by_type ?? []"
+			:statisticsItems="statisticsStore.statistics?.all?.best_selling_products_by_type ?? []"
 			:isLoading="isLoading" />
 	</VCol>
 	<VRow class="py-3">
