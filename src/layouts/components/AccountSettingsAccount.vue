@@ -138,10 +138,7 @@ onMounted(() => {
 				<VCardText>
 					<!-- 👉 Form -->
 					<VForm class="mt-6">
-
 						<VRow>
-
-
 							<VCol md="6" cols="12">
 								<VTextField v-model="accountDataLocal.name" label="Name" :rules="nameRules" />
 							</VCol>

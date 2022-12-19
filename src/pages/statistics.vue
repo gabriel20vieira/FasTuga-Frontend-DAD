@@ -12,6 +12,7 @@ const statisticsStore = useStatisticsStore()
 const balanceDay = ref([])
 const order_with_highest_paid_value = ref([])
 const average_paid_value_per_order = ref([])
+const transactionStatistics = ref([])
 const isLoading = ref(true)
 
 onBeforeMount(async () => {
@@ -19,6 +20,7 @@ onBeforeMount(async () => {
 	balanceDay.value = statisticsStore.getStatisticsBalance()
 	order_with_highest_paid_value.value = statisticsStore.getOrderWithHighestPaidValue()
 	average_paid_value_per_order.value = statisticsStore.getAveragePaidValuePerOrder()
+	transactionStatistics.value = statisticsStore.getTransactionValue()
 	isLoading.value = false
 })
 </script>
@@ -28,7 +30,7 @@ onBeforeMount(async () => {
 	<VRow class="match-height">
 		<VCol cols="12" md="3">
 			<StatisticsCustomerCard title="Customers" :image="true"
-				:value="statisticsStore.statistics?.all.total_of_new_customers ?? '..'" subtitle="From last week"
+				:value="statisticsStore.statistics?.all.total_of_new_customers ?? '..'" subtitle="This Week"
 				:subvalue="statisticsStore.statistics?.weekly.total_of_new_customers ?? '..'" :isLoading="isLoading" />
 		</VCol>
 		<VCol cols="12" md="9">
@@ -49,27 +51,18 @@ onBeforeMount(async () => {
 		<VCol cols="12" md="4">
 			<StatisticsTop5 :title="'Top 5 Deliverers'"
 				:statisticsItems="statisticsStore.statistics?.all.employee_with_most_deliveries ?? []"
-				:isLoading="isLoading" :statisticType="'Deliveries'" />
+				:isLoading="isLoading" :statisticType="'Deliveries'" :hasPhotos="true" />
 		</VCol>
 
 		<VCol cols="12" md="4">
 			<StatisticsTop5 :title="'Top 5 Chefs'"
 				:statisticsItems="statisticsStore.statistics?.all.chef_with_most_orders ?? []" :isLoading="isLoading"
-				:statisticType="'Preparations'" />
+				:statisticType="'Preparations'" :hasPhotos="true" />
 		</VCol>
 
 		<VCol cols="12" md="4">
-			<VCard>
-				<VCardItem>
-					<VCardTitle>Top 5</VCardTitle>
-				</VCardItem>
-
-				<VCardText>
-					<VListItemTitle class="text-sm font-weight-semibold mb-1">
-						TODO!
-					</VListItemTitle>
-				</VCardText>
-			</VCard>
+			<StatisticsTop5 :title="'Transactions'" :statisticsItems="transactionStatistics ?? []"
+				:isLoading="isLoading" :hasPhotos="false" />
 		</VCol>
 	</VRow>
 	<VCol cols="12" class="px-0 pt-6">

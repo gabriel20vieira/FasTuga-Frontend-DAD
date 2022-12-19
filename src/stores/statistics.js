@@ -53,25 +53,25 @@ export const useStatisticsStore = defineStore('statistics', () => {
     return [
       {
         time: 'Ever',
-        value: statistics.value?.all.order_with_highest_paid_value ?? 0,
+        value: `${statistics.value?.all.order_with_highest_paid_value ?? 0}€`,
         icon: 'mdi-all-inclusive',
         color: 'primary'
       },
       {
         time: 'Month',
-        value: statistics.value?.monthly.order_with_highest_paid_value ?? 0,
+        value: `${statistics.value?.monthly.order_with_highest_paid_value ?? 0}€`,
         icon: 'mdi-calendar-month-outline',
         color: 'success'
       },
       {
         time: 'Week',
-        value: statistics.value?.weekly.order_with_highest_paid_value ?? 0,
+        value: `${statistics.value?.weekly.order_with_highest_paid_value ?? 0}€`,
         icon: 'mdi-calendar-week-outline',
         color: 'warning'
       },
       {
         time: 'Today',
-        value: statistics.value?.daily.order_with_highest_paid_value ?? 0,
+        value: `${statistics.value?.daily.order_with_highest_paid_value ?? 0}€`,
         icon: 'mdi-calendar-today-outline',
         color: 'info'
       },
@@ -82,26 +82,61 @@ export const useStatisticsStore = defineStore('statistics', () => {
     return [
       {
         time: 'Ever',
-        value: statistics.value?.all.average_paid_value_per_order ?? 0,
+        value: `${statistics.value?.all.average_paid_value_per_order ?? 0}€`,
         icon: 'mdi-all-inclusive',
         color: 'primary'
       },
       {
         time: 'Month',
-        value: statistics.value?.monthly.average_paid_value_per_order ?? 0,
+        value: `${statistics.value?.monthly.average_paid_value_per_order ?? 0}€`,
         icon: 'mdi-calendar-month-outline',
         color: 'success'
       },
       {
         time: 'Week',
-        value: statistics.value?.weekly.average_paid_value_per_order ?? 0,
+        value: `${statistics.value?.weekly.average_paid_value_per_order ?? 0}€`,
         icon: 'mdi-calendar-week-outline',
         color: 'warning'
       },
       {
         time: 'Today',
-        value: statistics.value?.daily.average_paid_value_per_order ?? 0,
+        value: `${statistics.value?.daily.average_paid_value_per_order ?? 0}€`,
         icon: 'mdi-calendar-today-outline',
+        color: 'info'
+      },
+    ]
+  }
+
+  function getTransactionValue() {
+    return [
+      {
+        name: 'VISA',
+        count: statistics.value?.monthly.transactions_by_type[0].quantity ?? 0,
+        icon: 'mdi-credit-card',
+        color: 'warning'
+      },
+      {
+        name: 'PAYPAL',
+        count: statistics.value?.monthly.transactions_by_type[1].quantity ?? 0,
+        icon: 'mdi-email',
+        color: 'info'
+      },
+      {
+        name: 'MB WAY',
+        count: statistics.value?.monthly.transactions_by_type[2].quantity ?? 0,
+        icon: 'mdi-cellphone',
+        color: 'error'
+      },
+      {
+        name: 'Refounds',
+        count: statistics.value?.monthly.number_of_refunds__canceled_orders ?? 0,
+        icon: 'mdi-close-circle-multiple-outline',
+        color: 'primary'
+      },
+      {
+        name: 'Value Refounded',
+        count: `${statistics.value?.monthly.total_refunded__lost_canceled_order ?? 0}€`,
+        icon: 'mdi-cash-refund',
         color: 'info'
       },
     ]
@@ -113,5 +148,6 @@ export const useStatisticsStore = defineStore('statistics', () => {
     getStatisticsBalance,
     getOrderWithHighestPaidValue,
     getAveragePaidValuePerOrder,
+    getTransactionValue
   }
 })

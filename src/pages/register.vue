@@ -111,9 +111,7 @@ const register = async () => {
                 :error-messages="loginErrors.password_confirmation" />
             </VCol>
 
-            <VCol>
-              <VSpacer></VSpacer>
-            </VCol>
+            <VDivider class="my-4 mx-3" />
 
             <!-- phone -->
             <VCol cols="12">
