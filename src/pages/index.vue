@@ -21,7 +21,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <!-- <VRow class="mb-16">
+  <VRow class="mb-16">
     <VCol class="text-left float-md-right" md="4" cols="12">
       <div style="height:20%;"></div>
       <div class="float-md-end">
@@ -44,19 +44,17 @@ onBeforeMount(async () => {
   <VRow>
     <VRow class="align-cards py-8 px-6 w-100 gap-8">
       <VCol v-for="product in products.slice(0, 6)" :key="product.id" cols="12" lg="3" sm="3">
-        <!-- <VCard>
-            <VImg cover :aspect-ratio="1.5" :src="imageUrl(product.photo_url)" :lazy-src="imageUrl(product.photo_url)" /> -->
-  <VCard class="h-100">
-    <VImg cover :aspect-ratio="1" :src="imageUrl(product.photo_url)" :lazy-src="imageUrl(product.photo_url)" />
-    <VCardItem>
-      <VCardTitle>
-        {{ product.name }}
-      </VCardTitle>
-    </VCardItem>
-  </VCard>
-  </VCol>
+        <VCard class="h-100">
+          <VImg cover :aspect-ratio="1" :src="imageUrl(product.photo_url)" :lazy-src="imageUrl(product.photo_url)" />
+          <VCardItem>
+            <VCardTitle>
+              {{ product.name }}
+            </VCardTitle>
+          </VCardItem>
+        </VCard>
+      </VCol>
+    </VRow>
   </VRow>
-  </VRow> -->
 </template>
 
 <style lang="scss" scoped>
