@@ -22,23 +22,24 @@ onBeforeMount(async () => {
 
 <template>
   <VRow class="mb-16">
-    <VCol class="text-left float-md-right" md="4" cols="12">
+    <VCol cols="12" sm="12" md="6" lg="5">
       <div style="height:20%;"></div>
-      <div class="float-md-end">
-        <h1 class="text-h1 text-primary font-weight-bold text-uppercase">FasTuga</h1>
+      <div class="float-md-center pt-8">
+        <h1 class="text-primary font-weight-bold text-uppercase landing-title" >FasTuga</h1>
         <h4 class="text-h4 mt-auto mb-5">Very Fast. Very Tuga.</h4>
         <router-link :to="{ name: 'menu' }" v-if="userStore.isAnonymous || userStore.isCustomer">
           <VBtn color="primary" depressed elevation="3" size="large">
-            Order now</VBtn>
+            Order now
+          </VBtn>
         </router-link>
       </div>
     </VCol>
-    <VCol md="8" cols="12">
-      <VImg :src="imgUrl" max-height="700" max-width="1000" class="ml-auto" />
+    <VCol cols="12" sm="12" md="6" lg="7" >
+      <VImg :src="imgUrl" max-height="700" max-width="1000" class="ml-auto" style="margin-right: -125px !important;" />
     </VCol>
   </VRow>
 
-  <h1 class="text-h3 text-center mt-16">Some of our menu items</h1>
+  <h1 class="text-h3 text-center mt-16">Some of our menu items!</h1>
   <VDivider class="my-7" style="border-width: 2px;border-radius: 10px;" />
 
   <VRow>
@@ -62,5 +63,25 @@ onBeforeMount(async () => {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.landing-title {
+    font-size: 6rem !important;
+    font-weight: 500;
+    line-height: 7rem;
+  }
+
+@media only screen 
+and (max-width : 440px) {
+  .landing-title {
+    font-size: 4rem !important;
+  }
+}
+
+@media only screen 
+and (max-width : 1380px) and (min-width : 440px){
+  .landing-title {
+    font-size: 5rem !important;
+  }
 }
 </style>
