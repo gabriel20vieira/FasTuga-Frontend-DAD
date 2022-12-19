@@ -1,7 +1,7 @@
 <script setup>
+import StatisticsCustomerCard from '@/layouts/components/StatisticsCustomerCard.vue';
 import { useStatisticsStore } from '@/stores/statistics';
 import { useUserStore } from '@/stores/user';
-import StatisticsCustomerCard from '@/views/dashboards/analytics/StatisticsCustomerCard.vue';
 import StatisticsCustomerSavings from './StatisticsCustomerSavings.vue';
 import StatisticsMostItemByType from './StatisticsMostItemByType.vue';
 

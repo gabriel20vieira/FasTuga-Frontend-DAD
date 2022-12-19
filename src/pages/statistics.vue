@@ -1,12 +1,12 @@
 <script setup>
+import StatisticsCustomerCard from '@/layouts/components/StatisticsCustomerCard.vue';
+import StatisticsDayBalanceCard from '@/layouts/components/StatisticsDayBalanceCard.vue';
 import StatisticsLifeTime from '@/layouts/components/StatisticsLifeTime.vue';
 import StatisticsMostSoldByType from '@/layouts/components/StatisticsMostItemByType.vue';
 import StatisticsNewUsersBarChart from '@/layouts/components/StatisticsNewUsersBarChart.vue';
 import StatisticsOrdersTypePieChart from '@/layouts/components/StatisticsOrdersTypePieChart.vue';
 import StatisticsTop5 from '@/layouts/components/StatisticsTop5.vue';
 import { useStatisticsStore } from '@/stores/statistics';
-import StatisticsCustomerCard from '@/views/dashboards/analytics/StatisticsCustomerCard.vue';
-import StatisticsDayBalanceCard from '@/views/dashboards/analytics/StatisticsDayBalanceCard.vue';
 
 const statisticsStore = useStatisticsStore()
 const balanceDay = ref([])
