@@ -65,7 +65,8 @@ function setCustomerData() {
 }
 
 const hasChanged = computed(() => {
-	return accountData.name != accountDataLocal.value.name
+	return (accountDataLocal.value.image != accountData.image)
+		|| accountData.name != accountDataLocal.value.name
 		|| accountData.email != accountDataLocal.value.email
 		|| accountData.type != accountDataLocal.value.type
 		|| customerData.phone != customerDataLocal.value.phone
@@ -78,7 +79,7 @@ const hasChanged = computed(() => {
 const saveChanges = async () => {
 	isLoading.value = true
 
-	if (accountDataLocal.image != accountData.image) {
+	if (accountDataLocal.value.image == accountData.image) {
 		var { image, photo_url, ...data } = accountDataLocal.value
 	} else {
 		var data = accountDataLocal.value
@@ -92,7 +93,6 @@ const saveChanges = async () => {
 				accountDataLocal.value = structuredClone(accountData)
 			}
 		}).catch((err) => {
-
 			toast.error(err?.response?.data?.message)
 		}).finally(() => isLoading.value = false)
 
