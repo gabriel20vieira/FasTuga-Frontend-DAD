@@ -36,7 +36,6 @@ async function makeOrder() {
 	)
 
 	await cartStore.makeOrder().then(async res => {
-		loading.value = false
 		toast.success(res.data.message + "\tTicket: " + res.data.data.ticket_number)
 		userStore.currentOrders.push(res.data.data)
 		if (userStore?.isLogged) {
@@ -44,18 +43,18 @@ async function makeOrder() {
 		}
 		await orderStore.fetchBoard()
 		router.push({ name: 'board' })
-	}).catch(err => {
-		loading.value = false
-		if (err && err.response.data.errors) {
-			errors.value.type = err.response.data.errors['payment.type'] ?? []
-			errors.value.reference = err.response.data.errors['payment.reference'] ?? []
-			toast.error(capitalizeFirstLetter(err.response.data.message.replace('.', ' ')))
-		}
-
-		if (err && err.response.data.message) {
-			toast.error(capitalizeFirstLetter(err.response.data.message))
-		}
 	})
+		.catch(err => {
+			if (err && err.response.data.errors) {
+				errors.value.type = err.response.data.errors['payment.type'] ?? []
+				errors.value.reference = err.response.data.errors['payment.reference'] ?? []
+				toast.error(capitalizeFirstLetter(err.response.data.message.replace('.', ' ')))
+			}
+			if (err && err.response.data.message) {
+				toast.error(capitalizeFirstLetter(err.response.data.message))
+			}
+		})
+		.finally(() => loading.value = false)
 }
 </script>
 

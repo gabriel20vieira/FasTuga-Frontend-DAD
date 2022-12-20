@@ -72,24 +72,13 @@ export const useUserStore = defineStore('user', () => {
     return isLogged ? user.value?.type == type : false
   }
 
-  async function updatePassword(password, confirmation, callback = null) {
+  async function updatePassword(password, confirmation) {
     if (password && confirmation) {
       if (password == confirmation) {
-        axios
-          .post('/change-password', {
-            password: `${password}`,
-            password_confirmation: `${confirmation}`,
-          })
-          .then(res => {
-            toast.success(res.message ?? 'Password changes with success! 🤗')
-            if (callback) {
-              callback(true)
-            }
-          })
-          .catch(err => {
-            toast.error(err.response.data.message)
-            callback(false)
-          })
+        return await axios.post('/change-password', {
+          password: `${password}`,
+          password_confirmation: `${confirmation}`,
+        })
       } else {
         toast.error("Passwords don't match. 😮")
       }

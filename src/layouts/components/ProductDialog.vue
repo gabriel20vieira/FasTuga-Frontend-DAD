@@ -46,7 +46,7 @@ const destroy = async () => {
 	if (!product.value?.id) {
 		return
 	}
-	
+
 	if (await confirmDialog.value.open({ message: "Do you really want to delete this product?" })) {
 		loading.value = true
 		confirmDialog.value.close()
@@ -59,7 +59,7 @@ const destroy = async () => {
 				loading.value = false
 				toast.error("Unable to delete product.")
 			}).finally(() => loading.value = false)
-	} 
+	}
 }
 
 const save = async () => {
@@ -79,8 +79,9 @@ const save = async () => {
 			toast.success(res.data.message)
 			emit("save");
 		}).catch((err) => {
+			console.log(err)
 			loading.value = false
-			toast.error(err.response.data.message ?? (err.message + ": Your image might be too large."))
+			toast.error(err.response?.statusText ?? err.response.data.message ?? (err.message + ": Your image might be too large."))
 			setErrors(err.response.data.errors)
 		})
 };

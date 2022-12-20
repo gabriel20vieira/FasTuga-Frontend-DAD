@@ -1,5 +1,6 @@
 <script setup>
 import { paymentTypes } from '@/stores/user';
+import { emailRules, nameRules } from '@/utils/validations';
 import { useRouter } from 'vue-router';
 const axios = inject('axios')
 const toast = inject('toast')
@@ -85,13 +86,14 @@ const register = async () => {
           <VRow>
             <!-- Name -->
             <VCol cols="12">
-              <VTextField v-model="form.name" label="Name" :disabled="loading" :error-messages="loginErrors.name" />
+              <VTextField v-model="form.name" label="Name" :disabled="loading" :error-messages="loginErrors.name"
+                :rules="nameRules" />
             </VCol>
 
             <!-- email -->
             <VCol cols="12">
               <VTextField v-model="form.email" label="Email" type="email" :disabled="loading"
-                :error-messages="loginErrors.email" />
+                :error-messages="loginErrors.email" :rules="emailRules" />
             </VCol>
 
             <!-- password -->
@@ -99,7 +101,7 @@ const register = async () => {
               <VTextField v-model="form.password" label="Password" :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
                 @click:append-inner="isPasswordVisible = !isPasswordVisible" class="mb-1" :disabled="loading"
-                :error-messages="loginErrors.password" />
+                :rules="[v => !!v || v.length <= 8 || 'Password too short.']" :error-messages="loginErrors.password" />
             </VCol>
 
             <!-- password confirmation -->
@@ -108,6 +110,7 @@ const register = async () => {
                 :type="isPasswordVisible ? 'text' : 'password'"
                 :append-inner-icon="isPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
                 @click:append-inner="isPasswordVisible = !isPasswordVisible" class="mb-1" :disabled="loading"
+                :rules="[v => !!v || v.length <= 8 || 'Password too short.']"
                 :error-messages="loginErrors.password_confirmation" />
             </VCol>
 

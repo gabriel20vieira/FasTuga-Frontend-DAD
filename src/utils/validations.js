@@ -6,7 +6,7 @@ const emailRules = ref([
 
 const nameRules = ref([
   v => !!v || 'Name is required',
-  v => /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/.test(v) || 'Name must be valid',
+  v => /^([A-Za-z0-9\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/.test(v) || 'Name must be valid',
   v => (v && v.length <= 60) || 'Name must be less than 60 characters',
 ])
 
@@ -65,4 +65,3 @@ const phoneRules = ref([
 const priceRules = ref([v => !!v || 'Price is required', v => v >= 0 || 'Price must be bigger than 0'])
 
 export { emailRules, nameRules, productNameRules, nifRules, paymentReferenceRules, phoneRules, priceRules }
-

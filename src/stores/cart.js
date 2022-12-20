@@ -44,17 +44,13 @@ export const useCartStore = defineStore('cart', () => {
 
     const { prds: _, ...data } = order.value
 
-    return await axios
-      .post('/orders', data)
-      .then(res => {
-        let completed = res.data.data
-        soc.send('orders-update', completed)
-        soc.send('board-update', completed)
-        return res
-      })
-      .finally(() => {
-        resetCart()
-      })
+    return await axios.post('/orders', data).then(res => {
+      let completed = res.data.data
+      soc.send('orders-update', completed)
+      soc.send('board-update', completed)
+      resetCart()
+      return res
+    })
   }
 
   function addUsePoints() {

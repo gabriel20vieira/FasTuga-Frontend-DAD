@@ -14,8 +14,10 @@ import { createApp } from 'vue'
 
 loadFonts()
 
+// const serverBaseUrl = import.meta.env.VITE_API_DOMAIN
+// const socketConnection = import.meta.env.VITE_WS_CONNECTION
 const serverBaseUrl = 'http://127.0.0.1:8000'
-const socketConnection = 'http://localhost:8080'
+const socketConnection = 'http://localhost:8081'
 
 const pinia = createPinia()
 
@@ -34,7 +36,6 @@ const toasterInstance = {
 }
 
 const app = createApp(App)
-// app.config.warnHandler = () => null
 
 app.provide('serverBaseUrl', serverBaseUrl)
 app.provide('axios', axiosInstance)

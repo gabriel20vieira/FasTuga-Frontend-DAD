@@ -9,14 +9,21 @@ const isConfirmPasswordVisible = ref(false)
 const newPassword = ref('')
 const confirmPassword = ref('')
 
-const updatePassword = () => {
-	userStore.updatePassword(newPassword.value, confirmPassword.value, (res) => {
+const isLoading = ref(false)
+
+const updatePassword = async () => {
+	isLoading.value = true
+	await userStore.updatePassword(newPassword.value, confirmPassword.value).then((res) => {
 		if (res) {
 			newPassword.value = ""
 			confirmPassword.value = ""
 		}
+		toast.success(res.message ?? 'Password changes with success! 🤗')
 	})
+		.catch((err) => toast.error(err.response.data.message))
+		.finally(() => isLoading.value = false)
 }
+
 
 </script>
 
@@ -34,7 +41,8 @@ const updatePassword = () => {
 								<!-- 👉 new password -->
 								<VTextField v-model="newPassword" :type="isNewPasswordVisible ? 'text' : 'password'"
 									:append-inner-icon="isNewPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-									label="New Password"
+									label="New Password" :disabled="isLoading"
+									:rules="[v => !!v || v.length <= 8 || 'Password too short.']"
 									@click:append-inner="isNewPasswordVisible = !isNewPasswordVisible" />
 							</VCol>
 						</VRow>
@@ -45,7 +53,8 @@ const updatePassword = () => {
 								<VTextField v-model="confirmPassword"
 									:type="isConfirmPasswordVisible ? 'text' : 'password'"
 									:append-inner-icon="isConfirmPasswordVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-									label="Confirm New Password"
+									label="Confirm New Password" :disabled="isLoading"
+									:rules="[v => !!v || v.length <= 8 || 'Password too short.']"
 									@click:append-inner="isConfirmPasswordVisible = !isConfirmPasswordVisible" />
 							</VCol>
 						</VRow>
@@ -53,11 +62,9 @@ const updatePassword = () => {
 
 					<!-- 👉 Action Buttons -->
 					<VCardText class="d-flex flex-wrap gap-4">
-						<VBtn @click.prevent="updatePassword">Save changes
-						</VBtn>
-						<VBtn type="reset" color="error" variant="tonal" :disabled="!(newPassword || confirmPassword)">
-							Reset
-						</VBtn>
+						<VBtn @click.prevent="updatePassword" :loading="isLoading">Save changes</VBtn>
+						<VBtn type="reset" color="error" variant="tonal"
+							:disabled="!(newPassword || confirmPassword) || isLoading"> Reset </VBtn>
 					</VCardText>
 				</VForm>
 			</VCard>
